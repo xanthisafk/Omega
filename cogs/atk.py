@@ -85,7 +85,7 @@ class ATK(commands.Cog):
 
             x = string.split(",",1)
             try:
-                name = x[0]
+                name = x[0].rstrip()
                 url = x[1]
             except Exception as e:
                 if isinstance(e,IndexError):
@@ -164,13 +164,19 @@ class ATK(commands.Cog):
 
         
         split_s = s.split(' ')
-        if s.startswith('>'): return
+        if s.startswith('>') : return
         for word in split_s:
-            if word.startswith(':') or word.startswith('>') or word.startswith('-'): return 
+            if word.startswith(':') or word.startswith('>') or word.startswith('-'): return
+            if re.search(r'\bnooooo',word): 
+                await message.channel.send(random.choice(idk['nooooo']))
+                await log.event_logger(message,word,self.cog_name); return
         
         try:
             for word in idk:
-                
+                check1 = r":"+word+r":"
+                check2 = r"\b-"+word+r"\b"
+                check3 = r"\b>"+word+r"\b"
+                if re.search(check1,s) or re.search(check2,s) or re.search(check3,s) : return
                 regex_string = r"\b"+word+ r"\b"
                 if re.search(regex_string,s):
                     if type(idk[word]) == list:

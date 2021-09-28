@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import json, os, random, re, config
+import random, re, config
 import loggers.logger as log
 import files.db as pql
 

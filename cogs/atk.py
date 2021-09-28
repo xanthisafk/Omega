@@ -208,7 +208,16 @@ class ATK(commands.Cog):
 
 
     @commands.Cog.listener()
-    async def on_message(self,message):
+    async def on_message(self,message) -> None:
+        """
+        This function processes the message to check if they contain an ATK. If it does, then send the assigned
+        value back.
+
+        args:
+            message: discord.Context -> Contains all the information needed to process the message
+        returns:
+            None
+        """
         
         if message.author == self.client.user or message.author.bot == True or str(message.author.id) in self.aignores: return
         

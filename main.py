@@ -2,13 +2,25 @@ import discord
 from discord.ext import commands
 import config
 import os
+from os import path
 
-intents = discord.Intents(messages=True,members=True,emojis=True)
+intents = discord.Intents(messages=True,members=True,emojis=True,guilds=True)
 client = commands.Bot(command_prefix = config.PREFIX, case_insensitive = True, intents = intents)
+client.remove_command('help')
 
 @client.event
 async def on_ready():
+    
+
+    channel =  client.get_channel(891403310953795605)
+
+    if path.exists('./files/exists'):
+        await channel.send("Running on PC.")
+    else:
+        await channel.send("Running on Heroku")
+
     print(f'Logged in as {client.user.name}')
+    await channel.send(f'Logged in as {client.user.name}')
 
 @client.command()
 async def load(ctx, ext: str = None):
@@ -68,5 +80,6 @@ async def reload(ctx, ext: str = None):
 for i in os.listdir('./cogs'):
     if i.endswith('.py'):
         client.load_extension(f'cogs.{i[:-3]}')
+        print(f'Loading {i[:-3].capitalize()}')
 
 client.run(config.SECKEY)

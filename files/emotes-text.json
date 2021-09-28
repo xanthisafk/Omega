@@ -1,0 +1,14 @@
+{
+  "emote":{
+    "blush":{
+      "name":"Blush",
+      "description":"Blush or blush at someone",
+      "syntax":"`>blush [member]`"
+    },
+    "dance":{
+      "name":"Dance",
+      "description":"Dance alone with someone",
+      "syntax":"`>blush [member]`"
+    }
+  }
+}

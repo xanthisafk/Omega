@@ -8,7 +8,12 @@ class Help(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-    
+        self.cog_name = __name__[5:].capitalize()
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f'{self.cog_name} Running.')
+
     cog_name: str = 'Help'
     
     color_list = [

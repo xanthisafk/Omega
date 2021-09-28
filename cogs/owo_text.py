@@ -4,10 +4,13 @@ import owo
 import loggers.logger as log
 
 class owo_text(commands.Cog):
-    cog_name = 'OwO_text'
     def __init__(self, client):
         self.client = client
+        self.cog_name = __name__[5:].capitalize()
 
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f'{self.cog_name} Running.')
 
     @commands.command()
     async def owoify(self,ctx,*,text:str=None):

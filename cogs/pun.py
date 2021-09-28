@@ -4,9 +4,13 @@ import requests, random
 import loggers.logger as log
 
 class Pun(commands.Cog):
-    cog_name = 'Pun'
     def __init__(self, client):
         self.client = client
+        self.cog_name = __name__[5:].capitalize()
+    
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f'{self.cog_name} Running.')
 
     color_list = [0xA9FBD7, 0xD7FDEC, 0xFDE74C, 0xE8DAB2, 0xDD6E42, 0xE5FCFF, 0xE5FCFF, 0xABDAFC, 0xACACDE, 0xC490D1, 0xB8336A]
 

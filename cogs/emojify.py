@@ -5,10 +5,14 @@ import json
 import loggers.logger as log
 
 class Emoji(commands.Cog):
-    cog_name = 'Emoji'
     def __init__(self, client):
         self.client = client
-    
+        self.cog_name = __name__[5:].capitalize()
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f'{self.cog_name} Running.')
+
     @commands.command()
     async def emojify(self,ctx,*,text=None):
         name = 'Emojify'

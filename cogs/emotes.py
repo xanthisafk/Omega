@@ -5,9 +5,13 @@ import loggers.logger as log
 import files.color as rang
 
 class Emotes(commands.Cog):
-    cog_name = 'Emotes'
     def __init__(self, client):
         self.client = client
+        self.cog_name = __name__[5:].capitalize()
+    
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f'{self.cog_name} Running.')
 
     async def get_gif(self,name: str) -> str:
         """
@@ -92,12 +96,12 @@ class Emotes(commands.Cog):
             embed.set_image(url=image)
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
 
-    
+
     @commands.command()
     async def dance(self,ctx,mentioned:discord.Member=None):
         name = 'Dance'
@@ -113,14 +117,14 @@ class Emotes(commands.Cog):
                 image = random.choice(self.dance_list)
             else:
                 image = await self.get_gif(name.lower())
-            
-            
+
+
             embed.set_image(url=image)
 
 
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
@@ -139,10 +143,10 @@ class Emotes(commands.Cog):
 
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-            
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
@@ -153,19 +157,19 @@ class Emotes(commands.Cog):
         name = 'Sleep'
         try:
             color = await rang.get_color()
-            
+
             embed = discord.Embed(title = f'{ctx.author.name} is sleeping!',color=color)
-            
+
             image = random.choice(self.sleep_list)
             embed.set_image(url=image)
 
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-            
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command()
     async def vibe(self,ctx,user:discord.Member=None):
         name = 'Vibe'
@@ -175,24 +179,24 @@ class Emotes(commands.Cog):
                 embed = discord.Embed(title = f'{ctx.author.name} is vibing!',color=color)
             else:
                 embed = discord.Embed(title = f'{ctx.author.name} is vibing with {user.name}!',color=color)
-            
+
             image = random.choice(self.vibe_list)
             embed.set_image(url=image)
 
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-            
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
 
-    
+
     @commands.command()
     async def pat(self,ctx,mentioned:discord.Member=None):
         name = 'Pat'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 embed = discord.Embed(title = f'{ctx.author.name} pats!',color=color)
             else:
@@ -200,21 +204,21 @@ class Emotes(commands.Cog):
 
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-            
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
 
-    
+
     @commands.command()
     async def cry(self,ctx,mentioned:discord.Member=None):
         name = 'Cry'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 embed = discord.Embed(title = f'{ctx.author.name} is crying.',color=color)
             else:
@@ -222,20 +226,20 @@ class Emotes(commands.Cog):
 
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-            
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command()
     async def pout(self,ctx,mentioned:discord.Member=None):
         name = 'Pout'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 embed = discord.Embed(title = f'{ctx.author.name} is pouting.!',color=color)
             else:
@@ -243,10 +247,10 @@ class Emotes(commands.Cog):
 
             image = random.choice(self.pout_list)
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
@@ -256,19 +260,19 @@ class Emotes(commands.Cog):
         name = 'Kiss'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("You need to tag someoneto kiss them, dummy")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} is kissing {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
@@ -278,41 +282,41 @@ class Emotes(commands.Cog):
         name = 'Bully'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("You need to tag someone to BULLY THEM! ヾ(`ヘ´)ﾉﾞ")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} is bullying {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command()
     async def cuddle(self,ctx,mentioned:discord.Member=None):
         name = 'Cuddle'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("Here have some cuddles  ╰(*´︶`*)╯♡	")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} is cuddling with {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
@@ -322,19 +326,19 @@ class Emotes(commands.Cog):
         name = 'Hug'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("I will hug you.. ＼(￣▽￣)／	")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} is hugging {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
@@ -344,18 +348,18 @@ class Emotes(commands.Cog):
         name = 'Lick'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 embed = discord.Embed(title=f'{ctx.author.name} is licking... something?',color=color)
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} is bullying {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
@@ -365,104 +369,116 @@ class Emotes(commands.Cog):
         name = 'Smug'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 embed = discord.Embed(title=f'{ctx.author.name} is feeling smug :3',color=color)
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} smugs at {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command()
     async def bonk(self,ctx,mentioned:discord.Member=None):
         name = 'Bonk'
         try:
             color = await rang.get_color()
-            
-            if mentioned == None:
-                embed = discord.Embed(title=f'{ctx.author.name} bonked!',color=color)
+
+            if ctx.author.id == 693118595089170553:
+                if mentioned == None:
+                    embed = discord.Embed(title=f'{ctx.author.name} bonked!',color=color)
+                    
+                else:
+                    embed = discord.Embed(title=f'{ctx.author.name} is boking {mentioned.name}!',color=color)
+
             else:
-                embed = discord.Embed(title=f'{ctx.author.name} is boking {mentioned.name}!',color=color)
-            
+                if mentioned == None:
+                    embed = discord.Embed(title=f'{ctx.author.name} bonked!',color=color)
+
+                elif mentioned.id == 693118595089170553:
+                    embed = discord.Embed(title=f'{ctx.author.name} is boking {mentioned.name}!',color=color)
+
+                else:
+                    embed = discord.Embed(title=f'{ctx.author.name} is bonking {mentioned.name}!',color=color)
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command(aliases=['throw'])
     async def yeet(self,ctx,mentioned:discord.Member=None):
         name = 'Yeet'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send('Mention someone to throw!')
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} yeets {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command(aliases=['happy'])
     async def smile(self,ctx,mentioned:discord.Member=None):
         name = 'Smile'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 embed = discord.Embed(title=f'{ctx.author.name} is smiling!',color=color)
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} is smiling at {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command()
     async def highfive(self,ctx,mentioned:discord.Member=None):
         name = 'Highfive'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("Mention someone to highfive them.")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} highfives {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
@@ -472,19 +488,19 @@ class Emotes(commands.Cog):
         name = 'Handhold'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("Mention someone to hold their hands.. ")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} is holding {mentioned.name} hands!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
@@ -494,192 +510,192 @@ class Emotes(commands.Cog):
         name = 'Nom'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 embed = discord.Embed(title=f'{ctx.author.name} is eating',color=color)
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} is eating with {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command(aliases=['nom'])
     async def bite(self,ctx,mentioned:discord.Member=None):
         name = 'Bite'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("Mention someone to bite them.")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} is biting {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command(aliases=['superhug'])
     async def glomp(self,ctx,mentioned:discord.Member=None):
         name = 'glomp'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("Mention someone pls. Glomping is worth it.")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} glomps {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command()
     async def slap(self,ctx,mentioned:discord.Member=None):
         name = 'Slap'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("To slap someone you need to mention them 😩")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} slaps {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command()
     async def kill(self,ctx,mentioned:discord.Member=None):
         name = 'Kill'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("Kill who? Mention them ples")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} kills {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command()
     async def kick(self,ctx,mentioned:discord.Member=None):
         name = 'Kick'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("You can not kick air!! Mention someone!")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} kicks {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command()
     async def wink(self,ctx,mentioned:discord.Member=None):
         name = 'Wink'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 embed = discord.Embed(title=f'{ctx.author.name} winks!',color=color)
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} winks at {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command()
     async def poke(self,ctx,mentioned:discord.Member=None):
         name = 'Poke'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 await ctx.send("Who tf do I poke? Mention them")
                 return
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} is poking {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)
-    
+
     @commands.command()
     async def cringe(self,ctx,mentioned:discord.Member=None):
         name = 'Cringe'
         try:
             color = await rang.get_color()
-            
+
             if mentioned == None:
                 embed = discord.Embed(title=f'{ctx.author.name} is cringing',color=color)
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} cringes at {mentioned.name}!',color=color)
-            
+
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
-            
+
             await ctx.send(embed=embed)
             await log.event_logger(ctx,name,self.cog_name)
-        
+
         except Exception as e:
             await ctx.send('Something went wrong.')
             await log.error_logger(ctx,name,self.cog_name,e)

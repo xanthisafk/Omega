@@ -197,10 +197,7 @@ class Emotes(commands.Cog):
         try:
             color = await rang.get_color()
 
-            if mentioned == None:
-                embed = discord.Embed(title = f'{ctx.author.name} pats!',color=color)
-            else:
-                embed = discord.Embed(title=f'{ctx.author.name} pats {mentioned.name}!',color=color)
+            embed = discord.Embed(title=f'{ctx.author.name} pats {mentioned.name}!',color=color)
 
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
@@ -550,7 +547,7 @@ class Emotes(commands.Cog):
 
     @commands.command(aliases=['superhug'])
     async def glomp(self,ctx,mentioned:discord.Member=None):
-        name = 'glomp'
+        name = 'Glomp'
         try:
             color = await rang.get_color()
 

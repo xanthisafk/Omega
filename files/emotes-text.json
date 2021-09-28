@@ -1,14 +1,401 @@
 {
   "emote":{
+
     "blush":{
-      "name":"Blush",
-      "description":"Blush or blush at someone",
-      "syntax":"`>blush [member]`"
+
+      "solo":[
+        "blushes!",
+        "'s cheeks turn red!",
+        "is blushing!",
+        "is shy!",
+        "is feeling shy!"
+      ],
+
+      "with":[
+        "is blushing at",
+        "is feeling shy towards",
+        "'s cheeks turn red for",
+        "blushes"
+      ]
     },
+
     "dance":{
-      "name":"Dance",
-      "description":"Dance alone with someone",
-      "syntax":"`>blush [member]`"
+
+      "solo":[
+
+        "dances!",
+        "is moving their feets",
+        "shakes a leg",
+        "moves to the rythm",
+        "is dancing!",
+        "boogies down"
+      ],
+
+      "with":[
+        "is dancing with",
+        "dances with",
+        "is shaking a leg with",
+        "shakes a leg with",
+        "is moving to the rythm with",
+        "boogies down with"
+      ]
+    },
+
+    "wave":{
+
+      "solo":[
+        "waves",
+        "is waving",
+        "waves their hands",
+        "says hi",
+        "is greeting",
+        "greets"
+      ],
+
+      "with":[
+        "waves at",
+        "is waving at",
+        "waves their hands towards",
+        "says hi to",
+        "is greeting",
+        "greets"
+      ]
+    },
+
+    "sleep":{
+
+      "solo":[
+        "sleeps",
+        "goes to sleep",
+        "is sleeping",
+        "went to sleep",
+        "gets some shut eye",
+        "snores",
+        "is napping",
+        "takes a nap",
+        "is slumbering",
+        "is asleet",
+        "is feeling drowsy"
+      ]
+    },
+
+    "vibe":{
+
+      "solo":[
+        "is vibing",
+        "vibes",
+        "is nodding their head",
+        "is in the groove",
+        "is enjoying music",
+        "thinks this is a vibe"
+      ],
+
+      "with":[
+        "is vibing with",
+        "vibes with",
+        "is enjoying music with",
+        "is feeling groovy with"
+      ]
+    },
+
+    "pat":{
+
+      "with":[
+        "is patting",
+        "pats",
+        "pets",
+        "is carresing"
+      ]
+    },
+
+    "cry":{
+
+      "solo":[
+        "is crying",
+        "cries",
+        "is sad",
+        "'s eyes are full of tears",
+        "is sobbing",
+        "sheds tears",
+        "is crying their heart out",
+        "wails",
+        "is weeping",
+        "weeps",
+        "is wailing",
+        "whimpers"
+      ],
+
+      "with":[
+        "is crying at",
+        "cries at",
+        "is shedding tears for",
+        "sobs at",
+        "sobs for",
+        "whimpers at"
+      ]
+    },
+
+    "pout":{
+
+      "solo":[
+        "is pouting",
+        "pouts",
+        "is angry",
+        "is annoyed",
+        "feels annoyed"
+      ],
+
+      "with":[
+        "is pouting at",
+        "pout at",
+        "is angry at",
+        "is annoyed at",
+        "feels annoyed towards"
+      ]
+    },
+
+    "kiss":{
+
+      "with":[
+        "kisses",
+        "kissed",
+        "is kissing"
+      ]
+    },
+
+    "bully":{
+
+      "with":[
+        "bullies",
+        "is bullying",
+        "pushes around"
+      ]
+    },
+    
+    "cuddle":{
+
+      "with":[
+        "cuddles with",
+        "is cuddling with",
+        "cuddles",
+        "embraces",
+        "snuggles with",
+        "is snuggling"
+      ]
+    },
+
+    "hug":{
+      
+      "with":[
+        "hugs",
+        "gives a hug to",
+        "is holding",
+        "holds",
+        "embraces",
+        "is embracing"
+      ]
+    },
+
+    "lick":{
+
+      "solo":[
+        "licks something",
+        "is licking... something",
+        "is licking?",
+        "licks",
+        "gets a taste"
+      ],
+
+      "with":[
+        "licks",
+        "is licking...",
+        "gets a taste of"
+      ]
+    },
+
+    "smug":{
+      
+      "solo":[
+        "is feeling smug",
+        "feels smug",
+        "is feeling superior",
+        "puffs up"
+      ],
+
+      "with":[
+        "feels smug at",
+        "is feeling smug at",
+        "thinks they are superior than"
+      ]
+    },
+
+    "bonk":{
+
+      "solo":[
+        "bonks",
+        "is bonking.. someone",
+        "is hitting heads",
+        "is striking heads"
+      ],
+
+      "with":[
+        "bonks",
+        "is bonking",
+        "is hitting head of",
+        "is striking head of"
+      ]
+    },
+
+    "yeet":{
+
+      "with":[
+        "yeets",
+        "yeeted",
+        "throws",
+        "has yeeted"
+      ]
+    },
+
+    "smile":{
+
+      "solo":[
+        "is smiling",
+        "smiles",
+        "is happy",
+        "is feeling happy",
+        "feels good",
+        "is in good mood"
+      ],
+
+      "with":[
+        "is smiling at",
+        "smiles at",
+        "is happy at",
+        "is feeling happy towards",
+        "is in good mood with"
+      ]
+    },
+
+    "highfive":{
+
+      "with":[
+        "gives a high five to",
+        "highfives",
+        "is highfiving"
+      ]
+    },
+
+    "handhold":{
+
+      "with":[
+        "is holding hands with",
+        "hold hand of",
+        "does lewd things with"
+      ]
+    },
+
+    "eat":{
+
+      "solo":[
+        "is eating",
+        "is hungry",
+        "mows down",
+        "eats"
+      ],
+
+      "with":[
+        "is eating with",
+        "is feeling hungry with",
+        "is mowing down food with",
+        "eats with",
+        "eats..."
+      ]
+    },
+
+    "bite":{
+
+      "with":[
+        "bites",
+        "is biting",
+        "bit",
+        "noms"
+      ]
+    },
+
+    "glomp":{
+
+      "with":[
+        "glomps",
+        "gives a super hug to"
+      ]
+    },
+
+    "slap":{
+
+      "with":[
+        "slaps",
+        "is slapping",
+        "slapped",
+        "is hitting face of"
+      ]
+    },
+
+    "kill":{
+
+      "with":[
+        "kills",
+        "murders",
+        "is killing",
+        "wants blood of"
+      ]
+    },
+
+    "kick":{
+      
+      "with":[
+        "kicks",
+        "is kicking",
+        "kicked",
+        "gives a on boot to face to"
+      ]
+    },
+
+    "wink":{
+
+      "solo":[
+        "winks",
+        "is wiking",
+        "'s eyes twitch"
+      ],
+
+      "with":[
+        "is winking at",
+        "winks at"
+      ]
+    },
+
+    "poke":{
+
+      "with":[
+        "pokes",
+        "is poking at",
+        "is poking"
+      ]
+    },
+
+    "cringe":{
+
+      "solo":[
+        "cringes",
+        "is cringing",
+        "thinks this is weird",
+        "thinking this is cringe"
+      ],
+
+      "with":[
+        "cringes at",
+        "is cringing at"
+      ]
     }
   }
 }

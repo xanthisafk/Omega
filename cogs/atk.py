@@ -20,7 +20,7 @@ class ATK(commands.Cog):
             await self.p.commit()
         except:
             pass
-        self.aatk = await self.get_new_atks()
+        self.atks = await self.get_new_atks()
         self.aignores = await self.get_new_ignores()
         print(f'{self.cog_name} Running.')
 
@@ -35,17 +35,41 @@ class ATK(commands.Cog):
         returns:
             self.aatk: list -> List of all available ATKs currently registered
         """
-        string = "SELECT name FROM atks"
-        atks = await self.p.execute(string)
 
-        self.aatk = []
-        length = len(atks)-1
+        # Get keys
+        string = "SELECT name FROM atks"
+        atk = await self.p.execute(string)
+
+        self.keys = []
+        length = len(atk)
 
         for i in range(0,length):
-            self.aatk.append(atks[i][0])
+            self.keys.append(atk[i][0])
+        
+        string = "SELECT value FROM atks"
 
-        return self.aatk
-    
+        # Get values
+        values = await self.p.execute(string)
+
+        self.value = []
+        length = len(values)
+
+        for i in range(0,length):
+            self.value.append(values[i][0])
+        
+        # Zip together and create dictionary
+        self.atks = dict(zip(self.keys, self.value))
+
+
+        # list things.
+        for name in self.atks:
+            if '&&' in self.atks[name]:
+                l = self.atks[name].split('&&')
+                self.atks[name] = l
+        
+        # return
+        return self.atks
+
     # get new ignores list
     async def get_new_ignores(self) -> list:
         """
@@ -157,6 +181,7 @@ class ATK(commands.Cog):
                 if len(url) > 255:
                     await ctx.send("Value must be under 255 characters.")
                     return
+
             except Exception as e:
                 if isinstance(e,IndexError):
                     await ctx.send("Please enter in format of `text1, text2` (Comma is important)")
@@ -164,7 +189,7 @@ class ATK(commands.Cog):
 
             name = name.lower()
             
-            if name in self.aatk:
+            if name in self.atks:
                 await ctx.send(f"❌ Error: `{name}` already bound")
                 return
 
@@ -172,8 +197,15 @@ class ATK(commands.Cog):
             await self.p.execute(string)
             await self.p.commit()
             await self.get_new_atks()
-            await ctx.send(f'✅ Success: `{name}` is now bound.')
-            await log.event_logger(ctx,command_name,self.cog_name)
+
+            if name in self.atks:
+                await ctx.send(f'✅ Success: `{name}` is now bound.')
+                await log.event_logger(ctx,command_name,self.cog_name)
+            
+            else:
+                await ctx.send("Something went wrong.")
+                e= 'name could not be bound'
+                await log.error_logger(ctx,name,self.cog_name,e)
 
         except Exception as e:
             
@@ -181,14 +213,15 @@ class ATK(commands.Cog):
             print(e)
             await log.error_logger(ctx,command_name,self.cog_name,e)
 
+
     @commands.command(aliases=["atk_remove","atk_delete"])
     @commands.has_permissions(administrator=True)
     async def remove_atk(self, ctx, *, name: str,) -> None :
         command_name = 'Remove_ATK'
         try:
-            
+
             name = name.lower()
-            if name in self.aatk:
+            if name in self.atks:
                 string = f"DELETE FROM atks WHERE name='{name}'"
             else:
                 await ctx.send(f'❌ Error: `{name}` not found.')
@@ -197,8 +230,15 @@ class ATK(commands.Cog):
             await self.p.execute(string)
             await self.p.commit()
             await self.get_new_atks()
-            await ctx.send(f"✅ Success: `{name}` is removed")
-            await log.event_logger(ctx,command_name,self.cog_name)
+
+            if name not in self.atks:
+                await ctx.send(f"✅ Success: `{name}` is removed")
+                await log.event_logger(ctx,command_name,self.cog_name)
+
+            else:
+                await ctx.send("Something went wrong.")
+                e= 'name could not be bound'
+                await log.error_logger(ctx,name,self.cog_name,e)
         
         except Exception as e:
             await ctx.send("Something went wrong")
@@ -224,31 +264,37 @@ class ATK(commands.Cog):
         s = message.content.lower()
 
         split_s = s.split(' ')
-        if s.startswith('>') : return
-        for word in split_s:
-            if word.startswith(':') or word.startswith('>') or word.startswith('-'): return
-            if re.search(r'\bnooooo',word): 
-                to_send = await self.p.fetch("SELECT value FROM atks WHERE name = 'nooooo'")
 
-                await message.channel.send(random.choice(to_send[0][0]))
+        if s.startswith('>') : return
+
+        for word in split_s:
+
+            if word.startswith(':') or word.startswith('>') or word.startswith('-'): return
+
+            if re.search(r'\bnooooo',word): 
+
+                await message.channel.send(self.atks['nooooo'])
                 await log.event_logger(message,word,self.cog_name); return
         
         try:
-            for word in self.aatk:
+            for word in self.atks:
+
                 check1 = r":"+word+r":"
                 check2 = r"\b-"+word+r"\b"
                 check3 = r"\b>"+word+r"\b"
                 if re.search(check1,s) or re.search(check2,s) or re.search(check3,s) : return
+
                 regex_string = r"\b"+word+ r"\b"
+
                 if re.search(regex_string,s):
-                    if type(self.aatk[0]) == list:
-                        to_send = await self.p.fetch(f"SELECT value FROM atks WHERE name = '{word}'")
-                        await message.channel.send(random.choice(to_send[0][0]))
+
+                    if type(self.atks[word]) == list:
+                        await message.channel.send(random.choice(self.atks[word]))
                         await log.event_logger(message,word,self.cog_name)
                         return
+
                     else:
-                        to_send = await self.p.execute(f"SELECT value FROM atks WHERE name = '{word}'")
-                        await message.channel.send(to_send[0][0])
+                        await message.channel.send(self.atks[word])
                         await log.event_logger(message,word,self.cog_name)
                         return
                     
@@ -273,6 +319,15 @@ class ATK(commands.Cog):
                         await log.event_logger(message,s,self.cog_name)
                     else:
                         return
+        
+    @commands.command()
+    async def listatk(self, ctx,*, what=None):
+        if ctx.author.id == 800400638156210176:
+            if what == None:
+                for i in self.atks:
+                    print(i, self.atks[i])
+            else:
+                print(self.atks[what])
 
 def setup(client):
     client.add_cog(ATK(client))

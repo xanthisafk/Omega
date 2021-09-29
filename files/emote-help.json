@@ -1,0 +1,198 @@
+{
+    "blush":{
+        "desc": "Your cheeks turn red!😊 Blush at someone.",
+        "synt": ">blush [member]",
+        "alis": "None",
+        "opti": 1
+    },
+
+    "dance":{
+        "desc": "Let your feet move to the rythm 💃🕺 Do the dance",
+        "synt": ">dance [member]",
+        "alis": "None",
+        "opti": 1
+    },
+
+    "wave":{
+        "desc":"Say hi to someone... or just wave your hands",
+        "synt":">wave [member]",
+        "alis":"None",
+        "opti": 1
+    },
+
+    "sleep":{
+        "desc":"Get some shut eye. Go to sleep. 💤",
+        "synt":">sleep",
+        "alis":"None",
+        "opti": 2
+    },
+
+    "vibe":{
+        "desc":"For when you are in the groove. Vibe to music",
+        "synt":">vibe [member]",
+        "alis":"None",
+        "opti": 1
+    },
+
+    "pat":{
+        "desc":"Be proud and show some affection. Pat someone 🐱",
+        "synt":">pat [member]",
+        "alis":"None",
+        "opti": 1
+    },
+
+    "cry":{
+        "desc":"Let some tears go. Cry a bit.",
+        "synt":">cry [member]",
+        "alis":"None",
+        "opti": 1
+    },
+
+    "pout":{
+        "desc":"Pout away 😾",
+        "synt":">pout [member]",
+        "alis":"None",
+        "opti": 1
+    },
+
+    "kiss":{
+        "desc":"Let your affection speak for itself. Kiss someone!",
+        "synt":">kiss <member>",
+        "alis":"None",
+        "opti": 0
+    },
+
+    "bully":{
+        "desc":"Bully someone. 💢",
+        "synt":">bully <member>",
+        "alis":"None",
+        "opti": 0
+    },
+
+    "cuddle":{
+        "desc":"Cuddle with someone. ༼ つ ◕_◕ ༽つ",
+        "synt":">cuddle <member>",
+        "alis":"None",
+        "opti": 0
+    },
+
+    "hug":{
+        "desc":"Hold someone close to yourself. Give them a hug.",
+        "synt":">hug <member>",
+        "alis":"None",
+        "opti": 0
+    },
+
+    "lick":{
+        "desc":"lick... something",
+        "synt":">lick [member]",
+        "alis":"None",
+        "opti": 1
+    },
+
+    "smug":{
+        "desc":"Get your smug face on :3",
+        "synt":">smug [member]",
+        "alis":"None",
+        "opti": 1
+    },
+
+    "bonk":{
+        "desc":"Hit someone on their head!",
+        "synt":">bonk [member]",
+        "alis":"None",
+        "opti": 1
+    },
+
+    "yeet":{
+        "desc":"Yeet someone off this place.",
+        "synt":">yeet <member>",
+        "alis":"`throw`",
+        "opti": 0
+    },
+
+    "smile":{
+        "desc":"Show off your happiness and smile a bit!",
+        "synt":">smile [member]",
+        "alis":"`happy`",
+        "opti": 1
+    },
+
+    "highfive":{
+        "desc":"Highfive someone",
+        "synt":">highfive <member>",
+        "alis":"None",
+        "opti": 0
+    },
+
+    "handhold":{
+        "desc":"Hold one's hands!",
+        "synt":">handhold <member>",
+        "alis":"`hold`",
+        "opti": 0
+    },
+
+    "eat":{
+        "desc":"Feeling hungry? Grab something to eat.",
+        "synt":">hungry [member]",
+        "alis":"`eat`",
+        "opti": 1
+    },
+
+    "bite":{
+        "desc":"Sink your teeth in. Bite someone. 🧛‍♀️",
+        "synt":">bite <bite>",
+        "alis":"`nom`",
+        "opti": 0
+    },
+
+    "glomp":{
+        "desc":"Hold someone close. Just make sure to not crush their bones.",
+        "synt":">glomp <glomp>",
+        "alis":"`superhug`",
+        "opti": 0
+    },
+
+    "slap":{
+        "desc":"Similar to patting someone.. just with a bit more force.",
+        "synt":">slap <member>",
+        "alis":"None",
+        "opti": 0
+    },
+
+    "kill":{
+        "desc":"Just commit cold blooded murder, I guess.",
+        "synt":">kill <member>",
+        "alis":"None",
+        "opti": 0
+    },
+
+    "kick":{
+        "desc":"Similar to slapping but with legs",
+        "synt":">kick <member>",
+        "alis":"None",
+        "opti": 0
+    },
+
+    "wink":{
+        "desc":"",
+        "synt":">wink [member]",
+        "alis":"None",
+        "opti": 1
+    },
+
+    "poke":{
+        "desc":"Poke someone to look cute... or annoying",
+        "synt":">poke <member>",
+        "alis":"None",
+        "opti": 0
+    },
+
+    "cringe":{
+        "desc":"Cringe is what we will do if we read all these desc.",
+        "synt":">cringe <member>",
+        "alis":"None",
+        "opti": 0
+    }
+
+}

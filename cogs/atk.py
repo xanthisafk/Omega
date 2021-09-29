@@ -273,7 +273,7 @@ class ATK(commands.Cog):
 
             if re.search(r'\bnooooo',word): 
 
-                await message.channel.send(self.atks['nooooo'])
+                await message.channel.send(random.choice(self.atks['nooooo']))
                 await log.event_logger(message,word,self.cog_name); return
         
         try:

@@ -14,11 +14,6 @@ class Help(commands.Cog):
     async def on_ready(self):
         print(f'{self.cog_name} Running.')
 
-    cog_name: str = 'Help'
-    
-    color_list = [
-        0xA9FBD7, 0xD7FDEC, 0xFDE74C, 0xE8DAB2, 0xDD6E42, 0xE5FCFF, 0xE5FCFF, 0xABDAFC, 0xACACDE, 0xC490D1, 0xB8336A
-    ]
     
     title = 'Bot for ***Nowhere Space***.'
     postfix = '\nUse `>help <command>` for more information.'
@@ -55,16 +50,15 @@ class Help(commands.Cog):
     # EMOTES COG HELP SECTION  #
     ############################
 
-    @help.command()
+    @help.command(aliases=['jon'])
     async def blush(self,ctx):
         name='Blush'
-
+        print(ctx.invoked_with)
         color = await rang.get_color()
         embed = discord.Embed(title='Blush', description='Blush or blush at someone',color=color)
         embed.add_field(name='Syntax', value='`>blush [member]`')
         embed.set_footer(text='Argument is: <required>, [optional]')
         await ctx.send(embed=embed)
-        await self.logger('blush',ctx)
         await log.event_logger(ctx,name,self.cog_name)
 
     @help.command()

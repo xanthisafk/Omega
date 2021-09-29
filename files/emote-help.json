@@ -70,7 +70,7 @@
     },
 
     "cuddle":{
-        "desc":"Cuddle with someone. ༼ つ ◕_◕ ༽つ",
+        "desc":"Cuddle with someone.",
         "synt":">cuddle <member>",
         "alis":"None",
         "opti": 0
@@ -111,10 +111,24 @@
         "opti": 0
     },
 
+    "throw":{
+        "desc":"Yeet someone off this place.",
+        "synt":">throw <member>",
+        "alis":"`yeet`",
+        "opti": 0
+    },
+
     "smile":{
         "desc":"Show off your happiness and smile a bit!",
         "synt":">smile [member]",
         "alis":"`happy`",
+        "opti": 1
+    },
+
+    "happy":{
+        "desc":"Show off your happiness and smile a bit!",
+        "synt":">happy [member]",
+        "alis":"`smile`",
         "opti": 1
     },
 
@@ -132,17 +146,38 @@
         "opti": 0
     },
 
+    "hold":{
+        "desc":"Hold one's hands!",
+        "synt":">hold <member>",
+        "alis":"`handhold`",
+        "opti": 0
+    },
+
     "eat":{
         "desc":"Feeling hungry? Grab something to eat.",
+        "synt":">eat [member]",
+        "alis":"`hungry`",
+        "opti": 1
+    },
+
+    "hungry":{
+        "desc":"Feeling hungry? Grab something to eat.",
         "synt":">hungry [member]",
-        "alis":"`eat`",
+        "alis":"`hungry`",
         "opti": 1
     },
 
     "bite":{
         "desc":"Sink your teeth in. Bite someone. 🧛‍♀️",
-        "synt":">bite <bite>",
+        "synt":">bite <member>",
         "alis":"`nom`",
+        "opti": 0
+    },
+
+    "nom":{
+        "desc":"Sink your teeth in. Bite someone. 🧛‍♀️",
+        "synt":">nom <member>",
+        "alis":"`bite`",
         "opti": 0
     },
 
@@ -150,6 +185,13 @@
         "desc":"Hold someone close. Just make sure to not crush their bones.",
         "synt":">glomp <glomp>",
         "alis":"`superhug`",
+        "opti": 0
+    },
+
+    "superhug":{
+        "desc":"Hold someone close. Just make sure to not crush their bones.",
+        "synt":">glomp <glomp>",
+        "alis":"`glomp`",
         "opti": 0
     },
 

@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import random, json
+import random, json, codecs
 import loggers.logger as log
 import APIs.color as rang
 
@@ -50,355 +50,44 @@ class Help(commands.Cog):
     # EMOTES COG HELP SECTION  #
     ############################
 
-    @help.command(aliases=['jon'])
-    async def blush(self,ctx):
-        name='Blush'
-        print(ctx.invoked_with)
-        color = await rang.get_color()
-        embed = discord.Embed(title='Blush', description='Blush or blush at someone',color=color)
-        embed.add_field(name='Syntax', value='`>blush [member]`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def dance(self,ctx):
-        name = 'Dance'
-        color = await rang.get_color()
-        embed = discord.Embed(title='Dance', description='Dance alone or with someone',color=color)
-        embed.add_field(name='Syntax', value='`>dance [member]`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def wave(self,ctx):
-        name = 'Wave'
-        color = await rang.get_color()
-        embed = discord.Embed(title='Wave', description='Wave at someone or for any reason',color=color)
-        embed.add_field(name='Syntax', value='`>wave [member]`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def sleep(self,ctx):
-        name = 'Sleep'
-        color = await rang.get_color()
-        embed = discord.Embed(title='Sleep', description='Go to sleep',color=color)
-        embed.add_field(name='Syntax', value='`>sleep`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def pat(self,ctx):
-        name = 'Pat'
-        color = await rang.get_color()
-        embed = discord.Embed(title='Pat', description='Pats someone',color=color)
-        embed.add_field(name='Syntax', value='`>pat [member]`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def cry(self,ctx):
-        name = 'Cry'
-        color = await rang.get_color()
-        embed = discord.Embed(title='Cry', description='Cry at someone or alone',color=color)
-        embed.add_field(name='Syntax', value='`>cry [member]`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def pout(self,ctx):
-        name = 'Pout'
-        color = await rang.get_color()
-        embed = discord.Embed(title='Pout', description='Pout at someone or alone',color=color)
-        embed.add_field(name='Syntax', value='`>pout [member]`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def kiss(self,ctx):
-        name = 'Kiss'
-        color = await rang.get_color()
-        text = 'Kiss someone..'
-        syntax = '`>kiss <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def bully(self,ctx):
-        name = 'Bully'
-        color = await rang.get_color()
-        text = 'Bully the meanine... or be one.'
-        syntax = '`>bully <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def cuddle(self,ctx):
-        name = 'Cuddle'
-        color = await rang.get_color()
-        text = 'Cuddle with someone. It feels nice.'
-        syntax = '`>cuddle <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def hug(self,ctx):
-        name = 'Hug'
-        color = await rang.get_color()
-        text = 'Hold someone very close'
-        syntax = '`>hold <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def lick(self,ctx):
-        name = 'Lick'
-        color = await rang.get_color()
-        text = 'Lick something or someone... I don\'t judge my name is literally Coom'
-        syntax = '`>lick [member]`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def smug(self,ctx):
-        name = 'Smug'
-        color = await rang.get_color()
-        text = 'Act smug'
-        syntax = '`>smug [member]`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def bonk(self,ctx):
-        name = 'Bonk'
-        color = await rang.get_color()
-        text = 'Bonk em in head'
-        syntax = '`>bonk <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command(aliases=['throw'])
-    async def yeet(self,ctx):
-        name = 'Yeet'
-        color = await rang.get_color()
-        text = 'Yeet someone tf out.\nAliases: `throw`'
-        syntax = '`>yeet <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command(aliases=['happy'])
-    async def smile(self,ctx):
-        name = 'Smile'
-        color = await rang.get_color()
-        text = 'Show that you are happy!\naliases: `happy`'
-        syntax = '`>smile [member]`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def highfive(self,ctx):
-        name = 'High five'
-        color = await rang.get_color()
-        text = 'Give someone a high five!'
-        syntax = '`>highfive <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command(aliases=['hold'])
-    async def handhold(self,ctx):
-        name = 'Hand hold'
-        color = await rang.get_color()
-        text = 'Hold someone\'s hand. Very cute.\nAliases: `hold`'
-        syntax = '`>hold <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command(aliases=['hungry'])
-    async def eat(self,ctx):
-        name = 'Eat'
-        color = await rang.get_color()
-        text = 'Eat something alone or with someone.\nAliases: `hungry`'
-        syntax = '`>hold [member]`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command(aliases=['nom'])
-    async def bite(self,ctx):
-        name = 'Bite'
-        color = await rang.get_color()
-        text = 'Bite someone.\nAliases: `nom`'
-        syntax = '`>bite <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command(aliases=['superhug'])
-    async def glomp(self,ctx):
-        name = 'Glomp'
-        color = await rang.get_color()
-        text = 'Hold someone very close... with a bit of passion. Just make sure you don\'t hurt yourself.\nAliases: `superhug`'
-        syntax = '`>glomp <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def slap(self,ctx):
-        name = 'Slap'
-        color = await rang.get_color()
-        text = 'Similar to patting a person.. with a bit more force.'
-        syntax = '`>slap <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def kill(self,ctx):
-        name = 'Kill'
-        color = await rang.get_color()
-        text = 'Just murder someone I guess idk'
-        syntax = '`>kill <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def kick(self,ctx):
-        name = 'Kick'
-        color = await rang.get_color()
-        text = 'Similar to slapping but done with legs.'
-        syntax = '`>kick <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def wink(self,ctx):
-        name = 'Wink'
-        color = await rang.get_color()
-        text = 'Wink ;)'
-        syntax = '`>wink [member]`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def poke(self,ctx):
-        name = 'Poke'
-        color = await rang.get_color()
-        text = 'Poke someone to act cute... or annoying.'
-        syntax = '`>poke <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def cringe(self,ctx):
-        name = 'Cringe'
-        color = await rang.get_color()
-        text = 'Cringe is what most of will do after reading these descriptions.'
-        syntax = '`>cringe <member>`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-
-    ########################
-    # FUN COG HELP SECTION #
-    ########################
-
-    @help.command()
-    async def emojify(self,ctx):
-        name = 'Emojify'
-        color = await rang.get_color()
-        text = 'Emojifies the :fire: text by adding emojis :heart_decoration::male_sign: all :joy::persevere: over :sweat_drops::b: it. :drooling_face:\nMaximum 1500 characters. :woman::busts_in_silhouette:'
-        embed = discord.Embed(title='Emojify', description=text,color=color)
-        embed.add_field(name='Syntax', value='`>emojify <text>`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def owoify(self,ctx):
-        name = 'OwOify'
-        color = await rang.get_color()
-        text = 'Haiiii! OwOifies da text to wook mowe wike fuwwy speak <{^v^}>\nMaximum 1800 chawactews. (❁´◡`❁)'
-        embed = discord.Embed(title='OwOify', description=text,color=color)
-        embed.add_field(name='Syntax', value='`>OwOify <text>`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command(aliases=['dadjoke'])
-    async def pun(self,ctx):
-        name = 'Pun'
-        description = 'Sends a random dad joke.\nEach dad joke is assigned with an ID found in footer. Add ID next to command to get joke assigned to ID.\nAlias: `dadjoke`'
-        syntax = '`>pun [id]`'
-        color = await rang.get_color()
-        embed = discord.Embed(title=name,description=description,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
+    @help.command(aliases=[
+        'blush',    'kiss',     'smile',    'bite',     'poke',
+        'dance',    'bully',    'throw',    'nom',      'cringe',
+        'wave',     'cuddle',   'happy',    'glomp',
+        'sleep',    'hug',      'highfive', 'superhug',
+        'vibe',     'lick',     'handhold', 'slap',
+        'pat',      'smug',     'hold',     'kill',
+        'cry',      'bonk',     'eat', '    kick',
+        'pout',     'yeet',     'hungry',   'wink'
+    ])
+    async def emotes(self,ctx):
+        try:
+            name = ctx.invoked_with
+            color = await rang.get_color()
+            with codecs.open('./files/emote-help.json', 'r', encoding='utf-8') as js:
+                data = json.load(js)
+                js.close()
+            
+            desc = data[name]['desc'] + '\nAliases: ' + data[name]['alis']
+            synt = '`' + data[name]['synt'] + '`'
+            
+            if data[name]['opti'] == 0:
+                footer = 'Argument is <required>'
+            elif data[name]['opti'] == 1:
+                footer = 'Argument is [optional]'
+            else:
+                footer = "No arguments"
+            
+            embed = discord.Embed(title=name.capitalize(),description=desc,color=color)
+            embed.add_field(name='Syntax', value=synt)
+            embed.set_footer(text=footer)
+            await ctx.send(embed=embed)
+            await log.event_logger(ctx,name.capitalize(),self.cog_name)
+        
+        except Exception as e:
+            print(e)
+            await ctx.send('Something went VERY wrong.')
+            await log.error_logger(ctx,name.capitalize(),self.cog_name,e)
 
     ############################
     # UTILITY COG HELP SECTION #

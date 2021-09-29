@@ -4,18 +4,18 @@
     "blush":{
 
       "solo":[
-        "blushes!",
-        "'s cheeks turn red!",
-        "is blushing!",
-        "is shy!",
-        "is feeling shy!"
+        "$user1 blushes!",
+        "$user1's cheeks turn red!",
+        "$user1 is blushing!",
+        "$user1 is shy!",
+        "$user1 is feeling shy!"
       ],
 
       "with":[
-        "is blushing at",
-        "is feeling shy towards",
-        "'s cheeks turn red for",
-        "blushes"
+        "$user1 is blushing at $user2",
+        "$user1 is feeling shy towards $user2",
+        "$user1's cheeks turn red for $user2",
+        "$user1 blushes at $user2"
       ]
     },
 
@@ -23,378 +23,382 @@
 
       "solo":[
 
-        "dances!",
-        "is moving their feets",
-        "shakes a leg",
-        "moves to the rythm",
-        "is dancing!",
-        "boogies down"
+        "$user1 dances!",
+        "$user1 is moving their feets",
+        "$user1 shakes a leg",
+        "$user1 moves to the rythm",
+        "$user1 is dancing!",
+        "$user1 boogies down"
       ],
 
       "with":[
-        "is dancing with",
-        "dances with",
-        "is shaking a leg with",
-        "shakes a leg with",
-        "is moving to the rythm with",
-        "boogies down with"
+        "$user1 is dancing with $user2",
+        "$user1 dances with $user2",
+        "$user1 is shaking a leg with $user2",
+        "$user1 shakes a leg with $user2",
+        "$user1 is moving to the rythm with $user2",
+        "$user1 boogies down with $user2"
       ]
     },
 
     "wave":{
 
       "solo":[
-        "waves",
-        "is waving",
-        "waves their hands",
-        "says hi",
-        "is greeting",
-        "greets"
+        "$user1 waves ",
+        "$user1 is waving",
+        "$user1 waves their hands ",
+        "$user1 says hi",
+        "$user1 is greeting",
+        "$user1 greets"
       ],
 
       "with":[
-        "waves at",
-        "is waving at",
-        "waves their hands towards",
-        "says hi to",
-        "is greeting",
-        "greets"
+        "$user1 waves at $user2",
+        "$user1 is waving at $user2",
+        "$user1 waves their hands towards $user2",
+        "$user1 says hi to $user2",
+        "$user1 is greeting $user2",
+        "$user1 greets $user2"
       ]
     },
 
     "sleep":{
 
       "solo":[
-        "sleeps",
-        "goes to sleep",
-        "is sleeping",
-        "went to sleep",
-        "gets some shut eye",
-        "snores",
-        "is napping",
-        "takes a nap",
-        "is slumbering",
-        "is asleet",
-        "is feeling drowsy"
+        "$user1 sleeps",
+        "$user1 goes to sleep",
+        "$user1 is sleeping",
+        "$user1 went to sleep",
+        "$user1 gets some shut eye",
+        "$user1 snores",
+        "$user1 is napping",
+        "$user1 takes a nap",
+        "$user1 is slumbering",
+        "$user1 is asleet",
+        "$user1 is feeling drowsy"
       ]
     },
 
     "vibe":{
 
       "solo":[
-        "is vibing",
-        "vibes",
-        "is nodding their head",
-        "is in the groove",
-        "is enjoying music",
-        "thinks this is a vibe"
+        "$user1 is vibing $user2",
+        "$user1 vibes $user2",
+        "$user1 is nodding their head $user2",
+        "$user1 is in the groove $user2",
+        "$user1 is enjoying music $user2",
+        "$user1 thinks this is a vibe $user2"
       ],
 
       "with":[
-        "is vibing with",
-        "vibes with",
-        "is enjoying music with",
-        "is feeling groovy with"
+        "$user1 is vibing with $user2",
+        "$user1 vibes with $user2",
+        "$user1 is enjoying music with $user2",
+        "$user1 is feeling groovy with $user2"
       ]
     },
 
     "pat":{
 
       "with":[
-        "is patting",
-        "pats",
-        "pets",
-        "is carresing"
+        "$user1 is patting $user2",
+        "$user1 pats $user2",
+        "$user1 pets $user2",
+        "$user1 is carresing $user2"
       ]
     },
 
     "cry":{
 
       "solo":[
-        "is crying",
-        "cries",
-        "is sad",
-        "'s eyes are full of tears",
-        "is sobbing",
-        "sheds tears",
-        "is crying their heart out",
-        "wails",
-        "is weeping",
-        "weeps",
-        "is wailing",
-        "whimpers"
+        "$user1 is crying",
+        "$user1 cries",
+        "$user1 is sad",
+        "$user1's eyes are full of tears",
+        "$user1 is sobbing",
+        "$user1 sheds tears",
+        "$user1 is crying their heart out",
+        "$user1 wails",
+        "$user1 is weeping",
+        "$user1 weeps",
+        "$user1 is wailing",
+        "$user1 whimpers"
       ],
 
       "with":[
-        "is crying at",
-        "cries at",
-        "is shedding tears for",
-        "sobs at",
-        "sobs for",
-        "whimpers at"
+        "$user1 is crying at $user2",
+        "$user1 cries at $user2",
+        "$user1 is shedding tears for $user2",
+        "$user1 sobs at $user2",
+        "$user1 sobs for $user2",
+        "$user1 whimpers at $user2"
       ]
     },
 
     "pout":{
 
       "solo":[
-        "is pouting",
-        "pouts",
-        "is angry",
-        "is annoyed",
-        "feels annoyed"
+        "$user1 is pouting",
+        "$user1 pouts",
+        "$user1 is angry",
+        "$user1 is annoyed",
+        "$user1 feels annoyed"
       ],
 
       "with":[
-        "is pouting at",
-        "pout at",
-        "is angry at",
-        "is annoyed at",
-        "feels annoyed towards"
+        "$user1 is pouting at $user2",
+        "$user1 pout at $user2",
+        "$user1 is angry at $user2",
+        "$user1 is annoyed at $user2",
+        "$user1 feels annoyed towards $user2"
       ]
     },
 
     "kiss":{
 
       "with":[
-        "kisses",
-        "kissed",
-        "is kissing"
+        "$user1 kisses $user2",
+        "$user1 kissed $user2",
+        "$user1 is kissing $user2",
+        "$user1 kissed $user2's cheeks",
+        "$user1 kisses $user2's lips"
       ]
     },
 
     "bully":{
 
       "with":[
-        "bullies",
-        "is bullying",
-        "pushes around"
+        "$user1 bullies $user2",
+        "$user1 is bullying $user2",
+        "$user1 pushes around $user2",
+        "$user2 got bullied by $user1"
       ]
     },
     
     "cuddle":{
 
       "with":[
-        "cuddles with",
-        "is cuddling with",
-        "cuddles",
-        "embraces",
-        "snuggles with",
-        "is snuggling"
+        "$user1 cuddles with $user2",
+        "$user1 is cuddling with $user2",
+        "$user1 cuddles $user2",
+        "$user1 embraces $user2",
+        "$user1 snuggles with $user2",
+        "$user1 is snuggling $user2"
       ]
     },
 
     "hug":{
       
       "with":[
-        "hugs",
-        "gives a hug to",
-        "is holding",
-        "holds",
-        "embraces",
-        "is embracing"
+        "$user1 hugs $user2",
+        "$user1 gives a hug to $user2",
+        "$user1 is holding $user2",
+        "$user1 holds $user2",
+        "$user1 embraces $user2",
+        "$user1 is embracing $user2"
       ]
     },
 
     "lick":{
 
       "solo":[
-        "licks something",
-        "is licking... something",
-        "is licking?",
-        "licks",
-        "gets a taste"
+        "$user1 licks something",
+        "$user1 is licking... something",
+        "$user1 is licking?",
+        "$user1 licks",
+        "$user1 gets a taste"
       ],
 
       "with":[
-        "licks",
-        "is licking...",
-        "gets a taste of"
+        "$user1 licks $user2",
+        "$user1 is licking... $user2",
+        "$user1 gets a taste of $user2"
       ]
     },
 
     "smug":{
       
       "solo":[
-        "is feeling smug",
-        "feels smug",
-        "is feeling superior",
-        "puffs up"
+        "$user1 is feeling smug",
+        "$user1 feels smug",
+        "$user1 is feeling superior",
+        "$user1 puffs up"
       ],
 
       "with":[
-        "feels smug at",
-        "is feeling smug at",
-        "thinks they are superior than"
+        "$user1 feels smug at $user2",
+        "$user1 is feeling smug at $user2",
+        "$user1 thinks they are superior than $user2"
       ]
     },
 
     "bonk":{
 
       "solo":[
-        "bonks",
-        "is bonking.. someone",
-        "is hitting heads",
-        "is striking heads"
+        "$user1 bonks",
+        "$user1 is bonking.. someone",
+        "$user1 is hitting heads",
+        "$user1 is striking heads"
       ],
 
       "with":[
-        "bonks",
-        "is bonking",
-        "is hitting head of",
-        "is striking head of"
+        "$user1 bonks $user2",
+        "$user1 is bonking $user2",
+        "$user1 is hitting $user2's head",
+        "$user1 is striking head of $user2"
       ]
     },
 
     "yeet":{
 
       "with":[
-        "yeets",
-        "yeeted",
-        "throws",
-        "has yeeted"
+        "$user1 yeets $user2",
+        "$user1 yeeted $user2",
+        "$user1 throws $user2",
+        "$user1 has yeeted $user2"
       ]
     },
 
     "smile":{
 
       "solo":[
-        "is smiling",
-        "smiles",
-        "is happy",
-        "is feeling happy",
-        "feels good",
-        "is in good mood"
+        "$user1 is smiling",
+        "$user1 smiles",
+        "$user1 is happy",
+        "$user1 is feeling happy",
+        "$user1 feels good",
+        "$user1 is in good mood"
       ],
 
       "with":[
-        "is smiling at",
-        "smiles at",
-        "is happy at",
-        "is feeling happy towards",
-        "is in good mood with"
+        "$user1 is smiling at $user2",
+        "$user1 smiles at $user2",
+        "$user1 is happy at $user2",
+        "$user1 is feeling happy towards $user2",
+        "$user1 is in good mood with $user2",
+        "$user1 and $user2 are happy"
       ]
     },
 
     "highfive":{
 
       "with":[
-        "gives a high five to",
-        "highfives",
-        "is highfiving"
+        "$user1 gives a high five to $user2",
+        "$user1 highfives $user2",
+        "$user1 is highfiving $user2"
       ]
     },
 
     "handhold":{
 
       "with":[
-        "is holding hands with",
-        "hold hand of",
-        "does lewd things with"
+        "$user1 is holding hands with $user2",
+        "$user1 hold hand of $user2",
+        "$user1 does lewd things with $user2"
       ]
     },
 
     "eat":{
 
       "solo":[
-        "is eating",
-        "is hungry",
-        "mows down",
-        "eats"
+        "$user1 is eating",
+        "$user1 is hungry",
+        "$user1 mows down",
+        "$user1 eats"
       ],
 
       "with":[
-        "is eating with",
-        "is feeling hungry with",
-        "is mowing down food with",
-        "eats with",
-        "eats..."
+        "$user1 is eating with $user2",
+        "$user1 is feeling hungry with $user2",
+        "$user1 is mowing down food with $user2",
+        "$user1 eats with $user2",
+        "$user1 eats... $user2"
       ]
     },
 
     "bite":{
 
       "with":[
-        "bites",
-        "is biting",
-        "bit",
-        "noms"
+        "$user1 bites $user2",
+        "$user1 is biting $user2",
+        "$user1 bit $user2",
+        "$user1 noms $user2"
       ]
     },
 
     "glomp":{
 
       "with":[
-        "glomps",
-        "gives a super hug to"
+        "$user1 glomps $user2",
+        "$user1 gives a super hug to $user2"
       ]
     },
 
     "slap":{
 
       "with":[
-        "slaps",
-        "is slapping",
-        "slapped",
-        "is hitting face of"
+        "$user1 slaps $user2",
+        "$user1 is slapping $user2",
+        "$user1 slapped $user2",
+        "$user1 is hitting face of $user2"
       ]
     },
 
     "kill":{
 
       "with":[
-        "kills",
-        "murders",
-        "is killing",
-        "wants blood of"
+        "$user1 kills $user2",
+        "$user1 murders $user2",
+        "$user1 is killing $user2",
+        "$user1 wants blood of $user2"
       ]
     },
 
     "kick":{
       
       "with":[
-        "kicks",
-        "is kicking",
-        "kicked",
-        "gives a on boot to face to"
+        "$user1 kicks $user2",
+        "$user1 is kicking $user2",
+        "$user1 kicked $user2",
+        "$user1 gives a on boot to face to $user2"
       ]
     },
 
     "wink":{
 
       "solo":[
-        "winks",
-        "is wiking",
-        "'s eyes twitch"
+        "$user1 winks",
+        "$user1 is wiking",
+        "$user1's eyes twitch"
       ],
 
       "with":[
-        "is winking at",
-        "winks at"
+        "$user1 is winking at $user2",
+        "$user1 winks at $user2"
       ]
     },
 
     "poke":{
 
       "with":[
-        "pokes",
-        "is poking at",
-        "is poking"
+        "$user1 pokes $user2",
+        "$user1 is poking at $user2",
+        "$user1 is poking $user2"
       ]
     },
 
     "cringe":{
 
       "solo":[
-        "cringes",
-        "is cringing",
-        "thinks this is weird",
-        "thinking this is cringe"
+        "$user1 cringes",
+        "$user1 is cringing",
+        "$user1 thinks this is weird",
+        "$user1 thinking this is cringe"
       ],
 
       "with":[
-        "cringes at",
-        "is cringing at"
+        "$user1 cringes at $user2",
+        "$user1 is cringing at $user2"
       ]
     }
   }

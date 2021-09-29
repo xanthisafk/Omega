@@ -8,8 +8,19 @@ async def get_date():
     string = f'{date} {time}'
     return string
 
-# Common logger. Logs in logs.txt
-async def event_logger(ctx,name,cog):
+
+async def event_logger(ctx,name:str,cog:str) -> None:
+    """
+    Common event logger. Logs usage of every function.
+    
+    args:
+        ctx: discord.Context -> discord context item for name and discriminator
+        name: str -> Name of command used
+        cog: str -> Name of cog from which the command originated
+    
+    retrurns:
+        None
+    """
     if name == 'aa':
         return
     try:

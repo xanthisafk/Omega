@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import random, json
 import loggers.logger as log
-import files.color as rang
+import APIs.color as rang
 
 class Help(commands.Cog):
 

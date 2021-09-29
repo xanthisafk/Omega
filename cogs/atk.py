@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import random, re, config
 import loggers.logger as log
-import files.db as pql
+import APIs.db as pql
 
 class ATK(commands.Cog):
     def __init__(self,client):

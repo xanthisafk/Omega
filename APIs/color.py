@@ -8,7 +8,7 @@ async def get_color() -> int:
     """ 
 
     # Generate a random color
-    color = "06x" % random.randint(0, 0xFFFFFF)
+    color = "%06x" % random.randint(0, 0xFFFFFF)
 
     # Convert to int for it to work
     color = int(color, 16)

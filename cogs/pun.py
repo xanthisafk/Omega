@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import requests, random
 import loggers.logger as log
+import APIs.color as rang
 
 class Pun(commands.Cog):
     def __init__(self, client):
@@ -11,8 +12,6 @@ class Pun(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'{self.cog_name} Running.')
-
-    color_list = [0xA9FBD7, 0xD7FDEC, 0xFDE74C, 0xE8DAB2, 0xDD6E42, 0xE5FCFF, 0xE5FCFF, 0xABDAFC, 0xACACDE, 0xC490D1, 0xB8336A]
 
     @commands.command(aliases=['dadjoke'])
     async def pun(self,ctx,id:str=None):
@@ -29,7 +28,7 @@ class Pun(commands.Cog):
                 await ctx.send("❌ Invalid ID.")
                 return
 
-            embed = discord.Embed(title = "Pun", description=f['joke'],color=random.choice(self.color_list))
+            embed = discord.Embed(title = "Pun", description=f['joke'],color=await rang.get_color())
             embed.set_footer(text=f['id'])
 
             await ctx.send(embed=embed)

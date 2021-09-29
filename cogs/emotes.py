@@ -2,12 +2,14 @@ import discord
 from discord.ext import commands
 import random, requests
 import loggers.logger as log
-import files.color as rang
+import APIs.color as rang
+import APIs.emotes as et
 
 class Emotes(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.cog_name = __name__[5:].capitalize()
+        self.ete = et.EmbedTextEmote()
     
     @commands.Cog.listener()
     async def on_ready(self):
@@ -83,11 +85,16 @@ class Emotes(commands.Cog):
     @commands.command()
     async def blush(self,ctx,mentioned:discord.Member=None):
         name = 'Blush'
-
+        short_name = name.lower()
+        user1 = ctx.author.name
+        try:
+            user2 = mentioned.name
+        except: pass
         try:
             color = await rang.get_color()
 
             if mentioned == None:
+                
                 embed = discord.Embed(title = f'{ctx.author.name} is blushing!',color=color)
             else:
                 embed = discord.Embed(title=f'{ctx.author.name} is blushing at {mentioned.name}!',color=color)
@@ -194,6 +201,9 @@ class Emotes(commands.Cog):
     @commands.command()
     async def pat(self,ctx,mentioned:discord.Member=None):
         name = 'Pat'
+        short_name = name.lower()
+        user1 = ctx.author.name
+        user2 = mentioned.name
         try:
             color = await rang.get_color()
 
@@ -213,6 +223,9 @@ class Emotes(commands.Cog):
     @commands.command()
     async def cry(self,ctx,mentioned:discord.Member=None):
         name = 'Cry'
+        short_name = name.lower()
+        user1 = ctx.author.name
+        user2 = mentioned.name
         try:
             color = await rang.get_color()
 
@@ -234,6 +247,9 @@ class Emotes(commands.Cog):
     @commands.command()
     async def pout(self,ctx,mentioned:discord.Member=None):
         name = 'Pout'
+        short_name = name.lower()
+        user1 = ctx.author.name
+        user2 = mentioned.name
         try:
             color = await rang.get_color()
 
@@ -255,6 +271,9 @@ class Emotes(commands.Cog):
     @commands.command()
     async def kiss(self,ctx,mentioned:discord.Member=None):
         name = 'Kiss'
+        short_name = name.lower()
+        user1 = ctx.author.name
+        user2 = mentioned.name
         try:
             color = await rang.get_color()
 
@@ -262,7 +281,8 @@ class Emotes(commands.Cog):
                 await ctx.send("You need to tag someoneto kiss them, dummy")
                 return
             else:
-                embed = discord.Embed(title=f'{ctx.author.name} is kissing {mentioned.name}!',color=color)
+                text = await self.ete.create_string(user1=user1,user2=user2,type=short_name)
+            embed = discord.Embed(title=text,color=color)
 
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
@@ -277,6 +297,9 @@ class Emotes(commands.Cog):
     @commands.command()
     async def bully(self,ctx,mentioned:discord.Member=None):
         name = 'Bully'
+        short_name = name.lower()
+        user1 = ctx.author.name
+        user2 = mentioned.name
         try:
             color = await rang.get_color()
 
@@ -284,7 +307,8 @@ class Emotes(commands.Cog):
                 await ctx.send("You need to tag someone to BULLY THEM! ヾ(`ヘ´)ﾉﾞ")
                 return
             else:
-                embed = discord.Embed(title=f'{ctx.author.name} is bullying {mentioned.name}!',color=color)
+                text = await self.ete.create_string(user1=user1,user2=user2,type=short_name)
+            embed = discord.Embed(title=text,color=color)
 
             image = await self.get_gif(name.lower())
             embed.set_image(url=image)
@@ -299,6 +323,9 @@ class Emotes(commands.Cog):
     @commands.command()
     async def cuddle(self,ctx,mentioned:discord.Member=None):
         name = 'Cuddle'
+        short_name = name.lower()
+        user1 = ctx.author.name
+        user2 = mentioned.name
         try:
             color = await rang.get_color()
 
@@ -306,9 +333,10 @@ class Emotes(commands.Cog):
                 await ctx.send("Here have some cuddles  ╰(*´︶`*)╯♡	")
                 return
             else:
-                embed = discord.Embed(title=f'{ctx.author.name} is cuddling with {mentioned.name}!',color=color)
+                text = await self.ete.create_string(user1=user1,user2=user2,type=short_name)
+                embed = discord.Embed(title=text,color=color)
 
-            image = await self.get_gif(name.lower())
+            image = await self.get_gif(short_name)
             embed.set_image(url=image)
 
             await ctx.send(embed=embed)

@@ -1,6 +1,6 @@
 import discord, os, asyncio
 from discord.ext import commands
-import files.color as rang
+import APIs.color as rang
 import loggers.logger as log
 
 class About(commands.Cog):

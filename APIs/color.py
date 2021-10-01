@@ -4,7 +4,7 @@ async def get_color() -> int:
     """
     Generates a random hexadecimal color.
     Returns:
-        color: int - a hexadecimal number
+        color: int - a hexadecimal number.
     """ 
 
     # Generate a random color

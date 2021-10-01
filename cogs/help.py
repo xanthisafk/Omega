@@ -10,41 +10,77 @@ class Help(commands.Cog):
         self.client = client
         self.cog_name = __name__[5:].capitalize()
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print(f'{self.cog_name} Running.')
 
+    async def emo_section(self):
+        syntax = ''
+        temp = []
+
+        cog = self.client.get_cog('Emotes')
+
+        for i in cog.get_commands():
+            temp.append(i.name.capitalize())
+
+        temp.sort(key=str.lower)
+
+        for i in temp:
+            syntax += f'`{i}`, '
+        syntax = syntax[:-2]
+        return syntax
+
+
+    async def uti_section(self):
+
+        with codecs.open('files/emote-help.json','r',encoding='utf-8') as js:
+            data = json.load(js)
+            js.close()
+
+        syntax = ''
+
+        for i in data['utility']:
+            syntax += f'`{i}`, '
+        syntax = syntax[:-2]
+
+        return syntax
     
-    title = 'Bot for ***Nowhere Space***.'
-    postfix = '\nUse `>help <command>` for more information.'
-    flair = title+postfix
+    async def fun_section(self):
 
-    emotes = "`Blush`, `Dance`, `Wave`, `Sleep`, `Vibe`, `Pat`, `Cry`, `Pout`, `Kiss`, `Bully`, `Cuddle`, `Hug`, `Lick`, `Smug`, `Bonk`, `Yeet`, `Smile`, `Highfive`, `Handhold`, `Eat`, `Bite`, `Glomp`, `Slap`, `Kill`, `Kick`, `Wink`, `Poke`, `Cringe`"
+        with codecs.open('files/emote-help.json','r',encoding='utf-8') as js:
+            data = json.load(js)
+            js.close()
 
-    fun = """
-    `emojify`, `owoify`, `pun`
-    """
+        syntax = ''
 
-    general = '__*General*__: `status`'
-    fat = '\n__*For auto trigger*__: `ignore`, `unignore`, `add_atk`, `remove_atk`'
-    utility = general + fat
+        for i in data['fun']:
+            syntax += f'`{i}`, '
+        syntax = syntax[:-2]
 
-    atka = 'List all Auto Trigger Keywords using `>help atk`'
+        return syntax
 
     @commands.group(invoke_without_command=True)
     async def help(self,ctx):
+
         name = 'Help'
 
+        emo = await self.emo_section()
+        fun = await self.fun_section()
+        uti = await self.uti_section()
+        atk = 'List all Auto Trigger Keywords using `>help atk`'
+        hdr = 'Bot for ***Nowhere Space***.\nUse `>help <command>` for more information.'
+        
+
         color = await rang.get_color()
-        embed = discord.Embed(title='Help dialogue', description=self.flair,color=color)
-        embed.add_field(name='Emotes', value = self.emotes, inline=False)
-        embed.add_field(name='Fun',value=self.fun,inline=False)
-        embed.add_field(name='Auto trigger keywords', value = self.atka, inline=False)
-        embed.add_field(name='Utility',value=self.utility,inline=False)
+
+        embed = discord.Embed(title = 'Help dialogue', description = hdr, color = color)
+        embed.add_field(name='Emotes', value = emo, inline = False)
+        embed.add_field(name='Fun', value = fun, inline = False)
+        embed.add_field(name='Auto trigger keywords', value = atk, inline = False)
+        embed.add_field(name='Utility', value = uti, inline = False)
+
         if random.choice(range(1,100)) == 69:
-            embed.set_footer(text='Made by Xanthis')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
+            embed.set_footer(text = 'Made by Xanthis')
+
+        await ctx.send(embed = embed)
+        await log.event_logger(ctx, name, self.cog_name)
 
     ############################
     # EMOTES COG HELP SECTION  #
@@ -60,7 +96,11 @@ class Help(commands.Cog):
         'cry',      'bonk',     'eat', '    kick',
         'pout',     'yeet',     'hungry',   'wink'
     ])
-    async def emotes(self,ctx):
+    async def emotes_help(self,ctx):
+        """
+        Sends out help embed for every element in emotes in emote-help.json
+        There are a lot of these. I feel stupid for handwriting all that before now.
+        """
         try:
             name = ctx.invoked_with
             color = await rang.get_color()
@@ -68,12 +108,12 @@ class Help(commands.Cog):
                 data = json.load(js)
                 js.close()
             
-            desc = data[name]['desc'] + '\nAliases: ' + data[name]['alis']
-            synt = '`' + data[name]['synt'] + '`'
+            desc = data['emotes'][name]['desc'] + '\nAliases: ' + data['emotes'][name]['alis']
+            synt = '`' + data['emotes'][name]['synt'] + '`'
             
-            if data[name]['opti'] == 0:
+            if data['emotes'][name]['opti'] == 0:
                 footer = 'Argument is <required>'
-            elif data[name]['opti'] == 1:
+            elif data['emotes'][name]['opti'] == 1:
                 footer = 'Argument is [optional]'
             else:
                 footer = "No arguments"
@@ -85,81 +125,106 @@ class Help(commands.Cog):
             await log.event_logger(ctx,name.capitalize(),self.cog_name)
         
         except Exception as e:
-            print(e)
             await ctx.send('Something went VERY wrong.')
             await log.error_logger(ctx,name.capitalize(),self.cog_name,e)
+            raise e
+    
+
+    ########################
+    # FUN COG HELP SECTION #
+    ########################
+
+    @help.command(aliases=[
+        'emojify', 'owoify',
+        'pun', 'dadjoke'
+    ])
+    async def fun_help(self,ctx):
+        """
+        Sends out help embed for every element in fun in emote-help.json
+        """
+        try:
+            name = ctx.invoked_with
+            color = await rang.get_color()
+            with codecs.open('./files/emote-help.json', 'r', encoding='utf-8') as js:
+                data = json.load(js)
+                js.close()
+            
+            desc = data['fun'][name]['desc'] + '\nAliases: ' + data['fun'][name]['alis']
+            synt = '`' + data['fun'][name]['synt'] + '`'
+            
+            if data['fun'][name]['opti'] == 0:
+                footer = 'Argument is <required>'
+            elif data['fun'][name]['opti'] == 1:
+                footer = 'Argument is [optional]'
+            else:
+                footer = "No arguments"
+            
+            embed = discord.Embed(title=name.capitalize(),description=desc,color=color)
+            embed.add_field(name='Syntax', value=synt)
+            embed.set_footer(text=footer)
+            await ctx.send(embed=embed)
+            await log.event_logger(ctx,name.capitalize(),self.cog_name)
+        
+        except Exception as e:
+            await ctx.send('Something went VERY wrong.')
+            await log.error_logger(ctx,name.capitalize(),self.cog_name,e)
+            raise e
 
     ############################
     # UTILITY COG HELP SECTION #
     ############################
 
-    @help.command()
-    async def ignore(self,ctx):
-        name = 'Ignore'
-        color = await rang.get_color()
-        embed = discord.Embed(title='Ignore', description='Disable bot auto trigger words for you',color=color)
-        embed.add_field(name='Syntax',value='`>ignore`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command()
-    async def unignore(self,ctx):
-        name = 'Unignore'
-        color = await rang.get_color()
-        embed = discord.Embed(title='Ignore', description='Enable bot auto trigger words for you',color=color)
-        embed.add_field(name='Syntax',value='`>unignore`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-
-    @help.command(aliases=['ping'])
-    async def status(self,ctx):
-        name = 'Status'
-        color = await rang.get_color()
-        embed = discord.Embed(title='Status', description='Checks the bot connection and Discord API status.\nAliases: `ping`',color=color)
-        embed.add_field(name='Syntax',value='`>status`')
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def add_atk(self,ctx):
-        name = 'Add Auto Trigger Keyword'
-        color = await rang.get_color()
-        text = 'Adds an Auto Trigger Keyword (ATK) to list. This can then be called by anyone.\nRequires administration privilage.'
-        syntax = '`>add_atk <trigger word, value>`\nTrigger word is the word that triggers the bot.\nValue is what will be sent by bot after being triggerd.\nComma between them is required. Only 1 comma is allowed.'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
-    
-    @help.command()
-    async def remove_atk(self,ctx):
-        name = 'Remove Auto Trigger Keyword'
-        color = await rang.get_color()
-        text = 'Removes an Auto Trigger Keyword (ATK) from the list.\nRequires administration privilage.'
-        syntax = '`>add_atk <trigger word>`\nTo list all ATKs, use `>help atk`'
-        embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx,name,self.cog_name)
+    @help.command(aliases=[
+        'ignore', 'uignore', 'add_atk', 'remove_atk',
+        'atk_add', 'atk_remove', 'status', 'ping'
+    ])
+    async def utility_help(self,ctx):
+        """
+        Sends out help embed for every element in utility in emote-help.json
+        """
+        try:
+            name = ctx.invoked_with
+            color = await rang.get_color()
+            with codecs.open('./files/emote-help.json', 'r', encoding='utf-8') as js:
+                data = json.load(js)
+                js.close()
+            
+            desc = data['utility'][name]['desc'] + '\nAliases: ' + data['utility'][name]['alis']
+            synt = '`' + data['utility'][name]['synt'] + '`'
+            
+            if data['utility'][name]['opti'] == 0:
+                footer = 'Argument is <required>'
+            elif data['utility'][name]['opti'] == 1:
+                footer = 'Argument is [optional]'
+            else:
+                footer = "No arguments"
+            
+            embed = discord.Embed(title=name.capitalize(),description=desc,color=color)
+            embed.add_field(name='Syntax', value=synt)
+            embed.set_footer(text=footer)
+            await ctx.send(embed=embed)
+            await log.event_logger(ctx,name.capitalize(),self.cog_name)
+        
+        except Exception as e:
+            await ctx.send('Something went VERY wrong.')
+            await log.error_logger(ctx,name.capitalize(),self.cog_name,e)
+            raise e
     
     #################################
     # AUTO TRIGGER COG HELP SECTION #
     #################################
 
-    @help.command()
-    async def atk(self,ctx):
+    @help.command(name='atk')
+    async def atk_help(self,ctx):
+        """
+        Sends out a help embed listing all the available auto trigger keywords.
+        """
         name = 'Auto Trigger Keywords'
         color = await rang.get_color()
         text = 'Auto Trigger Keywords trigger the bot to post a message instantly when sent in chat.'
         syntax = ''
-        with open('files/list.json', "r") as js:
-            data = json.load(js)
-            js.close()
+        cog = self.client.get_cog('ATK')
+        data = cog.atks
 
         temp = []
         for i in data:
@@ -173,10 +238,8 @@ class Help(commands.Cog):
 
         embed = discord.Embed(title=name, description=text,color=color)
         embed.add_field(name='Syntax', value=syntax)
-        embed.set_footer(text='Argument is: <required>, [optional]')
         await ctx.send(embed=embed)
         await log.event_logger(ctx,name,self.cog_name)
-
 
 def setup(client):
     client.add_cog(Help(client))

@@ -1,7 +1,8 @@
 import psycopg2
+import loggers.logger as log
 
 class PostgreSQL():
-    # Init will attemp to connect
+
     def __init__(self,DB_NAME:str = None, DB_USER:str = None, DB_PASS:str = None, DB_HOST:str = None):
         """
         Creates a postgreSQL object.
@@ -14,8 +15,16 @@ class PostgreSQL():
         returns:
             None
         """
+        
+        try:
+            self.conn.close()
+            print("DB: Connection closed")
+        except: pass
+
         self.conn = psycopg2.connect(dbname=DB_NAME,user=DB_USER,password=DB_PASS,host=DB_HOST)
+        print("DB: Connection established")
         self.cur = self.conn.cursor()
+        print("DB: Connection cursor created")
 
     # connect if randomly disconnect
     async def connect(self, DB_NAME:str = None, DB_USER:str = None, DB_PASS:str = None, DB_HOST:str = None):
@@ -32,10 +41,14 @@ class PostgreSQL():
         """
         try:
             self.conn.close()
+            print("DB: Connection closed")
         except: pass
 
         self.conn = psycopg2.connect(dbname=DB_NAME,user=DB_USER,password=DB_PASS,host=DB_HOST)
+        print("DB: Established connection")
         self.cur = self.conn.cursor()
+        print("DB: Cursor created")
+        await log.db_logger(name='Established connection')
     
     # close connection
     async def close(self):
@@ -48,6 +61,8 @@ class PostgreSQL():
             None
         """
         self.conn.close()
+        print("DB: Connection closed")
+        await log.db_logger(name='Connection close')
 
     # commit changes
     async def commit(self):
@@ -60,6 +75,7 @@ class PostgreSQL():
             None
         """
         self.conn.commit()
+        await log.db_logger(name='Commited changes')
 
     # execute changes
     async def execute(self,string:str):
@@ -72,8 +88,10 @@ class PostgreSQL():
             response:list/tuples -> Returns the result
         """
         self.cur.execute(string)
+        await log.db_logger(name='Query executed',query=string)
         try:
             response = self.cur.fetchall()
+
         except Exception as e:
             if isinstance(e,psycopg2.ProgrammingError):
                 response = e
@@ -93,6 +111,7 @@ class PostgreSQL():
             None
         """
         response = self.execute(string)
+        await log.db_logger(name='Query fetch', query=string)
         return response
 
     # create a fetch string from given data
@@ -115,6 +134,7 @@ class PostgreSQL():
 
         self.cur.execute(string)
         response = self.cur.fetchall()
+        await log.db_logger(name='Query make & fetch',query=string)
         return response
 
     # create an insert string from given data
@@ -169,4 +189,5 @@ class PostgreSQL():
             string = string + s4
         
         self.cur.execute(string)
+        await log.db_logger(name='Query make & insert',query=string)
         return string 

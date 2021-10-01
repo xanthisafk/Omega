@@ -1,85 +1,187 @@
 import discord
-from discord.ext import commands
-import config
+from discord.ext import commands, tasks
 import os
+import asyncio
+import loggers.logger as log
 from os import path
 
-intents = discord.Intents(messages=True,members=True,emojis=True,guilds=True)
-client = commands.Bot(command_prefix = config.PREFIX, case_insensitive = True, intents = intents)
+import config
+
+client = commands.Bot(command_prefix=config.PREFIX,case_insensitive=True)
 client.remove_command('help')
+cog_name = 'Main'
+
+print('Hello Xanthis')
+
+@tasks.loop(seconds=60)
+async def change_presence():
+
+        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="over Nowhere Space"))
+        await asyncio.sleep(60)
+    
+        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=">help"))
+        await asyncio.sleep(60)
+    
+        await client.change_presence(activity=discord.Game(name="with life"))
+        await asyncio.sleep(60)
 
 @client.event
 async def on_ready():
-    
-
-    channel =  client.get_channel(891403310953795605)
-
-    if path.exists('./files/exists'):
-        await channel.send("Running on PC.")
-    else:
-        await channel.send("Running on Heroku")
-
     print(f'Logged in as {client.user.name}')
-    await channel.send(f'Logged in as {client.user.name}')
+
+    try:
+        channel =  client.get_channel(config.DEBUG)
+
+        if path.exists('./files/exists'):
+            await channel.send(f"Logged in as {client.user.name}. Running on PC.")
+        else:
+            await channel.send(f"Logged in as {client.user.name}. Running on Heroku.")
+    except: pass
+
+    print('Ready to go.')
+    await change_presence.start()
 
 @client.command()
-async def load(ctx, ext: str = None):
-    if ext == None:
-        for file in os.listdir('./cogs'):
-            if file.endswith('.py'):
-                try:
-                    client.load_extension(f'cogs.{file[:-3]}')
-                    ctx.message.add_reaction('🥇')
-                except: pass
-    
+async def load(ctx, extension = None):
+    name = 'Load'
+    if ctx.author.id in config.OWNER:
+        if extension == None:
+            for file in os.listdir('./cogs'):
+                if file.endswith('.py') or file.startswith('!') == False:
+                    try:
+                        client.load_extension(f'cogs.{file[:-3]}')
+                    except: pass
+            print('loaded all')
+        else:
+            extension = extension.lower()
+            client.load_extension(f'cogs.{extension}')
+            print(f'{extension} loaded')
+        await ctx.message.add_reaction('👍')
+    await log.admin_logger(ctx,name,cog_name)
+
+
+@load.error
+async def load_error(ctx, error):
+    name = 'Load'
+    if isinstance(error, commands.CommandInvokeError):
+        await ctx.message.add_reaction('👎')
+        print(error)
+
+    elif isinstance(error, commands.ExtensionNotLoaded):
+        await ctx.message.add_reaction('👎')
+        print(error)
+
+    elif isinstance(error, commands.ExtensionAlreadyLoaded):
+        await ctx.message.add_reaction('👎')
+        print(error)
+
     else:
-        try:
-            
-            client.load_extension(f'cogs.{ext}')
-            await ctx.message.add_reaction('🥇')
-        except:
-            await ctx.message.add_reaction('👖')
+        raise error
+    await log.admin_logger(ctx,name,cog_name,error)
+    return
 
 @client.command()
-async def unload(ctx, ext: str = None):
-    if ext == None:
-        for file in os.listdir('./cogs'):
-            if file.endswith('.py'):
-                try:
-                    client.unload_extension(f'cogs.{file[:-3]}')
-                    ctx.message.add_reaction('🥇')
-                except: pass
-    
+async def unload(ctx, extension = None):
+    name = 'Unload'
+    if ctx.author.id in config.OWNER:
+        if extension == None:
+            for file in os.listdir('./cogs'):
+                if file.endswith('.py') or file.startswith('!') == False:
+                    try:
+                        client.unload_extension(f'cogs.{file[:-3]}')
+                    except: pass
+            print('unloaded all')
+        else:
+            extension = extension.lower()
+            client.unload_extension(f'cogs.{extension}')
+            print(f'{extension} unloaded')
+        await ctx.message.add_reaction('👍')
+    await log.admin_logger(ctx,name,cog_name)
+
+@unload.error
+async def unload_error(ctx, error):
+    name = 'Unload'
+    if isinstance(error, commands.CommandInvokeError):
+        await ctx.message.add_reaction('👎')
+        print(error)
+
+    elif isinstance(error, commands.ExtensionNotLoaded):
+        await ctx.message.add_reaction('👎')
+        print(error)
+
+    elif isinstance(error, commands.ExtensionAlreadyLoaded):
+        await ctx.message.add_reaction('👎')
+        print(error)
+        
     else:
-        try:
-            client.unload_extension(f'cogs.{ext}')
-            
-            await ctx.message.add_reaction('🥇')
-        except:
-            await ctx.message.add_reaction('👖')
+        raise error
+    await log.admin_logger(ctx,name,cog_name,error)
+    return
+
 
 @client.command()
-async def reload(ctx, ext: str = None):
-    if ext == None:
-        for file in os.listdir('./cogs'):
-            if file.endswith('.py'):
-                try:
-                    client.unload_extension(f'cogs.{file[:-3]}')
-                    client.load_extension(f'cogs.{file[:-3]}')
-                    await ctx.message.add_reaction('🥇')
-                except: pass
-    
+async def reload(ctx, extension = None):
+    name = 'Reload'
+    if ctx.author.id in config.OWNER:
+        if extension == None:
+            for file in os.listdir('./cogs'):
+                if file.endswith('.py') or file.startswith('!') == False:
+                    try:
+                        client.unload_extension(f'cogs.{file[:-3]}')
+                        client.load_extension(f'cogs.{file[:-3]}')
+                    except: pass
+            print('reloaded all')
+        else:
+            extension = extension.lower()
+            client.unload_extension(f'cogs.{extension}')
+            client.load_extension(f'cogs.{extension}')
+            print(f'{extension} reloaded')
+        await ctx.message.add_reaction('👍')
+    await log.admin_logger(ctx,name,cog_name)
+
+@reload.error
+async def reload_error(ctx, error):
+    name = 'Reload'
+    if isinstance(error, commands.CommandInvokeError):
+        await ctx.message.add_reaction('👎')
+        print(error)
+
+    elif isinstance(error, commands.ExtensionNotLoaded):
+        await ctx.message.add_reaction('👎')
+        print(error)
+
+    elif isinstance(error, commands.ExtensionAlreadyLoaded):
+        await ctx.message.add_reaction('👎')
+        print(error)
+        
     else:
-        try:
-            client.unload_extension(f'cogs.{ext}')
-            client.load_extension(f'cogs.{ext}')
-            await ctx.message.add_reaction('🥇')
-        except:
-            await ctx.message.add_reaction('👖')
+        raise error
+    await log.admin_logger(ctx,name,cog_name,error)
+    return
 
-for i in os.listdir('./cogs'):
-    if i.endswith('.py'):
-        client.load_extension(f'cogs.{i[:-3]}')
-        print(f'Loading {i[:-3].capitalize()}')
+for file in os.listdir('./cogs'):
+    if file.endswith('.py') and file.startswith('!') == False:
+        client.load_extension(f'cogs.{file[:-3]}')
+        print(f'Loaded {file[:-3]}')
 
-client.run(config.SECKEY)
+@client.event
+async def on_command_error(ctx, error):
+    name = 'No command'
+    if isinstance(error, commands.CommandNotFound):
+        await log.error_logger(ctx,name,cog_name,error)
+        return
+    
+    elif isinstance(error,commands.MemberNotFound):
+        await log.error_logger(ctx,name,cog_name,error)
+        await ctx.send(error)
+        return
+    
+    elif isinstance(error,commands.MissingRequiredArgument):
+        await log.error_logger(ctx,name,cog_name,error)
+        await ctx.send("Invalid arguments. Please try again.")
+        print(error.args)
+
+    else:
+        raise error
+
+client.run(config.SECRET)

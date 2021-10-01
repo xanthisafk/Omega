@@ -61,28 +61,32 @@
             "desc":"Let your affection speak for itself. Kiss someone!",
             "synt":">kiss <member>",
             "alis":"None",
-            "opti": 0
+            "opti": 0,
+            "erro": "Mention someone to kiss them ¯\\_(ツ)_/¯"
         },
 
         "bully":{
             "desc":"Bully someone. 💢",
             "synt":">bully <member>",
             "alis":"None",
-            "opti": 0
+            "opti": 0,
+            "erro": "Ok you asked me to bully but who? Why did you not mention them??"
         },
 
         "cuddle":{
             "desc":"Cuddle with someone.",
             "synt":">cuddle <member>",
             "alis":"None",
-            "opti": 0
+            "opti": 0,
+            "erro": "Since you did not mention whom I should cuddle, have some cuddles from me (❁´◡`❁)"
         },
 
         "hug":{
             "desc":"Hold someone close to yourself. Give them a hug.",
             "synt":">hug <member>",
             "alis":"None",
-            "opti": 0
+            "opti": 0,
+            "erro": "Tell me tell me who you want to hug?"
         },
 
         "lick":{
@@ -110,14 +114,16 @@
             "desc":"Yeet someone off this place.",
             "synt":">yeet <member>",
             "alis":"`throw`",
-            "opti": 0
+            "opti": 0,
+            "erro": "Who needs to be yeeted off this planet?"
         },
 
         "throw":{
-            "desc":"Yeet someone off this place.",
+            "desc":"Throw someone off this place.",
             "synt":">throw <member>",
             "alis":"`yeet`",
-            "opti": 0
+            "opti": 0,
+            "erro": "Who needs to be thrown off this place?"
         },
 
         "smile":{
@@ -138,21 +144,24 @@
             "desc":"Highfive someone",
             "synt":">highfive <member>",
             "alis":"None",
-            "opti": 0
+            "opti": 0,
+            "erro": "You can not high five alone. That is called clapping. Mention who to highfive."
         },
 
         "handhold":{
             "desc":"Hold one's hands!",
             "synt":">handhold <member>",
             "alis":"`hold`",
-            "opti": 0
+            "opti": 0,
+            "erro": "Mention the person you want to hold hands with"
         },
 
         "hold":{
             "desc":"Hold one's hands!",
             "synt":">hold <member>",
             "alis":"`handhold`",
-            "opti": 0
+            "opti": 0,
+            "erro": "Mention the person you wanna hold hands with."
         },
 
         "eat":{
@@ -173,49 +182,56 @@
             "desc":"Sink your teeth in. Bite someone. 🧛‍♀️",
             "synt":">bite <member>",
             "alis":"`nom`",
-            "opti": 0
+            "opti": 0,
+            "erro": "Mention someone to bite them"
         },
 
         "nom":{
             "desc":"Sink your teeth in. Bite someone. 🧛‍♀️",
             "synt":">nom <member>",
             "alis":"`bite`",
-            "opti": 0
+            "opti": 0,
+            "erro": "To bite someone, you need to mention them"
         },
 
         "glomp":{
             "desc":"Hold someone close. Just make sure to not crush their bones.",
             "synt":">glomp <glomp>",
             "alis":"`superhug`",
-            "opti": 0
+            "opti": 0,
+            "erro": "You got the energy.. now just mention you wanna glomp."
         },
 
         "superhug":{
             "desc":"Hold someone close. Just make sure to not crush their bones.",
             "synt":">glomp <glomp>",
             "alis":"`glomp`",
-            "opti": 0
+            "opti": 0,
+            "erro": "TELL ME! Who to SUPERHUG?"
         },
 
         "slap":{
             "desc":"Similar to patting someone.. just with a bit more force.",
             "synt":">slap <member>",
             "alis":"None",
-            "opti": 0
+            "opti": 0,
+            "erro": "Slap what? air? Mention someone"
         },
 
         "kill":{
             "desc":"Just commit cold blooded murder, I guess.",
             "synt":">kill <member>",
             "alis":"None",
-            "opti": 0
+            "opti": 0,
+            "erro": "Look, murder takes planning and you are just `kill`. WHO DO I KILL? Mention them"
         },
 
         "kick":{
             "desc":"Similar to slapping but with legs",
             "synt":">kick <member>",
             "alis":"None",
-            "opti": 0
+            "opti": 0,
+            "erro": "I will do it to you if don't mention someone."
         },
 
         "wink":{
@@ -229,14 +245,15 @@
             "desc":"Poke someone to look cute... or annoying",
             "synt":">poke <member>",
             "alis":"None",
-            "opti": 0
+            "opti": 0,
+            "erro": "This is not Facebook. Mention who to poke"
         },
 
         "cringe":{
             "desc":"Cringe is what we will do if we read all these desc.",
-            "synt":">cringe <member>",
+            "synt":">cringe [member]",
             "alis":"None",
-            "opti": 0
+            "opti": 1
         }
     },
 

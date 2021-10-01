@@ -76,6 +76,13 @@ class Status(commands.Cog):
                 if comps["name"] == "CloudFlare":
                     cf_status = comps["status"].capitalize()
             
+            url = 'https://status.elephantsql.com/api/v2/components.json'
+            db_status = requests.get(url).json()
+            
+            for comps in db_status["components"]:
+                if comps["id"] == "9s1ddgddw9cn":
+                    db_status = comps["status"].capitalize()
+
             # Gathers latency information and turns it into string
             ping = round(self.client.latency, 3)
             ping = str(ping)
@@ -87,7 +94,8 @@ class Status(commands.Cog):
             pn = f'\nPush notifications: `{push_notifications_status}`'
             cf = f'\nCloudFlare: `{cf_status}`'
             la = f'\nLatency: `{ping[-3:]} ms`'
-            major_systems = ap+mp+se+pn+cf+la
+            db = f'\nDatabase: `{db_status}`'
+            major_systems = ap+mp+se+pn+cf+db+la
 
             # Footer
             footer = f'Requested on {date} at {time}'
@@ -130,6 +138,7 @@ class Status(commands.Cog):
         except Exception as e:
             await ctx.send("❌ Something went wrong.")
             await log.error_logger(ctx,name,self.cog_name,e)
+            print(e)
 
     @commands.command()
     async def coin(self,ctx):

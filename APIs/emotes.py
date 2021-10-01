@@ -21,6 +21,5 @@ class EmbedTextEmote():
             random_text = random_text.replace('$user2',user2)
         except: pass
 
-        print(random_text)
         return random_text
 

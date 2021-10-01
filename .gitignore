@@ -1,6 +1,13 @@
-config.py
-__pycache__
-admin_errors.txt
 errors.txt
+admin_errors.txt
 logs.txt
-omega.code-workspace
+ignore_list.json
+list.json
+__pycache__
+cogs\__pycache__
+secret.txt
+config.py
+exist_check
+Procfile
+runtime.txt
+queries.txt

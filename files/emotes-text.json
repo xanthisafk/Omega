@@ -16,7 +16,8 @@
         "$user1 is feeling shy towards $user2",
         "$user1's cheeks turn red for $user2",
         "$user1 blushes at $user2"
-      ]
+      ],
+      "emoji":"love"
     },
 
     "dance":{
@@ -38,7 +39,8 @@
         "$user1 shakes a leg with $user2",
         "$user1 is moving to the rythm with $user2",
         "$user1 boogies down with $user2"
-      ]
+      ],
+      "emoji":"joy"
     },
 
     "wave":{
@@ -59,7 +61,8 @@
         "$user1 says hi to $user2",
         "$user1 is greeting $user2",
         "$user1 greets $user2"
-      ]
+      ],
+      "emoji":"wave"
     },
 
     "sleep":{
@@ -76,7 +79,8 @@
         "$user1 is slumbering",
         "$user1 is asleep",
         "$user1 is feeling drowsy"
-      ]
+      ],
+      "emoji":"sleep"
     },
 
     "vibe":{
@@ -95,7 +99,8 @@
         "$user1 vibes with $user2",
         "$user1 is enjoying music with $user2",
         "$user1 is feeling groovy with $user2"
-      ]
+      ],
+      "emoji":"joy"
     },
 
     "pat":{
@@ -105,7 +110,8 @@
         "$user1 pats $user2",
         "$user1 pets $user2",
         "$user1 is caressing $user2"
-      ]
+      ],
+      "emoji":"love"
     },
 
     "cry":{
@@ -132,7 +138,8 @@
         "$user1 sobs at $user2",
         "$user1 sobs for $user2",
         "$user1 whimpers at $user2"
-      ]
+      ],
+      "emoji":"sad"
     },
 
     "pout":{
@@ -151,7 +158,8 @@
         "$user1 is angry at $user2",
         "$user1 is annoyed at $user2",
         "$user1 feels annoyed towards $user2"
-      ]
+      ],
+      "emoji":"angry"
     },
 
     "kiss":{
@@ -162,7 +170,8 @@
         "$user1 is kissing $user2",
         "$user1 kissed $user2's cheeks",
         "$user1 kisses $user2's lips"
-      ]
+      ],
+      "emoji":"love"
     },
 
     "bully":{
@@ -172,7 +181,8 @@
         "$user1 is bullying $user2",
         "$user1 pushes around $user2",
         "$user2 got bullied by $user1"
-      ]
+      ],
+      "emoji":"angry"
     },
     
     "cuddle":{
@@ -184,7 +194,8 @@
         "$user1 embraces $user2",
         "$user1 snuggles with $user2",
         "$user1 is snuggling $user2"
-      ]
+      ],
+      "emoji":"love"
     },
 
     "hug":{
@@ -196,7 +207,8 @@
         "$user1 holds $user2",
         "$user1 embraces $user2",
         "$user1 is embracing $user2"
-      ]
+      ],
+      "emoji":"hug"
     },
 
     "lick":{
@@ -213,7 +225,8 @@
         "$user1 licks $user2",
         "$user1 is licking... $user2",
         "$user1 gets a taste of $user2"
-      ]
+      ],
+      "emoji":"none"
     },
 
     "smug":{
@@ -229,7 +242,8 @@
         "$user1 feels smug at $user2",
         "$user1 is feeling smug at $user2",
         "$user1 thinks they are superior than $user2"
-      ]
+      ],
+      "emoji":"joy"
     },
 
     "bonk":{
@@ -246,7 +260,8 @@
         "$user1 is bonking $user2",
         "$user1 is hitting $user2's head",
         "$user1 is striking head of $user2"
-      ]
+      ],
+      "emoji":"none"
     },
 
     "yeet":{
@@ -256,7 +271,8 @@
         "$user1 yeeted $user2",
         "$user1 throws $user2",
         "$user1 has yeeted $user2"
-      ]
+      ],
+      "emoji":"none"
     },
 
     "smile":{
@@ -277,7 +293,8 @@
         "$user1 is feeling happy towards $user2",
         "$user1 is in good mood with $user2",
         "$user1 and $user2 are happy"
-      ]
+      ],
+      "emoji":"joy"
     },
 
     "highfive":{
@@ -286,7 +303,8 @@
         "$user1 gives a high five to $user2",
         "$user1 highfives $user2",
         "$user1 is highfiving $user2"
-      ]
+      ],
+      "emoji":"joy"
     },
 
     "handhold":{
@@ -295,7 +313,8 @@
         "$user1 is holding hands with $user2",
         "$user1 hold hand of $user2",
         "$user1 does lewd things with $user2"
-      ]
+      ],
+      "emoji":"love"
     },
 
     "eat":{
@@ -313,7 +332,8 @@
         "$user1 is mowing down food with $user2",
         "$user1 eats with $user2",
         "$user1 eats... $user2"
-      ]
+      ],
+      "emoji":"hungry"
     },
 
     "bite":{
@@ -323,7 +343,8 @@
         "$user1 is biting $user2",
         "$user1 bit $user2",
         "$user1 noms $user2"
-      ]
+      ],
+      "emoji":"none"
     },
 
     "glomp":{
@@ -331,7 +352,8 @@
       "with":[
         "$user1 glomps $user2",
         "$user1 gives a super hug to $user2"
-      ]
+      ],
+      "emoji":"love"
     },
 
     "slap":{
@@ -341,7 +363,8 @@
         "$user1 is slapping $user2",
         "$user1 slapped $user2",
         "$user1 is hitting face of $user2"
-      ]
+      ],
+      "emoji":"angry"
     },
 
     "kill":{
@@ -351,7 +374,8 @@
         "$user1 murders $user2",
         "$user1 is killing $user2",
         "$user1 wants blood of $user2"
-      ]
+      ],
+      "emoji":"angry"
     },
 
     "kick":{
@@ -361,7 +385,8 @@
         "$user1 is kicking $user2",
         "$user1 kicked $user2",
         "$user1 gives a on boot to face to $user2"
-      ]
+      ],
+      "emoji":"angry"
     },
 
     "wink":{
@@ -375,7 +400,8 @@
       "with":[
         "$user1 is winking at $user2",
         "$user1 winks at $user2"
-      ]
+      ],
+      "emoji":"wink"
     },
 
     "poke":{
@@ -384,7 +410,8 @@
         "$user1 pokes $user2",
         "$user1 is poking at $user2",
         "$user1 is poking $user2"
-      ]
+      ],
+      "emoji":"none"
     },
 
     "cringe":{
@@ -399,7 +426,8 @@
       "with":[
         "$user1 cringes at $user2",
         "$user1 is cringing at $user2"
-      ]
+      ],
+      "emoji":"disgust"
     }
   },
 
@@ -444,6 +472,16 @@
     "hungry":[
       "( ˘▽˘)っ♨", "♨o(>_<)o♨","( ・ω・)o-{{[〃]}}",
       "(　・ω・)⊃-[二二]",	"( ・・)つ―{}@{}@{}-"
+    ],
+
+    "disgust":[
+      "~(>_<~)",	"☆⌒(> _ <)",	"☆⌒(>。<)",	"(☆_@)",
+      "(×_×)",	"(x_x)",	"(×_×)⌒☆"
+    ],
+
+    "angry":[
+      "ヽ(ಠ_ಠ)ノ", "(ಠ¿ಠ)", "┌( ಠ_ಠ)┘", "ლ(ಠ_ಠლ)",
+      "ఠ_ఠ ಠ_ರೃ", "ޏ₍ ὸ.ό₎ރ", "¯\\_ಠ_ಠ_/¯", "( ..•˘___˘• .. )"
     ]
 
   }

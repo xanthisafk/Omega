@@ -5,56 +5,64 @@
             "desc": "Your cheeks turn red!😊 Blush at someone.",
             "synt": ">blush [member]",
             "alis": "None",
-            "opti": 1
+            "opti": 1,
+            "cate": "blush"
         },
 
         "dance":{
             "desc": "Let your feet move to the rythm 💃🕺 Do the dance",
             "synt": ">dance [member]",
             "alis": "None",
-            "opti": 1
+            "opti": 1,
+            "cate": "dance"
         },
 
         "wave":{
             "desc":"Say hi to someone... or just wave your hands",
             "synt":">wave [member]",
             "alis":"None",
-            "opti": 1
+            "opti": 1,
+            "cate": "wave"
         },
 
         "sleep":{
             "desc":"Get some shut eye. Go to sleep. 💤",
             "synt":">sleep",
             "alis":"None",
-            "opti": 2
+            "opti": 2,
+            "cate": "sleep"
         },
 
         "vibe":{
             "desc":"For when you are in the groove. Vibe to music",
             "synt":">vibe [member]",
             "alis":"None",
-            "opti": 1
+            "opti": 1,
+            "cate": "vibe"
         },
 
         "pat":{
             "desc":"Be proud and show some affection. Pat someone 🐱",
             "synt":">pat [member]",
             "alis":"None",
-            "opti": 1
+            "opti": 1,
+            "cate": "pat"
         },
 
         "cry":{
             "desc":"Let some tears go. Cry a bit.",
             "synt":">cry [member]",
             "alis":"None",
-            "opti": 1
+            "opti": 1,
+            "cate": "cry"
         },
 
         "pout":{
             "desc":"Pout away 😾",
             "synt":">pout [member]",
             "alis":"None",
-            "opti": 1
+            "opti": 1,
+            "cate": "pout"
         },
 
         "kiss":{
@@ -62,7 +70,8 @@
             "synt":">kiss <member>",
             "alis":"None",
             "opti": 0,
-            "erro": "Mention someone to kiss them ¯\\_(ツ)_/¯"
+            "erro": "Mention someone to kiss them ¯\\_(ツ)_/¯",
+            "cate": "kiss"
         },
 
         "bully":{
@@ -70,7 +79,8 @@
             "synt":">bully <member>",
             "alis":"None",
             "opti": 0,
-            "erro": "Ok you asked me to bully but who? Why did you not mention them??"
+            "erro": "Ok you asked me to bully but who? Why did you not mention them??",
+            "cate": "bully"
         },
 
         "cuddle":{
@@ -78,7 +88,8 @@
             "synt":">cuddle <member>",
             "alis":"None",
             "opti": 0,
-            "erro": "Since you did not mention whom I should cuddle, have some cuddles from me (❁´◡`❁)"
+            "erro": "Since you did not mention whom I should cuddle, have some cuddles from me (❁´◡`❁)",
+            "cate": "cuddle"
         },
 
         "hug":{
@@ -86,28 +97,32 @@
             "synt":">hug <member>",
             "alis":"None",
             "opti": 0,
-            "erro": "Tell me tell me who you want to hug?"
+            "erro": "Tell me tell me who you want to hug?",
+            "cate": "hug"
         },
 
         "lick":{
             "desc":"lick... something",
             "synt":">lick [member]",
             "alis":"None",
-            "opti": 1
+            "opti": 1,
+            "cate": "lick"
         },
 
         "smug":{
             "desc":"Get your smug face on :3",
             "synt":">smug [member]",
             "alis":"None",
-            "opti": 1
+            "opti": 1,
+            "cate": "smug"
         },
 
         "bonk":{
             "desc":"Hit someone on their head!",
             "synt":">bonk [member]",
             "alis":"None",
-            "opti": 1
+            "opti": 1,
+            "cate": "bonk"
         },
 
         "yeet":{
@@ -115,7 +130,8 @@
             "synt":">yeet <member>",
             "alis":"`throw`",
             "opti": 0,
-            "erro": "Who needs to be yeeted off this planet?"
+            "erro": "Who needs to be yeeted off this planet?",
+            "cate": "yeet"
         },
 
         "throw":{
@@ -123,21 +139,24 @@
             "synt":">throw <member>",
             "alis":"`yeet`",
             "opti": 0,
-            "erro": "Who needs to be thrown off this place?"
+            "erro": "Who needs to be thrown off this place?",
+            "cate": "yeet"
         },
 
         "smile":{
             "desc":"Show off your happiness and smile a bit!",
             "synt":">smile [member]",
             "alis":"`happy`",
-            "opti": 1
+            "opti": 1,
+            "cate": "smile"
         },
 
         "happy":{
             "desc":"Show off your happiness and smile a bit!",
             "synt":">happy [member]",
             "alis":"`smile`",
-            "opti": 1
+            "opti": 1,
+            "cate": "smile"
         },
 
         "highfive":{
@@ -145,7 +164,8 @@
             "synt":">highfive <member>",
             "alis":"None",
             "opti": 0,
-            "erro": "You can not high five alone. That is called clapping. Mention who to highfive."
+            "erro": "You can not high five alone. That is called clapping. Mention who to highfive.",
+            "cate": "highfive"
         },
 
         "handhold":{
@@ -153,7 +173,8 @@
             "synt":">handhold <member>",
             "alis":"`hold`",
             "opti": 0,
-            "erro": "Mention the person you want to hold hands with"
+            "erro": "Mention the person you want to hold hands with",
+            "cate": "handhold"
         },
 
         "hold":{
@@ -161,21 +182,24 @@
             "synt":">hold <member>",
             "alis":"`handhold`",
             "opti": 0,
-            "erro": "Mention the person you wanna hold hands with."
+            "erro": "Mention the person you wanna hold hands with.",
+            "cate": "hold"
         },
 
         "eat":{
             "desc":"Feeling hungry? Grab something to eat.",
             "synt":">eat [member]",
             "alis":"`hungry`",
-            "opti": 1
+            "opti": 1,
+            "cate": "nom"
         },
 
         "hungry":{
             "desc":"Feeling hungry? Grab something to eat.",
             "synt":">hungry [member]",
             "alis":"`hungry`",
-            "opti": 1
+            "opti": 1,
+            "cate": "nom"
         },
 
         "bite":{
@@ -183,7 +207,8 @@
             "synt":">bite <member>",
             "alis":"`nom`",
             "opti": 0,
-            "erro": "Mention someone to bite them"
+            "erro": "Mention someone to bite them",
+            "cate": "bite"
         },
 
         "nom":{
@@ -191,7 +216,8 @@
             "synt":">nom <member>",
             "alis":"`bite`",
             "opti": 0,
-            "erro": "To bite someone, you need to mention them"
+            "erro": "Mention someone to bite them",
+            "cate": "bite"
         },
 
         "glomp":{
@@ -199,7 +225,8 @@
             "synt":">glomp <glomp>",
             "alis":"`superhug`",
             "opti": 0,
-            "erro": "You got the energy.. now just mention you wanna glomp."
+            "erro": "You got the energy.. now just mention you wanna glomp.",
+            "cate": "glomp"
         },
 
         "superhug":{
@@ -207,7 +234,8 @@
             "synt":">glomp <glomp>",
             "alis":"`glomp`",
             "opti": 0,
-            "erro": "TELL ME! Who to SUPERHUG?"
+            "erro": "TELL ME! Who to SUPERHUG?",
+            "cate": "glomp"
         },
 
         "slap":{
@@ -215,7 +243,8 @@
             "synt":">slap <member>",
             "alis":"None",
             "opti": 0,
-            "erro": "Slap what? air? Mention someone"
+            "erro": "Slap what? air? Mention someone",
+            "cate": "slap"
         },
 
         "kill":{
@@ -223,7 +252,8 @@
             "synt":">kill <member>",
             "alis":"None",
             "opti": 0,
-            "erro": "Look, murder takes planning and you are just `kill`. WHO DO I KILL? Mention them"
+            "erro": "Look, murder takes planning and you are just `kill`. WHO DO I KILL? Mention them",
+            "cate": "kill"
         },
 
         "kick":{
@@ -231,14 +261,16 @@
             "synt":">kick <member>",
             "alis":"None",
             "opti": 0,
-            "erro": "I will do it to you if don't mention someone."
+            "erro": "I will do it to you if don't mention someone.",
+            "cate": "kick"
         },
 
         "wink":{
             "desc":"Did your eye twitch or you are winking?",
             "synt":">wink [member]",
             "alis":"None",
-            "opti": 1
+            "opti": 1,
+            "cate": "wink"
         },
 
         "poke":{
@@ -246,15 +278,119 @@
             "synt":">poke <member>",
             "alis":"None",
             "opti": 0,
-            "erro": "This is not Facebook. Mention who to poke"
+            "erro": "This is not Facebook. Mention who to poke",
+            "cate": "poke"
         },
 
         "cringe":{
             "desc":"Cringe is what we will do if we read all these desc.",
             "synt":">cringe [member]",
             "alis":"None",
-            "opti": 1
+            "opti": 1,
+            "cate": "cringe"
+        },
+
+        "baka":{
+            "desc":"Think someone is stoopid? Call them a baka!",
+            "synt":">baka <member>",
+            "alis":"None",
+            "opti":0,
+            "erro": "Who do you want me to call stupid? YOU? Tag them.",
+            "cate": "baka"
+        },
+
+        "hmph":{
+            "desc": "Got mad at someone. Give them an angry pout.",
+            "synt": ">hmph [member]",
+            "alis": "None",
+            "opti": 1,
+            "cate": "hmph"
+        },
+
+        "bored":{
+            "desc": "When nothing is going on and you have to express your feeling that you are bored af.",
+            "synt": ">bored [member]",
+            "alis": "None",
+            "opti": 1,
+            "cate": "bored"
+        },
+
+        "facepalm":{
+            "desc": "You think that was stupid? Do a facepalm.",
+            "synt": ">facepalm [member]",
+            "alis": "None",
+            "opti": 1,
+            "cate": "facepalm"
+        },
+
+        "feed":{
+            "desc": "Show some love and feed other people.",
+            "synt": ">feed <member>",
+            "alis": "None",
+            "opti": 0,
+            "erro": "Who do you want to feed? Mention them..",
+            "cate": "feed"
+        },
+
+        "laugh":{
+            "desc": "Laugh your heart out.",
+            "synt": ">laugh [member]",
+            "alis": "None",
+            "opti": 1,
+            "cate": "laugh"
+        },
+
+        "shrug":{
+            "desc": "What was that dumb thing? Who cares?",
+            "synt": ">shrug",
+            "alis": "None",
+            "opti": 2,
+            "cate": "shrug"
+        },
+
+        "stare":{
+            "desc": "Stare into someone's soul",
+            "synt": ">stare <member>",
+            "alis": "None",
+            "opti": 0,
+            "erro": "Who do you want to STARE into? Mention them.",
+            "cate": "stare"
+        },
+
+        "think":{
+            "desc": "Use your thinking powers. THINK!",
+            "synt": ">think [member]",
+            "alis": "`thonk`",
+            "opti": 1,
+            "cate": "think"
+        },
+
+        "thonk":{
+            "desc": "Use your thonking powers!",
+            "synt": ">thonk [member]",
+            "alis": "`think`",
+            "opti": 1,
+            "cate": "think"
+        },
+
+        "thumbsup":{
+            "desc": "It is not the taste of thunder.",
+            "synt": ">thumpsup [member]",
+            "alis": "None",
+            "opti": 1,
+            "cate": "thumbsup"
+        },
+
+        "tickle":{
+            "desc": "Tickle someone until they cry. It is cute, trust me.",
+            "synt": ">tickle <member>",
+            "alis": "None",
+            "opti": 0,
+            "erro": "Mention someone to tickle them :3",
+            "cate": "tickle"
         }
+
+
     },
 
     "fun":{

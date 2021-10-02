@@ -1,4 +1,4 @@
-import random, requests, json
+import random, requests, json, codecs
 
 class GIF_And_Text():
 
@@ -47,6 +47,8 @@ class GIF_And_Text():
     
         return url
 
+
+
     async def waifu_gif(self,endpoint: str) -> str:
         """
         Generates a random gif from waifu.pics API.
@@ -61,7 +63,9 @@ class GIF_And_Text():
         rq = requests.get(url).json()
         rq = rq["url"]
         return rq
-    
+
+
+
     async def neko_gif(self,endpoint: str) -> str:
         """
         Generates a random gif from waifu.pics API.
@@ -77,6 +81,8 @@ class GIF_And_Text():
         rq = rq["url"]
         return rq
 
+
+
     async def listed_gif(self,category: str) -> str:
         """
         hmph, dance, sleep, vibe
@@ -91,9 +97,12 @@ class GIF_And_Text():
         image = random.choice(self.kind[category])
         return image
 
+
+
+
     async def create_string(self,*,type: str, user1: str, user2: str=None) -> str:
 
-        with open('files/emotes-text.json') as js:
+        with codecs.open('files/emotes-text.json','r',encoding='utf-8') as js:
             data = json.load(js)
             js.close()
 
@@ -109,6 +118,13 @@ class GIF_And_Text():
         try:
             random_text = random_text.replace('$user2',user2)
         except: pass
+
+        emoji_str = data['emote'][type]['emoji']
+        if emoji_str == 'none': 
+            pass
+        else:
+            emoji = random.choice(data['emoji'][emoji_str])
+            random_text = random_text +" "+ emoji
 
         return random_text
 

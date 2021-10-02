@@ -16,9 +16,11 @@ class Help(commands.Cog):
         temp = []
 
         cog = self.client.get_cog('Emotes')
-
-        for i in cog.get_commands():
-            temp.append(i.name.capitalize())
+        cmd = cog.get_commands()
+        for i in cmd:
+            for j in i.aliases:
+                temp.append(j)
+            temp.append(i.name)
 
         temp.sort(key=str.lower)
 
@@ -41,7 +43,7 @@ class Help(commands.Cog):
         syntax = syntax[:-2]
 
         return syntax
-    
+
     async def fun_section(self):
 
         with codecs.open('files/emote-help.json','r',encoding='utf-8') as js:
@@ -240,6 +242,18 @@ class Help(commands.Cog):
         embed.add_field(name='Syntax', value=syntax)
         await ctx.send(embed=embed)
         await log.event_logger(ctx,name,self.cog_name)
+
+    # @commands.command()
+    # async def testin(self, ctx):
+    #     if ctx.author.id == 800400638156210176:
+    #         cog = self.client.get_cog('Emotes')
+    #         syntax =''
+    #         name = cog.get_commands()
+    #         for i in name:
+    #             for j in i.aliases:
+    #                 syntax += f'`{j}`, '
+    #             syntax += f'`{i.name}`'
+    #         print(syntax)
 
 def setup(client):
     client.add_cog(Help(client))

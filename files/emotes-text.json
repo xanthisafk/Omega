@@ -275,7 +275,40 @@
       "emoji":"none"
     },
 
+    "throw":{
+
+      "with":[
+        "$user1 yeets $user2",
+        "$user1 yeeted $user2",
+        "$user1 throws $user2",
+        "$user1 has yeeted $user2"
+      ],
+      "emoji":"none"
+    },
+
     "smile":{
+
+      "solo":[
+        "$user1 is smiling",
+        "$user1 smiles",
+        "$user1 is happy",
+        "$user1 is feeling happy",
+        "$user1 feels good",
+        "$user1 is in good mood"
+      ],
+
+      "with":[
+        "$user1 is smiling at $user2",
+        "$user1 smiles at $user2",
+        "$user1 is happy at $user2",
+        "$user1 is feeling happy towards $user2",
+        "$user1 is in good mood with $user2",
+        "$user1 and $user2 are happy"
+      ],
+      "emoji":"joy"
+    },
+
+    "happy":{
 
       "solo":[
         "$user1 is smiling",
@@ -317,7 +350,36 @@
       "emoji":"love"
     },
 
+    "hold":{
+
+      "with":[
+        "$user1 is holding hands with $user2",
+        "$user1 hold hand of $user2",
+        "$user1 does lewd things with $user2"
+      ],
+      "emoji":"love"
+    },
+
     "eat":{
+
+      "solo":[
+        "$user1 is eating",
+        "$user1 is hungry",
+        "$user1 mows down",
+        "$user1 eats"
+      ],
+
+      "with":[
+        "$user1 is eating with $user2",
+        "$user1 is feeling hungry with $user2",
+        "$user1 is mowing down food with $user2",
+        "$user1 eats with $user2",
+        "$user1 eats... $user2"
+      ],
+      "emoji":"hungry"
+    },
+
+    "hungry":{
 
       "solo":[
         "$user1 is eating",
@@ -347,7 +409,27 @@
       "emoji":"none"
     },
 
+    "nom":{
+
+      "with":[
+        "$user1 bites $user2",
+        "$user1 is biting $user2",
+        "$user1 bit $user2",
+        "$user1 noms $user2"
+      ],
+      "emoji":"none"
+    },
+
     "glomp":{
+
+      "with":[
+        "$user1 glomps $user2",
+        "$user1 gives a super hug to $user2"
+      ],
+      "emoji":"love"
+    },
+
+    "superhug":{
 
       "with":[
         "$user1 glomps $user2",
@@ -366,6 +448,8 @@
       ],
       "emoji":"angry"
     },
+
+
 
     "kill":{
 
@@ -428,8 +512,187 @@
         "$user1 is cringing at $user2"
       ],
       "emoji":"disgust"
+    },
+
+    "baka":{
+
+      "with":[
+        "$user1 says baka to $user2",
+        "$user1 thinks $user2 is stupid",
+        "$user1 is calling $user2 a baka"
+      ],
+      "emoji":"disgust"
+    },
+
+    "hmph":{
+
+      "solo":[
+
+        "$user1 is angry",
+        "$user1 is mad at that",
+        "You made $user1 angry",
+        "$user1 is furious"
+      ],
+
+      "with":[
+        "$user1 is angry at $user2",
+        "$user1 got mad at $user2",
+        "$user2 made $user1 angry"
+      ],
+      "emoji":"angry"
+    },
+
+    "bored":{
+
+      "solo":[
+        "$user1 is bored",
+        "$user1 is feeling bored",
+        "Boredom got to $user1"
+      ],
+
+      "with":[
+        "$user1 and $user2 are bored",
+        "$user1 and $user2 are feeling bored",
+        "$user1 is feeling bored with $user2"
+      ],
+
+      "emoji":"sad"
+    },
+
+    "facepalm":{
+
+      "solo":[
+        "$user1 facepalms",
+        "$user1 thinks that is stupid",
+        "$user1's did a facepalm"
+      ],
+
+      "with":[
+        "$user1 facepalms at $user2",
+        "$user1 thinks $user2's message was stupid"
+      ],
+
+      "emoji":"sad"
+    },
+
+    "feed":{
+
+      "with":[
+        "$user1 feeds $user2",
+        "$user1 is feeding $user2",
+        "$user2 got fed by $user1"
+      ],
+
+      "emoji":"love"
+    },
+
+    "laugh":{
+
+      "solo":[
+        "$user1 is laughing",
+        "$user1 laughs",
+        "$user1 is having a laugh",
+        "$user1 keks",
+        "It is very funny to $user1"
+      ],
+
+      "with":[
+        "$user1 is laughing at $user2",
+        "$user1 laughs at $user2"
+      ],
+
+      "emoji":"joy"
+    },
+
+    "shrug":{
+
+      "solo":[
+        "$user1 shrugs it off",
+        "$user1 shrugs",
+        "$user1 don't care",
+        "$user1 gives no fuck"
+      ],
+
+      "emoji":"none"
+    },
+
+    "stare":{
+
+      "with":[
+        "$user1 is staring $user2",
+        "$user1 stares into $user2's soul"
+      ],
+
+      "emoji":"disgust"
+    },
+
+    "think":{
+
+      "solo":[
+        "$user1 is thinking",
+        "$user1 thinks",
+        "$user1 is thinking about this"
+      ],
+
+      "with":[
+        "$user1 is thinking with $user2",
+        "$user1 is using brainpower with $user2",
+        "$user1 and $user2 are thinking"
+      ],
+
+      "emoji":"none"
+    },
+
+    "thonk":{
+
+      "solo":[
+        "$user1 is thinking",
+        "$user1 thinks",
+        "$user1 is thinking about this"
+      ],
+
+      "with":[
+        "$user1 is thinking with $user2",
+        "$user1 is using brainpower with $user2",
+        "$user1 and $user2 are thinking"
+      ],
+
+      "emoji":"none"
+    },
+
+
+    "thumbsup":{
+
+      "solo":[
+        "$user1 gives a huge thumbs up",
+        "$user1 gives a thumbs up",
+        "A thumbs up from $user1"
+      ],
+
+      "with":[
+        "$user1 gives a thumbs up to $user2",
+        "$user2 gets a thumbsup from $user1"
+      ],
+
+      "emoji":"joy"
+    },
+
+    "tickle":{
+      
+      "with":[
+        "$user1 tickles $user2",
+        "$user1 is tickling $user2",
+        "$user1 tickled $user2"
+      ],
+
+      "emoji":"joy"
     }
+
+
   },
+
+
+
 
   "emoji":{
 

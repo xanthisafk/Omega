@@ -12,6 +12,7 @@ class GIF_And_Text():
         returns;
             url = 
         """
+
         if category in self.waifu and category in self.lists:
 
             if random.randint(1,2) == 1:
@@ -127,6 +128,13 @@ class GIF_And_Text():
             random_text = random_text +" "+ emoji
 
         return random_text
+    
+    async def alias_check(self,category)->str:
+        if category in self.aliases:
+            category = self.aliases[category]
+        else:
+            pass
+        return category
 
     kind = {
 
@@ -175,7 +183,7 @@ class GIF_And_Text():
             'https://media.discordapp.net/attachments/703316133717213285/886135952127430676/umaru-umaru-chan.gif'
         ],
 
-            'pout' : [
+        'pout' : [
             'https://cdn.discordapp.com/attachments/843508777177186334/887299073009414144/tenor_1.gif',
             'https://cdn.discordapp.com/attachments/843508777177186334/887299073428840458/tenor.gif',
             'https://cdn.discordapp.com/attachments/843508777177186334/887299078470393937/tenor_3.gif',
@@ -208,12 +216,12 @@ class GIF_And_Text():
         'hug',      'highfive', 'superhug', 'poke',
         'lick',     'handhold', 'slap',     'wink',
         'pat',      'smug',     'hold',     'kill',
-        'cry',      'bonk',     'eat',      'kick',
+        'cry',      'bonk',     'kick',
         'yeet',     'hungry'
     ]
 
     lists = [
-        'dance','sleep', 'vibe', 'pout'
+        'dance','sleep', 'vibe', 'pout', 'hmph'
     ]
 
     nekos = [
@@ -223,3 +231,13 @@ class GIF_And_Text():
         'smug', 'stare', 'think', 'thumbsup', 'tickle', 'wave',
         'wink'
     ]
+
+    aliases = {
+        "throw":"yeet",
+        "hold":"handhold",
+        "eat":"nom",
+        "hungry":"nom",
+        "nom":"bite",
+        "superhug":"glomp",
+        "thonk":"think",
+    }

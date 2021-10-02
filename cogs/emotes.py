@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import random, requests, json, codecs
+import json, codecs
 import loggers.logger as log
 import APIs.color as rang
 import APIs.GIF_And_Text
@@ -20,9 +20,11 @@ class Emotes(commands.Cog):
         'pat',      'smug',     'hold',     'kill',
         'cry',      'bonk',     'eat',      'kick',
         'yeet',     'dance',    'sleep',    'vibe',
-        'pout'
+        'pout',     'baka',     'hmph',     'bored',
+        'facepalm', 'feed',     'shrug',    'stare',
+        'think',    'thumbsup', 'tickle',   'thonk'
     ])
-    async def send_emotes_waifu(self, ctx, member:discord.Member=None):
+    async def send_emotes(self, ctx, member:discord.Member=None):
         
         name = ctx.invoked_with
         color = await rang.get_color()
@@ -39,6 +41,8 @@ class Emotes(commands.Cog):
                 solo = True
         else:
             solo = False
+        
+        category = alias['emotes'][name]['cate']
 
         alias = None
 
@@ -50,12 +54,13 @@ class Emotes(commands.Cog):
         else:
             string = await self.gif.create_string(type=name,user1=u1)
 
-        image = await self.gif.selector(name)
+        image = await self.gif.selector(category)
 
         embed = discord.Embed(title = string, color = color)
         embed.set_image(url=image)
         await ctx.send(embed=embed)
         await log.event_logger(ctx,name,self.cog_name)
+ 
 
 def setup(client):
     client.add_cog(Emotes(client))

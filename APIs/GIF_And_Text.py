@@ -128,13 +128,6 @@ class GIF_And_Text():
             random_text = random_text +" "+ emoji
 
         return random_text
-    
-    async def alias_check(self,category)->str:
-        if category in self.aliases:
-            category = self.aliases[category]
-        else:
-            pass
-        return category
 
     kind = {
 

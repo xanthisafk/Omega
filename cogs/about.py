@@ -38,7 +38,7 @@ class About(commands.Cog):
             tot_c = f'{command_amount+1} commands are loaded across {cog_amount} extensions.'
             field_val = tot_s+tot_c
 
-            footer = f'Made by Xanthis for Nowhere Space!'
+            footer = f'Made by Xanthis!'
 
             thumb = self.client.user.avatar_url
 

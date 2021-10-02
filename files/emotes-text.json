@@ -74,7 +74,7 @@
         "$user1 is napping",
         "$user1 takes a nap",
         "$user1 is slumbering",
-        "$user1 is asleet",
+        "$user1 is asleep",
         "$user1 is feeling drowsy"
       ]
     },
@@ -82,12 +82,12 @@
     "vibe":{
 
       "solo":[
-        "$user1 is vibing $user2",
-        "$user1 vibes $user2",
-        "$user1 is nodding their head $user2",
-        "$user1 is in the groove $user2",
-        "$user1 is enjoying music $user2",
-        "$user1 thinks this is a vibe $user2"
+        "$user1 is vibing",
+        "$user1 vibes",
+        "$user1 is nodding their head",
+        "$user1 is in the groove",
+        "$user1 is enjoying music",
+        "$user1 thinks this is a vibe"
       ],
 
       "with":[
@@ -104,7 +104,7 @@
         "$user1 is patting $user2",
         "$user1 pats $user2",
         "$user1 pets $user2",
-        "$user1 is carresing $user2"
+        "$user1 is caressing $user2"
       ]
     },
 

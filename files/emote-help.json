@@ -182,8 +182,8 @@
             "synt":">hold <member>",
             "alis":"`handhold`",
             "opti": 0,
-            "erro": "Mention the person you wanna hold hands with.",
-            "cate": "hold"
+            "erro": "Mention the person you wanna hold hands with",
+            "cate": "handhold"
         },
 
         "eat":{

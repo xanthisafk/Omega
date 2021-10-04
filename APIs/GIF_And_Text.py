@@ -156,8 +156,8 @@ class GIF_And_Text():
             'https://media.discordapp.net/attachments/703316133717213285/885488989568663622/kermit-dance.gif',
             'https://media.discordapp.net/attachments/703316133717213285/886125451163107368/anime-dance_1.gif',
             'https://media.discordapp.net/attachments/703316133717213285/886162194365026354/ByhduIQP-.gif',
-            'https://media.discordapp.net/attachments/703272258990374973/886448324159344720/crab-rave-mmd.gif'
-            ],
+            'https://media.discordapp.net/attachments/703272258990374973/886448324159344720/crab-rave-mmd.gif',
+            'https://tenor.com/view/yay-yeah-happy-dance-gif-14866505'
 
         'sleep' : [
             'https://cdn.discordapp.com/attachments/799689564092104738/886127225836015616/tenor_11.gif',

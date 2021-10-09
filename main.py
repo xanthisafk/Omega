@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands, tasks
 import os
+from os import path
 import asyncio
 import loggers.logger as log
-from os import path
 
 import config
 
@@ -21,13 +21,19 @@ async def change_presence():
     
         await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=">help"))
         await asyncio.sleep(60)
-    
-        await client.change_presence(activity=discord.Game(name="with life"))
+
+        if path.exists('files/exists'):
+            desc = 'on my PC!'
+        else:
+            desc = 'on Heroku!'
+        
+        await client.change_presence(activity=discord.Game(name=desc))
         await asyncio.sleep(60)
 
 @client.event
 async def on_ready():
-    print(f'Logged in as {client.user.name}')
+    print(f'Logged in as {client.user.name}.')
+    print('Ready to go.')
 
     try:
         channel =  client.get_channel(config.DEBUG)
@@ -38,8 +44,8 @@ async def on_ready():
             await channel.send(f"Logged in as {client.user.name}. Running on Heroku.")
     except: pass
 
-    print('Ready to go.')
     await change_presence.start()
+
 
 @client.command()
 async def load(ctx, extension = None):
@@ -180,8 +186,18 @@ async def on_command_error(ctx, error):
         await log.error_logger(ctx,name,cog_name,error)
         await ctx.send("Invalid arguments. Please try again.")
         print(error.args)
+        return
+    
+    
 
     else:
         raise error
 
-client.run(config.SECRET)
+try:
+    client.run(config.SECRET)
+except Exception as e:
+    if isinstance(e,RuntimeError):
+        print("Exiting...")
+    else:
+        print("Unexpected exit.")
+        raise e

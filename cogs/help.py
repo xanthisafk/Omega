@@ -1,8 +1,13 @@
-import discord
-from discord.ext import commands
-import random, json, codecs
-import loggers.logger as log
+import codecs
+import json
+import random
+import asyncio
+
 import APIs.color as rang
+import discord
+import loggers.logger as log
+from discord.ext import commands
+
 
 class Help(commands.Cog):
 
@@ -229,6 +234,7 @@ class Help(commands.Cog):
         data = cog.atks
 
         temp = []
+        synt = []
         for i in data:
             temp.append(i)
 
@@ -236,11 +242,61 @@ class Help(commands.Cog):
 
         for i in temp:
             syntax += f'`{i}`, '
-        syntax = syntax[:-2]
+            if len(syntax) >= 1000:
+                syntax = syntax[:-2]
+                synt.append(syntax)
+                syntax = ''
+
+            if i == temp[(len(temp)-1)]:
+                syntax = syntax[:-2]
+                synt.append(syntax)
+                syntax = ''
+
+        i = 0
+        page = 1
+        total_pages = len(synt)
 
         embed = discord.Embed(title=name, description=text,color=color)
-        embed.add_field(name='Syntax', value=syntax)
-        await ctx.send(embed=embed)
+
+        embed.add_field(name=f'Syntax (Page {page}):', value=synt[i], inline=False)
+
+        message = await ctx.send(embed=embed)
+        embed = None
+
+        if len(synt) >= 2:
+            await message.add_reaction('◀️')
+            await message.add_reaction('▶️')
+
+            def check(reaction, user):
+                return user == ctx.author and str(reaction.emoji) in ["◀️", "▶️"]
+            
+            while True:
+                try:
+                    reaction, user = await self.client.wait_for("reaction_add", timeout=120, check=check)
+
+                    embed = discord.Embed(title=name, description=text,color=color)
+
+                    if str(reaction.emoji) == "▶️" and page != total_pages:
+                        page += 1
+                        embed.add_field(name=f'Syntax (Page {page}):', value=synt[(page-1)], inline=False)
+                        await message.edit(embed=embed)
+                        await message.remove_reaction(reaction, user)
+                        print(str(reaction.emoji))
+
+                    elif str(reaction.emoji) == "◀️" and page > 1:
+                        page -= 1
+                        embed.add_field(name=f'Syntax (Page {page}):', value=synt[(page-1)], inline=False)
+                        await message.edit(embed=embed)
+                        await message.remove_reaction(reaction, user)
+
+                    else:
+                        await message.remove_reaction(reaction, user)
+
+                except asyncio.TimeoutError:
+                    await message.delete()
+                    break
+
+
         await log.event_logger(ctx,name,self.cog_name)
 
     # @commands.command()

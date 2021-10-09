@@ -282,7 +282,6 @@ class Help(commands.Cog):
                         embed.add_field(name=f'Syntax (Page {page}):', value=synt[(page-1)], inline=False)
                         await message.edit(embed=embed)
                         await message.remove_reaction(reaction, user)
-                        print(str(reaction.emoji))
 
                     elif str(reaction.emoji) == "◀️" and page > 1:
                         page -= 1
@@ -294,7 +293,7 @@ class Help(commands.Cog):
                         await message.remove_reaction(reaction, user)
 
                 except asyncio.TimeoutError:
-                    message.edit(content="Message timed out")
+                    await message.edit(content="Message timed out")
                     break
 
 

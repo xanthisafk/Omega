@@ -263,6 +263,7 @@ class Help(commands.Cog):
         message = await ctx.send(embed=embed)
         embed = None
 
+        # https://stackoverflow.com/a/61793587/14504836
         if len(synt) >= 2:
             await message.add_reaction('◀️')
             await message.add_reaction('▶️')
@@ -293,7 +294,7 @@ class Help(commands.Cog):
                         await message.remove_reaction(reaction, user)
 
                 except asyncio.TimeoutError:
-                    await message.delete()
+                    message.edit(content="Message timed out")
                     break
 
 

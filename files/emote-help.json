@@ -414,6 +414,13 @@
             "synt":">pun [ID]",
             "alis":"`dadjoke`",
             "opti": 1
+        },
+
+        "8ball":{
+            "desc": "Ask a question from 8Ball and it will tell you what it thinks.",
+            "synt": ">8ball <question>",
+            "alis": "None",
+            "opti": 0
         }
     },
 
@@ -452,6 +459,20 @@
             "synt":">status",
             "alis":"`ping`",
             "opti": 2
+        },
+
+        "snipe":{
+            "desc": "Sends the last deleted message.",
+            "synt": ">snipe",
+            "alis": "None",
+            "opti": 2
+        },
+
+        "avatar":{
+            "desc": "Enlarges someone's profile photo.",
+            "synt": ">avatar [member]",
+            "alis": "`av`",
+            "opti": 1
         }
     }
 }

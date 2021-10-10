@@ -7,53 +7,63 @@ class About(commands.Cog):
     def __init__(self,client):
         self.client = client
         self.cog_name = __name__[5:].capitalize()
-    
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print(f'{self.cog_name} Running.')
+
+    async def emo_count(self):
+        count = 0
+        cog = self.client.get_cog('Emotes')
+        cmd = cog.get_commands()
+        for i in cmd:
+            for _ in i.aliases:
+                count+=1
+        return count
+
+    async def atk_count(self):
+        count = 0
+        cog = self.client.get_cog('ATK')
+        for _ in cog.atks:
+            count+=1
+        return count
 
     @commands.command()
     async def about(self,ctx):
         command_name = ctx.command.name.capitalize()
         cog_name = ctx.command.cog_name.capitalize()
 
-        try:
-            color = await rang.get_color()
+        #try:
+        color = await rang.get_color()
 
-            servers = len(self.client.guilds)
-            
-            people = 0
-            for guild in self.client.guilds:
-                people += guild.member_count
-
-            cog_amount = 0
-            for i in os.listdir('./cogs'):
-                cog_amount += 1
-            
-            command_amount = 0
-            for i in self.client.commands:
-                command_amount += 1
-
-            tot_s = f'Currently in {servers} servers and working with {people} people.\n'
-            tot_c = f'{command_amount+1} commands are loaded across {cog_amount} extensions.'
-            field_val = tot_s+tot_c
-
-            footer = f'Made by Xanthis!'
-
-            thumb = self.client.user.avatar_url
-
-            embed = discord.Embed(title='About',description='Discord bot, written in Python, uses `discord.py`',color=color)
-            embed.add_field(name='Usage',value=field_val,inline=False)
-            embed.set_footer(text=footer)
-            embed.set_thumbnail(url=thumb)
-            await ctx.send(embed=embed)
-            await log.event_logger(ctx,command_name,cog_name,)
+        servers = len(self.client.guilds)
         
-        except Exception as e:
+        people = 0
+        for guild in self.client.guilds:
+            people += guild.member_count
 
-            await log.error_logger(ctx,command_name,cog_name,e)
-            await ctx.send('Something went wrong')
+        cog_amount = 0
+        for _ in os.listdir('./cogs'):
+            cog_amount += 1
 
+        command_amount = 0
+        for _ in self.client.commands:
+            command_amount += 1
+        command_amount += (await self.emo_count())
+
+        atk_count = await self.atk_count()
+
+        tot_s = f'Currently in {servers} servers and working with {people} people.\n'
+        tot_c = f'{command_amount+1} commands are loaded across {cog_amount} extensions.\n'
+        tot_a = f'{atk_count} auto trigger keywords are loaded.'
+        field_val = tot_s+tot_c+tot_a
+
+        footer = f'v1.1 - Made by Xanthis!'
+
+        thumb = self.client.user.avatar_url
+
+        embed = discord.Embed(title='About',description='Discord bot, written in Python, uses `discord.py`',color=color)
+        embed.add_field(name='Usage',value=field_val,inline=False)
+        embed.set_footer(text=footer)
+        embed.set_thumbnail(url=thumb)
+        await ctx.send(embed=embed)
+        await log.event_logger(ctx,command_name,cog_name,)
 
 
 def setup(client):

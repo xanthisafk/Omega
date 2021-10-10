@@ -34,7 +34,6 @@ class Help(commands.Cog):
         syntax = syntax[:-2]
         return syntax
 
-
     async def uti_section(self):
 
         with codecs.open('files/emote-help.json','r',encoding='utf-8') as js:
@@ -93,16 +92,7 @@ class Help(commands.Cog):
     # EMOTES COG HELP SECTION  #
     ############################
 
-    @help.command(aliases=[
-        'blush',    'kiss',     'smile',    'bite',     'poke',
-        'dance',    'bully',    'throw',    'nom',      'cringe',
-        'wave',     'cuddle',   'happy',    'glomp',
-        'sleep',    'hug',      'highfive', 'superhug',
-        'vibe',     'lick',     'handhold', 'slap',
-        'pat',      'smug',     'hold',     'kill',
-        'cry',      'bonk',     'eat', '    kick',
-        'pout',     'yeet',     'hungry',   'wink'
-    ])
+    @help.command(aliases = ['blush', 'dance', 'wave', 'sleep', 'vibe', 'pat', 'cry', 'pout', 'kiss', 'bully', 'hug', 'cuddle', 'lick', 'smug', 'bonk', 'yeet', 'throw', 'smile', 'happy', 'highfive', 'handhold', 'hold', 'eat', 'hungry', 'bite', 'glomp', 'superhug', 'slap', 'kill', 'kick', 'wink', 'poke', 'cringe', 'baka', 'hmph', 'bored', 'facepalm', 'feed', 'laugh', 'shrug', 'stare', 'think', 'thonk', 'thumbsup', 'tickle'] )
     async def emotes_help(self,ctx):
         """
         Sends out help embed for every element in emotes in emote-help.json
@@ -143,7 +133,7 @@ class Help(commands.Cog):
 
     @help.command(aliases=[
         'emojify', 'owoify',
-        'pun', 'dadjoke'
+        'pun', 'dadjoke', '8ball'
     ])
     async def fun_help(self,ctx):
         """
@@ -183,7 +173,7 @@ class Help(commands.Cog):
 
     @help.command(aliases=[
         'ignore', 'uignore', 'add_atk', 'remove_atk',
-        'atk_add', 'atk_remove', 'status', 'ping'
+        'atk_add', 'atk_remove', 'status', 'ping', 'snipe', 'avatar', 'av'
     ])
     async def utility_help(self,ctx):
         """

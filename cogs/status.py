@@ -8,10 +8,7 @@ class Status(commands.Cog):
     def __init__(self,client):
         self.client = client
         self.cog_name = __name__[5:].capitalize()
-    
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print(f'{self.cog_name} Running.')
+
 
     @commands.command(aliases=['ping'])
     async def status(self,ctx):
@@ -30,50 +27,50 @@ class Status(commands.Cog):
             
             # Checks if file exist. It does so to check if bot is being hosted on my PC or not.
             if path.exists('./exist_check'):
-                desc = 'Self hosted. Stable speeds.'
+                desc = 'Self hosted. Variable speeds'
             else:
-                desc = 'Hosted on Heroku. Expect slower speeds. Bot may crash.'
+                desc = 'Hosted on Heroku. Stable speeds. Bot may crash.'
             
             # Could not find a better way to do this.
             # Assigns status string to easily workable variables
             for comps in status_json["components"]:
                 if comps["name"] == "API":
                     api_status = comps["status"].capitalize()
-                if comps["name"] == "Media Proxy":
+                elif comps["name"] == "Media Proxy":
                     media_proxy_status = comps["status"].capitalize()
-                if comps["name"] == "Search":
+                elif comps["name"] == "Search":
                     search_status = comps["status"]
-                if comps["name"] == "Push Notifications":
+                elif comps["name"] == "Push Notifications":
                     push_notifications_status = comps["status"].capitalize()
-                if comps["name"] == "Brazil":
+                elif comps["name"] == "Brazil":
                     brazil_status = comps["status"].capitalize()
-                if comps["name"] == "Europe":
+                elif comps["name"] == "Europe":
                     europe_status = comps["status"].capitalize()
-                if comps["name"] == "Hong Kong":
+                elif comps["name"] == "Hong Kong":
                     hong_kong_status = comps["status"].capitalize()
-                if comps["name"] == "India":
+                elif comps["name"] == "India":
                     india_status = comps["status"].capitalize()
-                if comps["name"] == "Japan":
+                elif comps["name"] == "Japan":
                     japan_status = comps["status"].capitalize()
-                if comps["name"] == "India":
+                elif comps["name"] == "Russia":
                     russia_status = comps["status"].capitalize()
-                if comps["name"] == "Singapore":
+                elif comps["name"] == "Singapore":
                     singapore_status = comps["status"].capitalize()
-                if comps["name"] == "South Africa":
+                elif comps["name"] == "South Africa":
                     south_africa_status = comps["status"].capitalize()
-                if comps["name"] == "South Korea":
+                elif comps["name"] == "South Korea":
                     south_korea_status = comps["status"].capitalize()
-                if comps["name"] == "Sydney":
+                elif comps["name"] == "Sydney":
                     sydney_status = comps["status"].capitalize()
-                if comps["name"] == "US Central":
+                elif comps["name"] == "US Central":
                     usc_status = comps["status"].capitalize()
-                if comps["name"] == "US East":
+                elif comps["name"] == "US East":
                     use_status = comps["status"].capitalize()
-                if comps["name"] == "US South":
+                elif comps["name"] == "US South":
                     uss_status = comps["status"].capitalize()
-                if comps["name"] == "US West":
+                elif comps["name"] == "US West":
                     usw_status = comps["status"].capitalize()
-                if comps["name"] == "CloudFlare":
+                elif comps["name"] == "CloudFlare":
                     cf_status = comps["status"].capitalize()
             
             url = 'https://status.elephantsql.com/api/v2/components.json'
@@ -84,7 +81,7 @@ class Status(commands.Cog):
                     db_status = comps["status"].capitalize()
 
             # Gathers latency information and turns it into string
-            ping = round(self.client.latency, 3)
+            ping = round((self.client.latency*1000), 3)
             ping = str(ping)
 
             # `value` information for major systems field in embed
@@ -140,12 +137,6 @@ class Status(commands.Cog):
             await log.error_logger(ctx,name,self.cog_name,e)
             print(e)
 
-    @commands.command()
-    async def coin(self,ctx):
-        if randint(1,2) == 1:
-            await ctx.send('Heads')
-        else:
-            await ctx.send('Tails')
 
 def setup(client):
     client.add_cog(Status(client))

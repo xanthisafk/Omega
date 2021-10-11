@@ -9,12 +9,14 @@ from discord.ext import commands
 
 
 class Emotes(commands.Cog):
+
     def __init__(self, client):
         self.client = client
         self.cog_name = __name__[5:].capitalize()
         self.gif = APIs.GIF_And_Text.GIF_And_Text()
-    
-    aliases = ['dance', 'wave', 'sleep', 'vibe', 'pat', 'cry', 'pout', 'kiss', 'bully', 'hug', 'cuddle', 'lick', 'smug', 'bonk', 'yeet', 'throw', 'smile', 'happy', 'highfive', 'handhold', 'hold', 'eat', 'hungry', 'bite', 'glomp', 'superhug', 'slap', 'kill', 'kick', 'wink', 'poke', 'cringe', 'baka', 'hmph', 'bored', 'facepalm', 'feed', 'laugh', 'shrug', 'stare', 'think', 'thonk', 'thumbsup', 'tickle'] 
+
+    aliases = ['dance', 'wave', 'sleep', 'vibe', 'pat', 'cry', 'pout', 'kiss', 'bully', 'hug', 'cuddle', 'lick', 'smug', 'bonk', 'yeet', 'throw', 'smile', 'happy', 'highfive', 'handhold', 'hold', 'eat',
+               'hungry', 'bite', 'glomp', 'superhug', 'slap', 'kill', 'kick', 'wink', 'poke', 'cringe', 'baka', 'hmph', 'bored', 'facepalm', 'feed', 'laugh', 'shrug', 'stare', 'think', 'thonk', 'thumbsup', 'tickle']
 
     @commands.command(name='blush', aliases=aliases)
     async def send_emotes(self, ctx, member: discord.Member = None):
@@ -57,4 +59,3 @@ class Emotes(commands.Cog):
 
 def setup(client):
     client.add_cog(Emotes(client))
-

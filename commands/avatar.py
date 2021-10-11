@@ -1,5 +1,5 @@
-import discord
 import APIs.color as rang
+import discord
 from discord.ext import commands
 
 
@@ -14,13 +14,14 @@ class Avatar(commands.Cog):
             nm = ctx.author.name + " 's avatar."
             embed = discord.Embed(title=nm, color=color)
             embed.set_image(url=ctx.author.avatar_url)
-        
+
         else:
             nm = user.name + " 's avatar."
             embed = discord.Embed(title=nm, color=color)
             embed.set_image(url=user.avatar_url)
-        
+
         await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Avatar(bot))

@@ -1,6 +1,6 @@
+import APIs.color as rang
 import discord
 from discord.ext import commands
-import APIs.color as rang
 
 
 class Snipe(commands.Cog):
@@ -25,14 +25,14 @@ class Snipe(commands.Cog):
         try:
             thumb = msg.author.avatar_url
         except Exception as e:
-            if isinstance(e,NameError):
+            if isinstance(e, NameError):
                 await ctx.send("There is nothing to snipe...")
                 return
 
         name = msg.author.name
 
-        embed = discord.Embed(description=msg.content, color = color)
-        embed.set_author(name=name , icon_url=thumb)
+        embed = discord.Embed(description=msg.content, color=color)
+        embed.set_author(name=name, icon_url=thumb)
 
         if msg.attachments == []:
             pass

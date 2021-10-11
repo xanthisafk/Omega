@@ -1,17 +1,20 @@
-from random import randint
-import discord, requests, datetime
-from discord.ext import commands
+import datetime
 from os import path
+from random import randint
+
+import discord
 import loggers.logger as log
+import requests
+from discord.ext import commands
+
 
 class Status(commands.Cog):
-    def __init__(self,client):
+    def __init__(self, client):
         self.client = client
         self.cog_name = __name__[5:].capitalize()
 
-
     @commands.command(aliases=['ping'])
-    async def status(self,ctx):
+    async def status(self, ctx):
         name = 'Status'
 
         try:
@@ -24,13 +27,13 @@ class Status(commands.Cog):
             # Load json file from URL
             url = 'https://discordstatus.com/api/v2/summary.json'
             status_json = requests.get(url).json()
-            
+
             # Checks if file exist. It does so to check if bot is being hosted on my PC or not.
             if path.exists('./exist_check'):
                 desc = 'Self hosted. Variable speeds'
             else:
                 desc = 'Hosted on Heroku. Stable speeds. Bot may crash.'
-            
+
             # Could not find a better way to do this.
             # Assigns status string to easily workable variables
             for comps in status_json["components"]:
@@ -72,10 +75,10 @@ class Status(commands.Cog):
                     usw_status = comps["status"].capitalize()
                 elif comps["name"] == "CloudFlare":
                     cf_status = comps["status"].capitalize()
-            
+
             url = 'https://status.elephantsql.com/api/v2/components.json'
             db_status = requests.get(url).json()
-            
+
             for comps in db_status["components"]:
                 if comps["id"] == "9s1ddgddw9cn":
                     db_status = comps["status"].capitalize()
@@ -123,18 +126,19 @@ class Status(commands.Cog):
                 color = 0xFF0000
 
             # Create embed
-            embed = discord.Embed(title='Status', description=desc, color=color)
+            embed = discord.Embed(
+                title='Status', description=desc, color=color)
             embed.add_field(name='Major Systems', value=major_systems)
-            embed.add_field(name='Voice',value=voice) 
+            embed.add_field(name='Voice', value=voice)
             embed.set_footer(text=footer)
 
             # Send and log
             await ctx.send(embed=embed)
-            await log.event_logger(ctx,name,self.cog_name)
-        
+            await log.event_logger(ctx, name, self.cog_name)
+
         except Exception as e:
             await ctx.send("❌ Something went wrong.")
-            await log.error_logger(ctx,name,self.cog_name,e)
+            await log.error_logger(ctx, name, self.cog_name, e)
             print(e)
 
 

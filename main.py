@@ -4,12 +4,15 @@ import os
 from os import path
 import asyncio
 import loggers.logger as log
+from discord_slash import SlashCommand
 
 import config
 
 client = commands.Bot(command_prefix=config.PREFIX,case_insensitive=True)
+slash = SlashCommand(client, sync_commands=True, sync_on_cog_reload=True,debug_guild=config.DEBUG_GUILD)
 client.remove_command('help')
 cog_name = 'Main'
+
 
 print('Hello Xanthis')
 
@@ -52,15 +55,15 @@ async def load(ctx, extension = None):
     name = 'Load'
     if ctx.author.id in config.OWNER:
         if extension == None:
-            for file in os.listdir('./cogs'):
+            for file in os.listdir('./commands'):
                 if file.endswith('.py') or file.startswith('!') == False:
                     try:
-                        client.load_extension(f'cogs.{file[:-3]}')
+                        client.load_extension(f'commands.{file[:-3]}')
                     except: pass
             print('loaded all')
         else:
             extension = extension.lower()
-            client.load_extension(f'cogs.{extension}')
+            client.load_extension(f'commands.{extension}')
             print(f'{extension} loaded')
         await ctx.message.add_reaction('👍')
     await log.admin_logger(ctx,name,cog_name)
@@ -91,15 +94,15 @@ async def unload(ctx, extension = None):
     name = 'Unload'
     if ctx.author.id in config.OWNER:
         if extension == None:
-            for file in os.listdir('./cogs'):
+            for file in os.listdir('./commands'):
                 if file.endswith('.py') or file.startswith('!') == False:
                     try:
-                        client.unload_extension(f'cogs.{file[:-3]}')
+                        client.unload_extension(f'commands.{file[:-3]}')
                     except: pass
             print('unloaded all')
         else:
             extension = extension.lower()
-            client.unload_extension(f'cogs.{extension}')
+            client.unload_extension(f'commands.{extension}')
             print(f'{extension} unloaded')
         await ctx.message.add_reaction('👍')
     await log.admin_logger(ctx,name,cog_name)
@@ -130,17 +133,17 @@ async def reload(ctx, extension = None):
     name = 'Reload'
     if ctx.author.id in config.OWNER:
         if extension == None:
-            for file in os.listdir('./cogs'):
+            for file in os.listdir('./commands'):
                 if file.endswith('.py') or file.startswith('!') == False:
                     try:
-                        client.unload_extension(f'cogs.{file[:-3]}')
-                        client.load_extension(f'cogs.{file[:-3]}')
+                        client.unload_extension(f'commands.{file[:-3]}')
+                        client.load_extension(f'commands.{file[:-3]}')
                     except: pass
             print('reloaded all')
         else:
             extension = extension.lower()
-            client.unload_extension(f'cogs.{extension}')
-            client.load_extension(f'cogs.{extension}')
+            client.unload_extension(f'commands.{extension}')
+            client.load_extension(f'commands.{extension}')
             print(f'{extension} reloaded')
         await ctx.message.add_reaction('👍')
     await log.admin_logger(ctx,name,cog_name)
@@ -165,9 +168,9 @@ async def reload_error(ctx, error):
     await log.admin_logger(ctx,name,cog_name,error)
     return
 
-for file in os.listdir('./cogs'):
+for file in os.listdir('./commands'):
     if file.endswith('.py') and file.startswith('!') == False:
-        client.load_extension(f'cogs.{file[:-3]}')
+        client.load_extension(f'commands.{file[:-3]}')
         print(f'Loaded {file[:-3]}')
 
 @client.event

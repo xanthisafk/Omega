@@ -43,7 +43,7 @@ class Snipe(commands.Cog):
             embed.set_image(url=(msg.attachments[0].url))
 
         await ctx.send(embed=embed)
-        await logger.logger(ctx, name, self.cog_name,"INFO")
+        await logger(ctx, name, self.cog_name,"INFO")
 
 
 def setup(bot):

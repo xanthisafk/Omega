@@ -1,4 +1,6 @@
 
+<img src="/file/banner.png"/>
+
 # Omega v1
 
 Omega is a multipurpose bot. Uses discord.py library.

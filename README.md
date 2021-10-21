@@ -1,5 +1,5 @@
 
-<img src="/file/banner.png"/>
+<img src="./file/banner.png"/>
 
 # Omega v1
 

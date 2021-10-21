@@ -11,10 +11,11 @@ from discord.ext import commands
 class ATK(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.cog_name = __name__[5:].capitalize()
+        self.cog_name = __name__[9:].capitalize()
         self.p = pql.PostgreSQL(DB_HOST=config.DB_HOST, DB_USER=config.DB_USER,
                                 DB_PASS=config.DB_PASS, DB_NAME=config.DB_NAME)
         self.tempp = 0
+        self.atks = {}
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -120,19 +121,19 @@ class ATK(commands.Cog):
             data = self.aignores
 
             if id in data:
-                await ctx.send('❌ Error: You are already on list.')
+                await ctx.reply(f'{config.EMOTE_ERROR} Error: You are already on list.')
                 return
 
             await self.p.insert(table='ignores', fields='id', values=id)
             await self.p.commit()
             await self.get_new_ignores()
-            await ctx.send("✅ Success: You are added to list")
-            await log.event_logger(ctx, command_name, self.cog_name)
+            await ctx.reply(f"{config.EMOTE_OK} Success: You are added to list")
+            await log.logger(ctx,command_name,self.cog_name,'INFO')
 
         except Exception as e:
-            await ctx.send("Something went wrong")
-            print(e)
-            await log.error_logger(ctx, command_name, self.cog_name, e)
+            await ctx.reply("Something went wrong")
+            await log.logger(ctx,command_name,self.cog_name,'ERROR', e)
+            raise e
 
     @commands.command(aliases=["atk_unignore"])
     async def unignore(self, ctx: commands.Context) -> None:
@@ -149,20 +150,20 @@ class ATK(commands.Cog):
             id = str(ctx.author.id)
 
             if id not in self.aignores:
-                await ctx.send("❌ Error: You are not in ignore list.")
+                await ctx.reply(f"{config.EMOTE_ERROR} Error: You are not in ignore list.")
                 return
 
             string = f"DELETE FROM ignores WHERE id = '{id}'"
             await self.p.execute(string)
             await self.p.commit()
             await self.get_new_ignores()
-            await ctx.send("✅ Success: You are removed from ignore list.")
-            await log.event_logger(ctx, command_name, self.cog_name)
+            await ctx.reply(f"{config.EMOTE_OK} Success: You are removed from ignore list.")
+            await log.logger(ctx,command_name,self.cog_name,'INFO')
 
         except Exception as e:
-            await ctx.send("Something went wrong")
-            print(e)
-            await log.error_logger(ctx, command_name, self.cog_name, e)
+            await ctx.reply("Something went wrong")
+            await log.logger(ctx,command_name,self.cog_name,'ERROR', e)
+            raise e
 
     @commands.command(aliases=["atk_add"])
     @commands.has_permissions(administrator=True)
@@ -184,7 +185,7 @@ class ATK(commands.Cog):
                 name = x[0].rstrip()
                 url = x[1]
                 if len(url) > 255:
-                    await ctx.send("Value must be under 255 characters.")
+                    await ctx.send(f"{config.EMOTE_ERROR} Value must be under 255 characters.")
                     return
 
             except Exception as e:
@@ -195,7 +196,7 @@ class ATK(commands.Cog):
             name = name.lower()
 
             if name in self.atks:
-                await ctx.send(f"❌ Error: `{name}` already bound")
+                await ctx.send(f"{config.EMOTE_ERROR} Error: `{name}` already bound")
                 return
 
             string = f"INSERT INTO atks(name,value) VALUES('{name}','{url}')"
@@ -204,19 +205,18 @@ class ATK(commands.Cog):
             await self.get_new_atks()
 
             if name in self.atks:
-                await ctx.send(f'✅ Success: `{name}` is now bound.')
-                await log.event_logger(ctx, command_name, self.cog_name)
+                await ctx.send(f'{config.EMOTE_OK} Success: `{name}` is now bound.')
 
             else:
-                await ctx.send("Something went wrong.")
-                e = 'name could not be bound'
-                await log.error_logger(ctx, name, self.cog_name, e)
+                e = f'{config.EMOTE_ERROR} Error: `{name}` could not be bound'
+                await ctx.send(e)
+                await log.logger(ctx,command_name,self.cog_name,'ERROR',e)
 
         except Exception as e:
 
-            await ctx.send("Something went wrong.")
-            print(e)
-            await log.error_logger(ctx, command_name, self.cog_name, e)
+            await ctx.send(f"{config.EMOTE_ERROR}: Something went wrong.")
+            await log.logger(ctx,command_name,self.cog_name,'ERROR',e)
+            raise e
 
     @commands.command(aliases=["atk_remove", "atk_delete"])
     @commands.has_permissions(administrator=True)
@@ -228,7 +228,7 @@ class ATK(commands.Cog):
             if name in self.atks:
                 string = f"DELETE FROM atks WHERE name='{name}'"
             else:
-                await ctx.send(f'❌ Error: `{name}` not found.')
+                await ctx.send(f'{config.EMOTE_ERROR} Error: `{name}` not found.')
                 return
 
             await self.p.execute(string)
@@ -236,18 +236,18 @@ class ATK(commands.Cog):
             await self.get_new_atks()
 
             if name not in self.atks:
-                await ctx.send(f"✅ Success: `{name}` is removed")
-                await log.event_logger(ctx, command_name, self.cog_name)
+                await ctx.send(f"{config.EMOTE_OK} Success: `{name}` is removed")
+                await log.logger(ctx,command_name,self.cog_name,'INFO')
 
             else:
-                await ctx.send("Something went wrong.")
-                e = 'name could not be bound'
-                await log.error_logger(ctx, name, self.cog_name, e)
+                e = f'Error: `{name}` could not be bound'
+                await ctx.send(e.capitalize())
+                await log.logger(ctx,name,self.cog_name,'ERROR',e)
 
         except Exception as e:
-            await ctx.send("Something went wrong")
-            print(e)
-            await log.error_logger(ctx, command_name, self.cog_name)
+            await ctx.send(f"{config.EMOTE_ERROR}: Something went wrong")
+            await log.logger(ctx,name,self.cog_name,'ERROR',e)
+            raise e
 
     @commands.Cog.listener()
     async def on_message(self, message) -> None:
@@ -261,7 +261,7 @@ class ATK(commands.Cog):
             None
         """
 
-        if message.author == self.client.user or message.author.bot == True:
+        if message.author == self.client.user or message.author.bot:
             return
         try:
             if str(message.author.id) in self.aignores:
@@ -284,8 +284,13 @@ class ATK(commands.Cog):
             if re.search(r'\bnooooo', word):
 
                 await message.channel.send(random.choice(self.atks['nooooo']))
-                await log.event_logger(message, word, self.cog_name)
+                await log.logger(message,s,self.cog_name,'INFO')
                 return
+            
+            if re.search(r'\bhhh', word):
+
+                await message.channel.send(self.atks['hhh'])
+                await log.logger(message,s,self.cog_name,'INFO')
 
         try:
             for word in self.atks:
@@ -302,12 +307,12 @@ class ATK(commands.Cog):
 
                     if type(self.atks[word]) == list:
                         await message.channel.send(random.choice(self.atks[word]))
-                        await log.event_logger(message, word, self.cog_name)
+                        await log.logger(message,s,self.cog_name,'INFO')
                         return
 
                     else:
                         await message.channel.send(self.atks[word])
-                        await log.event_logger(message, word, self.cog_name)
+                        await log.logger(message,s,self.cog_name,'INFO')
                         return
 
         except Exception as e:
@@ -316,30 +321,20 @@ class ATK(commands.Cog):
                 await message.channel.send("Please enter in format of `text1, text2` (Comma is important)")
             else:
                 await message.channel.send('Something went wrong.')
-                print(e)
-                await log.error_logger(message, s, self.cog_name, e)
+                await log.logger(message,s,self.cog_name,'ERROR',e)
                 raise e
 
         for x in message.mentions:
             if(x == self.client.user):
                 if random.randrange(1, 10) == 7:
-                    await message.channel.send('I\'m busy right now:')
+                    await message.channel.send('Sorry, I\'m busy right now:')
                     await message.channel.send('https://media.discordapp.net/attachments/845191720224161824/889751939053682748/coom.png')
-                    if random.randrange(1, 100) == 89:
-                        await message.channel.send('p/s: blame Navi.')
+
                     s = 'Mentioned'
-                    await log.event_logger(message, s, self.cog_name)
+                    await log.logger(message,s,self.cog_name,'INFO')
                 else:
                     return
 
-    @commands.command()
-    async def listatk(self, ctx, *, what=None):
-        if ctx.author.id == 800400638156210176:
-            if what == None:
-                for i in self.atks:
-                    print(i, self.atks[i])
-            else:
-                print(self.atks[what])
 
 
 def setup(client):

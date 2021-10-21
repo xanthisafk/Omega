@@ -4,16 +4,18 @@ from random import randint
 
 import discord
 import loggers.logger as log
-import requests
+import aiohttp
+import config
 from discord.ext import commands
 
 
 class Status(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.cog_name = __name__[5:].capitalize()
+        self.cog_name = __name__[9:].capitalize()
 
     @commands.command(aliases=['ping'])
+    @commands.cooldown(1,60,commands.BucketType.user)
     async def status(self, ctx):
         name = 'Status'
 
@@ -26,7 +28,10 @@ class Status(commands.Cog):
 
             # Load json file from URL
             url = 'https://discordstatus.com/api/v2/summary.json'
-            status_json = requests.get(url).json()
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    status_json = await response.json()
+                    await session.close()
 
             # Checks if file exist. It does so to check if bot is being hosted on my PC or not.
             if path.exists('./exist_check'):
@@ -77,7 +82,10 @@ class Status(commands.Cog):
                     cf_status = comps["status"].capitalize()
 
             url = 'https://status.elephantsql.com/api/v2/components.json'
-            db_status = requests.get(url).json()
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    db_status = await response.json()
+                    await session.close()
 
             for comps in db_status["components"]:
                 if comps["id"] == "9s1ddgddw9cn":
@@ -134,11 +142,11 @@ class Status(commands.Cog):
 
             # Send and log
             await ctx.send(embed=embed)
-            await log.event_logger(ctx, name, self.cog_name)
+            await log.logger(ctx, name, self.cog_name,"INFO")
 
         except Exception as e:
-            await ctx.send("❌ Something went wrong.")
-            await log.error_logger(ctx, name, self.cog_name, e)
+            await ctx.send("{config.EMOTE_ERROR} Something went wrong.")
+            await log.logger(ctx, name, self.cog_name, "ERROR" ,e)
             print(e)
 
 

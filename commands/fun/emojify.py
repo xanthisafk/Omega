@@ -9,7 +9,7 @@ from emojifier import Emojifier
 class Emoji(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.cog_name = __name__[5:].capitalize()
+        self.cog_name = __name__[9:].capitalize()
 
     @commands.command()
     async def emojify(self, ctx, *, text=None):
@@ -33,19 +33,19 @@ class Emoji(commands.Cog):
             elif len(text) > 1500:
                 temp = '❌ Maximum 1500 characters allowed. One you have is too big for me!'
                 temp = emoji.generate_emojipasta(temp)
-                await ctx.send(temp)
+                await ctx.reply(temp)
                 await log.event_logger(ctx, name, self.cog_name)
                 return
 
             # Runs the actual code if both test cases pass
             else:
                 text = emoji.generate_emojipasta(text)
-                await ctx.send(text)
-                await log.event_logger(ctx, name, self.cog_name)
+                await ctx.reply(text)
+                await log.logger(ctx, name, self.cog_name, "INFO")
 
         except Exception as e:
             await ctx.send('Something went wrong.')
-            await log.error_logger(ctx, name, self.cog_name, e)
+            await log.logger(ctx, name, self.cog_name,"ERROR", e)
 
 
 def setup(client):

@@ -1,4 +1,3 @@
-import asyncio
 import os
 
 import APIs.color as rang
@@ -9,7 +8,7 @@ from discord.ext import commands
 class About(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.cog_name = __name__[5:].capitalize()
+        self.cog_name = __name__[9:].capitalize()
 
     async def emo_count(self):
         count = 0
@@ -42,8 +41,9 @@ class About(commands.Cog):
             people += guild.member_count
 
         cog_amount = 0
-        for _ in os.listdir('./commands'):
-            cog_amount += 1
+        for dir in os.listdir('./commands'):
+            for _ in os.listdir(f'./commands/{dir}'):
+                cog_amount += 1
 
         command_amount = 0
         for _ in self.client.commands:
@@ -57,7 +57,7 @@ class About(commands.Cog):
         tot_a = f'{atk_count} auto trigger keywords are loaded.'
         field_val = tot_s+tot_c+tot_a
 
-        footer = f'v1.1 - Made by Xanthis!'
+        footer = f'v1.0.1 - Made by Xanthis!'
 
         thumb = self.client.user.avatar_url
 
@@ -66,8 +66,8 @@ class About(commands.Cog):
         embed.add_field(name='Usage', value=field_val, inline=False)
         embed.set_footer(text=footer)
         embed.set_thumbnail(url=thumb)
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx, command_name, cog_name,)
+        await ctx.reply(embed=embed)
+        await log.logger(ctx, command_name, cog_name,"INFO")
 
 
 def setup(client):

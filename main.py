@@ -3,26 +3,22 @@ from discord.ext import commands, tasks
 import os
 from os import path
 import asyncio
+
 import loggers.logger as log
-from discord_slash import SlashCommand
 
 import config
 
-client = commands.Bot(command_prefix=config.PREFIX,case_insensitive=True)
-slash = SlashCommand(client, sync_commands=True, sync_on_cog_reload=True,debug_guild=config.DEBUG_GUILD)
-client.remove_command('help')
 cog_name = 'Main'
-
-
-print('Hello Xanthis')
+client = commands.Bot(command_prefix=config.PREFIX,case_insensitive=True)
+client.remove_command('help')
 
 @tasks.loop(seconds=60)
 async def change_presence():
 
-        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="over Nowhere Space"))
+        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="over servers"))
         await asyncio.sleep(60)
     
-        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=">help"))
+        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"{config.PREFIX[0]}help"))
         await asyncio.sleep(60)
 
         if path.exists('files/exists'):
@@ -31,20 +27,22 @@ async def change_presence():
             desc = 'on Heroku!'
         
         await client.change_presence(activity=discord.Game(name=desc))
-        await asyncio.sleep(60)
 
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user.name}.')
     print('Ready to go.')
+    print("----------")
 
     try:
         channel =  client.get_channel(config.DEBUG)
 
         if path.exists('./files/exists'):
             await channel.send(f"Logged in as {client.user.name}. Running on PC.")
+            await log.debug(cog=cog_name,message='Running on PC')
         else:
             await channel.send(f"Logged in as {client.user.name}. Running on Heroku.")
+            await log.debug(cog=cog_name,message='Running on Heroku')
     except: pass
 
     await change_presence.start()
@@ -52,155 +50,250 @@ async def on_ready():
 
 @client.command()
 async def load(ctx, extension = None):
-    name = 'Load'
-    if ctx.author.id in config.OWNER:
-        if extension == None:
-            for file in os.listdir('./commands'):
-                if file.endswith('.py') or file.startswith('!') == False:
-                    try:
-                        client.load_extension(f'commands.{file[:-3]}')
-                    except: pass
-            print('loaded all')
-        else:
-            extension = extension.lower()
-            client.load_extension(f'commands.{extension}')
-            print(f'{extension} loaded')
-        await ctx.message.add_reaction('👍')
-    await log.admin_logger(ctx,name,cog_name)
+    """
+    Loads the cog mentioned by user.
 
+    args:
+        extension: str -> name of extension.
+    """
+    name = 'Load'
+
+    # Only works for owners of bot.
+    if ctx.author.id in config.OWNER:
+
+        # If no extension was provided
+        if extension == None:
+
+            # List folders in ./commands
+            for dir in os.listdir('./commands'):
+
+                # List files in ./commands/dir
+                for file in os.listdir(f'commands/{dir}'):
+
+                    # If file ends with .py and not starts with ! and is not atk.py
+                    if file.endswith('.py') and not file.startswith('!'):
+                        
+                        #Attempts to load. If cog is already loaded, it will raise an exception which does nothing
+                        try:
+                            client.load_extension(f'commands.{dir}.{file[:-3]}')
+
+                        except: pass
+
+            print('>> Unloaded: all')
+
+        else:
+            # Lower the extension text
+            extension = extension.lower()
+
+            # Get folders in /commands/
+            for dir in os.listdir('./commands'):
+
+                # Get files in /commands/dir
+                for file in os.listdir(f'commands/{dir}'):
+
+                    # If extension matches, load it
+                    if extension == file[:-3]:
+                        client.load_extension(f'commands.{dir}.{extension}')
+
+            print(f'>> Unloaded: {extension}')
+
+        # Add success reaction
+        await ctx.message.add_reaction(config.EMOTE_OK)
+    await log.logger(ctx,name,cog_name,'INFO')
+    return
 
 @load.error
 async def load_error(ctx, error):
     name = 'Load'
-    if isinstance(error, commands.CommandInvokeError):
-        await ctx.message.add_reaction('👎')
-        print(error)
+    await ctx.message.add_reaction(config.EMOTE_ERROR)
+    await log.logger(ctx,name,cog_name,'ERROR',error)
+    raise error
 
-    elif isinstance(error, commands.ExtensionNotLoaded):
-        await ctx.message.add_reaction('👎')
-        print(error)
-
-    elif isinstance(error, commands.ExtensionAlreadyLoaded):
-        await ctx.message.add_reaction('👎')
-        print(error)
-
-    else:
-        raise error
-    await log.admin_logger(ctx,name,cog_name,error)
-    return
+# ------------------------------------------------ #
 
 @client.command()
 async def unload(ctx, extension = None):
+    """
+    Unloads the cog mentioned by user.
+
+    args:
+        extension: str -> name of extension.
+    """
     name = 'Unload'
+
+    # Only works for owners of bot.
     if ctx.author.id in config.OWNER:
+
+        # If no extension was provided
         if extension == None:
-            for file in os.listdir('./commands'):
-                if file.endswith('.py') or file.startswith('!') == False:
-                    try:
-                        client.unload_extension(f'commands.{file[:-3]}')
-                    except: pass
-            print('unloaded all')
+
+            # List folders in ./commands
+            for dir in os.listdir('./commands'):
+
+                # List files in ./commands/dir
+                for file in os.listdir(f'commands/{dir}'):
+
+                    # If file ends with .py and not starts with ! and is not atk.py
+                    if file.endswith('.py') and not file.startswith('!') and not file == 'atk.py':
+                        
+                        #Attempts to unload. If cog is already unloaded, it will raise an exception which does nothing
+                        try:
+                            client.unload_extension(f'commands.{dir}.{file[:-3]}')
+
+                        except: pass
+
+            print('>> Unloaded: all')
+
         else:
+            # Lower the extension text
             extension = extension.lower()
-            client.unload_extension(f'commands.{extension}')
-            print(f'{extension} unloaded')
-        await ctx.message.add_reaction('👍')
-    await log.admin_logger(ctx,name,cog_name)
+
+            # Get folders in /commands/
+            for dir in os.listdir('./commands'):
+
+                # Get files in /commands/dir
+                for file in os.listdir(f'commands/{dir}'):
+
+                    # If extension matches, unload it
+                    if extension == file[:-3]:
+                        client.unload_extension(f'commands.{dir}.{extension}')
+
+            print(f'>> Unloaded: {extension}')
+
+        # Add success reaction
+        await ctx.message.add_reaction(config.EMOTE_OK)
+    await log.logger(ctx,name,cog_name,'INFO')
+    return
 
 @unload.error
 async def unload_error(ctx, error):
     name = 'Unload'
-    if isinstance(error, commands.CommandInvokeError):
-        await ctx.message.add_reaction('👎')
-        print(error)
+    await ctx.message.add_reaction(config.EMOTE_ERROR)
+    await log.logger(ctx,name,cog_name,'ERROR',error)
+    raise error
 
-    elif isinstance(error, commands.ExtensionNotLoaded):
-        await ctx.message.add_reaction('👎')
-        print(error)
-
-    elif isinstance(error, commands.ExtensionAlreadyLoaded):
-        await ctx.message.add_reaction('👎')
-        print(error)
-        
-    else:
-        raise error
-    await log.admin_logger(ctx,name,cog_name,error)
-    return
-
+# ---------------------------------------------- #
 
 @client.command()
 async def reload(ctx, extension = None):
+    """
+    Reloads the cog mentioned by user.
+
+    args:
+        extension: str -> name of extension.
+    """
     name = 'Reload'
+
+    # Only works for owners of bot.
     if ctx.author.id in config.OWNER:
+
+        # If no extension was provided
         if extension == None:
-            for file in os.listdir('./commands'):
-                if file.endswith('.py') or file.startswith('!') == False:
-                    try:
-                        client.unload_extension(f'commands.{file[:-3]}')
-                        client.load_extension(f'commands.{file[:-3]}')
-                    except: pass
-            print('reloaded all')
+
+            # List folders in ./commands
+            for dir in os.listdir('./commands'):
+
+                # List files in ./commands/dir
+                for file in os.listdir(f'commands/{dir}'):
+
+                    # If file ends with .py and not starts with ! and is not atk.py
+                    if file.endswith('.py') and not file.startswith('!') and not file == 'atk.py':
+                        
+                        #Attempts to reload. If cog is already unloaded, it will raise an exception which does nothing
+                        try:
+                            client.unload_extension(f'commands.{dir}.{file[:-3]}')
+                            client.load_extension(f'commands.{dir}.{file[:-3]}')
+
+                        except: pass
+
+            print('>> Reloaded: all')
+
         else:
+            # Lower the extension text
             extension = extension.lower()
-            client.unload_extension(f'commands.{extension}')
-            client.load_extension(f'commands.{extension}')
-            print(f'{extension} reloaded')
-        await ctx.message.add_reaction('👍')
-    await log.admin_logger(ctx,name,cog_name)
+
+            for dir in os.listdir('./commands'):
+                for file in os.listdir(f'commands/{dir}'):
+                    if extension == file[:-3]:
+                        client.unload_extension(f'commands.{dir}.{extension}')
+                        client.load_extension(f'commands.{dir}.{extension}')
+
+            print(f'>> Reloaded: {extension}')
+
+        # Add success reaction
+        await ctx.message.add_reaction(config.EMOTE_OK)
+    await log.logger(ctx,name,cog_name,'INFO')
+    return
 
 @reload.error
 async def reload_error(ctx, error):
     name = 'Reload'
-    if isinstance(error, commands.CommandInvokeError):
-        await ctx.message.add_reaction('👎')
-        print(error)
+    await ctx.message.add_reaction(config.EMOTE_ERROR)
+    await log.logger(ctx,name,cog_name,'ERROR',error)
+    raise error
 
-    elif isinstance(error, commands.ExtensionNotLoaded):
-        await ctx.message.add_reaction('👎')
-        print(error)
-
-    elif isinstance(error, commands.ExtensionAlreadyLoaded):
-        await ctx.message.add_reaction('👎')
-        print(error)
-        
-    else:
-        raise error
-    await log.admin_logger(ctx,name,cog_name,error)
-    return
-
-for file in os.listdir('./commands'):
-    if file.endswith('.py') and file.startswith('!') == False:
-        client.load_extension(f'commands.{file[:-3]}')
-        print(f'Loaded {file[:-3]}')
+def load_cogs():
+    for dir in os.listdir('./commands'):
+        print(f'>> From {dir}')
+        for file in os.listdir(f'commands/{dir}'):
+            
+                if file == 'logger.py':
+                    try:
+                        if config.DEBUG:
+                            client.load_extension(f'commands{dir}.{file[:-3]}')
+                            print()
+                    except:
+                        print("> Debug channel not set up. Logger not active.")
+            
+                elif file.endswith('.py') and file.startswith('!') == False and not file == 'logger.py':
+                    client.load_extension(f'commands.{dir}.{file[:-3]}')
+                    print(f'> Loaded: {file[:-3]}')
+            
+        print('----------')
 
 @client.event
 async def on_command_error(ctx, error):
     name = 'No command'
     if isinstance(error, commands.CommandNotFound):
-        await log.error_logger(ctx,name,cog_name,error)
         return
-    
+
     elif isinstance(error,commands.MemberNotFound):
-        await log.error_logger(ctx,name,cog_name,error)
+        await log.logger(ctx,name,cog_name,'ERROR',error)
         await ctx.send(error)
         return
-    
+
     elif isinstance(error,commands.MissingRequiredArgument):
-        await log.error_logger(ctx,name,cog_name,error)
+        await log.logger(ctx,name,cog_name,'ERROR',error)
         await ctx.send("Invalid arguments. Please try again.")
-        print(error.args)
         return
     
+    elif isinstance(error,commands.CommandOnCooldown):
+        return
     
+    if isinstance(error,commands.EmojiNotFound):
+        return
 
     else:
+        await log.logger(ctx,name,cog_name,'ERROR',error)
         raise error
+    
+if __name__ == '__main__':
 
-try:
+    omega= r"""   ____  __  __ ______ _____          
+  / __ \|  \/  |  ____/ ____|   /\    
+ | |  | | \  / | |__ | |  __   /  \   
+ | |  | | |\/| |  __|| | |_ | / /\ \  
+ | |__| | |  | | |___| |__| |/ ____ \ 
+  \____/|_|  |_|______\_____/_/    \_\
+
+"""
+    print(omega)
+    print("OMEGA BOT\nBy Xanthis\nVersion 1.019")
+    print('----------')
+    print('Loading Cogs')
+    print('----------')
+    load_cogs()
+    print("All cogs loaded")
+    print("----------")
     client.run(config.SECRET)
-except Exception as e:
-    if isinstance(e,RuntimeError):
-        print("Exiting...")
-    else:
-        print("Unexpected exit.")
-        raise e
+

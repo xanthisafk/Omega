@@ -7,7 +7,7 @@ from discord.ext import commands
 class owo_text(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.cog_name = __name__[5:].capitalize()
+        self.cog_name = __name__[9:].capitalize()
 
     @commands.command()
     async def owoify(self, ctx, *, text: str = None):
@@ -26,11 +26,11 @@ class owo_text(commands.Cog):
             else:
                 text = owo.owo(text)
                 await ctx.send(text)
-                await log.event_logger(ctx, name, self.cog_name)
+                await log.logger(ctx, name, self.cog_name, "INFO")
 
         except Exception as e:
             await ctx.send('Whats this? Some ewwow occuwed. XDDD')
-            await log.error_logger(ctx, name, self.cog_name, e)
+            await log.logger(ctx, name, self.cog_name,"ERROR", e)
 
 
 def setup(client):

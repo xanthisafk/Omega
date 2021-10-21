@@ -2,10 +2,13 @@ import APIs.color as rang
 import discord
 from discord.ext import commands
 
+from loggers.logger import logger
+
 
 class Snipe(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.cog_name = __name__[9:].capitalize()
 
     msg = None
 
@@ -40,6 +43,7 @@ class Snipe(commands.Cog):
             embed.set_image(url=(msg.attachments[0].url))
 
         await ctx.send(embed=embed)
+        await logger.logger(ctx, name, self.cog_name,"INFO")
 
 
 def setup(bot):

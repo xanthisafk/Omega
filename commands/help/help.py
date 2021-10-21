@@ -7,13 +7,14 @@ import APIs.color as rang
 import discord
 import loggers.logger as log
 from discord.ext import commands
+import config
 
 
 class Help(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.cog_name = __name__[5:].capitalize()
+        self.cog_name = __name__[9:].capitalize()
 
     async def emo_section(self):
         syntax = ""
@@ -35,7 +36,7 @@ class Help(commands.Cog):
 
     async def uti_section(self):
 
-        with codecs.open('files/emote-help.json', 'r', encoding='utf-8') as js:
+        with codecs.open('files/help.json', 'r', encoding='utf-8') as js:
             data = json.load(js)
             js.close()
 
@@ -49,13 +50,27 @@ class Help(commands.Cog):
 
     async def fun_section(self):
 
-        with codecs.open('files/emote-help.json', 'r', encoding='utf-8') as js:
+        with codecs.open('files/help.json', 'r', encoding='utf-8') as js:
             data = json.load(js)
             js.close()
 
         syntax = ''
 
         for i in data['fun']:
+            syntax += f'`{i}`, '
+        syntax = syntax[:-2]
+
+        return syntax
+    
+    async def paw_section(self):
+
+        with codecs.open('files/help.json', 'r', encoding='utf-8') as js:
+            data = json.load(js)
+            js.close()
+
+        syntax = ''
+
+        for i in data['animals']:
             syntax += f'`{i}`, '
         syntax = syntax[:-2]
 
@@ -69,6 +84,7 @@ class Help(commands.Cog):
         emo = await self.emo_section()
         fun = await self.fun_section()
         uti = await self.uti_section()
+        paw = await self.paw_section()
         atk = 'List all Auto Trigger Keywords using `>help atk`'
         hdr = 'Bot for ***Nowhere Space***.\nUse `>help <command>` for more information.'
 
@@ -78,30 +94,31 @@ class Help(commands.Cog):
                               description=hdr, color=color)
         embed.add_field(name='Emotes', value=emo, inline=False)
         embed.add_field(name='Fun', value=fun, inline=False)
+        embed.add_field(name='Animals', value=paw, inline=False)
         embed.add_field(name='Auto trigger keywords', value=atk, inline=False)
         embed.add_field(name='Utility', value=uti, inline=False)
 
-        if random.choice(range(1, 100)) == 69:
+        if random.choice(range(1, 100)) == 50:
             embed.set_footer(text='Made by Xanthis')
 
-        await ctx.send(embed=embed)
-        await log.event_logger(ctx, name, self.cog_name)
+        await ctx.reply(embed=embed)
+        await log.logger(ctx, name, self.cog_name,"INFO")
 
     ############################
-    # EMOTES COG HELP SECTION        #
+    # EMOTES COG HELP SECTION  #
     ############################
 
-    @help.command(aliases=['blush', 'dance', 'wave', 'sleep', 'vibe', 'pat', 'cry', 'pout', 'kiss', 'bully', 'hug', 'cuddle', 'lick', 'smug', 'bonk', 'yeet', 'throw', 'smile', 'happy', 'highfive', 'handhold', 'hold', 'eat', 'hungry', 'bite', 'glomp', 'superhug', 'slap', 'kill', 'kick', 'wink', 'poke', 'cringe', 'baka', 'hmph', 'bored', 'facepalm', 'feed', 'laugh', 'shrug', 'stare', 'think', 'thonk', 'thumbsup', 'tickle'])
+    @help.command(aliases=['blush', 'dance', 'wave', 'sleep', 'vibe', 'pat', 'cry', 'pout', 'kiss', 'bully', 'hug', 'cuddle', 'lick', 'smug', 'bonk', 'yeet', 'throw', 'smile', 'happy', 'highfive', 'handhold', 'hold', 'eat', 'hungry', 'bite', 'glomp', 'superhug', 'slap', 'kill', 'kick', 'wink', 'poke', 'cringe', 'baka', 'hmph', 'bored', 'facepalm', 'feed', 'laugh', 'shrug', 'stare', 'think', 'thonk', 'thumbsup', 'tickle', 'run'])
     async def emotes_help(self, ctx):
         """
-        Sends out help embed for every element in emotes in emote-help.json
+        Sends out help embed for every element in emotes in help.json
         There are a lot of these. I feel stupid for handwriting all that before now.
 
         """
         try:
             name = ctx.invoked_with
             color = await rang.get_color()
-            with codecs.open('./files/emote-help.json', 'r', encoding='utf-8') as js:
+            with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
                 data = json.load(js)
                 js.close()
 
@@ -120,12 +137,12 @@ class Help(commands.Cog):
                                   description=desc, color=color)
             embed.add_field(name='Syntax', value=synt)
             embed.set_footer(text=footer)
-            await ctx.send(embed=embed)
-            await log.event_logger(ctx, name.capitalize(), self.cog_name)
+            await ctx.reply(embed=embed)
+            await log.logger(ctx, name, self.cog_name,"INFO")
 
         except Exception as e:
-            await ctx.send('Something went VERY wrong.')
-            await log.error_logger(ctx, name.capitalize(), self.cog_name, e)
+            await ctx.reply(f'{config.EMOTE_ERROR} Something went wrong.')
+            await log.logger(ctx, name.capitalize(), self.cog_name,"ERROR", e)
             raise e
 
     ########################
@@ -134,16 +151,16 @@ class Help(commands.Cog):
 
     @help.command(aliases=[
         'emojify', 'owoify',
-        'pun', 'dadjoke', '8ball'
+        'pun', 'dadjoke', '8ball', 'gtn'
     ])
     async def fun_help(self, ctx):
         """
-        Sends out help embed for every element in fun in emote-help.json
+        Sends out help embed for every element in fun in help.json
         """
         try:
             name = ctx.invoked_with
             color = await rang.get_color()
-            with codecs.open('./files/emote-help.json', 'r', encoding='utf-8') as js:
+            with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
                 data = json.load(js)
                 js.close()
 
@@ -162,12 +179,12 @@ class Help(commands.Cog):
                                   description=desc, color=color)
             embed.add_field(name='Syntax', value=synt)
             embed.set_footer(text=footer)
-            await ctx.send(embed=embed)
-            await log.event_logger(ctx, name.capitalize(), self.cog_name)
+            await ctx.reply(embed=embed)
+            await log.logger(ctx, name, self.cog_name,"INFO")
 
         except Exception as e:
-            await ctx.send('Something went VERY wrong.')
-            await log.error_logger(ctx, name.capitalize(), self.cog_name, e)
+            await ctx.reply('Something went VERY wrong.')
+            await log.logger(ctx, name, self.cog_name,"ERROR", e)
             raise e
 
     ############################
@@ -180,12 +197,12 @@ class Help(commands.Cog):
     ])
     async def utility_help(self, ctx):
         """
-        Sends out help embed for every element in utility in emote-help.json
+        Sends out help embed for every element in utility in help.json
         """
         try:
             name = ctx.invoked_with
             color = await rang.get_color()
-            with codecs.open('./files/emote-help.json', 'r', encoding='utf-8') as js:
+            with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
                 data = json.load(js)
                 js.close()
 
@@ -204,12 +221,12 @@ class Help(commands.Cog):
                                   description=desc, color=color)
             embed.add_field(name='Syntax', value=synt)
             embed.set_footer(text=footer)
-            await ctx.send(embed=embed)
-            await log.event_logger(ctx, name.capitalize(), self.cog_name)
+            await ctx.reply(embed=embed)
+            await log.logger(ctx, name, self.cog_name,"INFO")
 
         except Exception as e:
-            await ctx.send('Something went VERY wrong.')
-            await log.error_logger(ctx, name.capitalize(), self.cog_name, e)
+            await ctx.reply('Something went VERY wrong.')
+            await log.logger(ctx, name, self.cog_name,"ERROR", e)
             raise e
 
     #################################
@@ -256,16 +273,18 @@ class Help(commands.Cog):
         embed.add_field(
             name=f'Syntax (Page {page}):', value=synt[i], inline=False)
 
-        message = await ctx.send(embed=embed)
+        message = await ctx.reply(embed=embed)
         embed = None
 
         # https://stackoverflow.com/a/61793587/14504836
         if len(synt) >= 2:
-            await message.add_reaction('◀️')
-            await message.add_reaction('▶️')
+            right_e = self.client.get_emoji(898963538004021318)
+            left_e = self.client.get_emoji(898963539912437771)
+            await message.add_reaction(left_e)
+            await message.add_reaction(right_e)
 
             def check(reaction, user):
-                return user == ctx.author and str(reaction.emoji) in ["◀️", "▶️"]
+                return user == ctx.author and reaction.emoji in [left_e, right_e]
 
             while True:
                 try:
@@ -274,14 +293,14 @@ class Help(commands.Cog):
                     embed = discord.Embed(
                         title=name, description=text, color=color)
 
-                    if str(reaction.emoji) == "▶️" and page != total_pages:
+                    if reaction.emoji == right_e and page != total_pages:
                         page += 1
                         embed.add_field(
                             name=f'Syntax (Page {page}):', value=synt[(page-1)], inline=False)
                         await message.edit(embed=embed)
                         await message.remove_reaction(reaction, user)
 
-                    elif str(reaction.emoji) == "◀️" and page > 1:
+                    elif reaction.emoji == left_e and page > 1:
                         page -= 1
                         embed.add_field(
                             name=f'Syntax (Page {page}):', value=synt[(page-1)], inline=False)
@@ -295,19 +314,52 @@ class Help(commands.Cog):
                     await message.edit(content="Message timed out")
                     break
 
-        await log.event_logger(ctx, name, self.cog_name)
+        await log.logger(ctx, name, self.cog_name,"INFO")
+
+    ############################
+    # ANIMALS COG HELP SECTION #
+    ############################
+
+    @help.command(aliases=['cat','dog','fox'])
+    async def animal_help(self, ctx):
+        try:
+            name = ctx.invoked_with
+            color = await rang.get_color()
+            with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
+                data = json.load(js)
+                js.close()
+
+            desc = data['animals'][name]['desc'] + \
+                '\nAliases: ' + data['animals'][name]['alis']
+            synt = '`' + data['animals'][name]['synt'] + '`'
+
+            if data['animals'][name]['opti'] == 0:
+                footer = 'Argument is <required>'
+            elif data['animals'][name]['opti'] == 1:
+                footer = 'Argument is [optional]'
+            else:
+                footer = "No arguments"
+
+            embed = discord.Embed(title=name.capitalize(),
+                                  description=desc, color=color)
+            embed.add_field(name='Syntax', value=synt)
+            embed.set_footer(text=footer)
+            await ctx.reply(embed=embed)
+            await log.logger(ctx, name, self.cog_name,"INFO")
+
+        except Exception as e:
+            await ctx.reply('Something went VERY wrong.')
+            await log.logger(ctx, name, self.cog_name,"ERROR", e)
+            raise e
+        
 
     # @commands.command()
     # async def testin(self, ctx):
     #     if ctx.author.id == 800400638156210176:
-    #         cog = self.client.get_cog('Emotes')
-    #         syntax =''
-    #         name = cog.get_commands()
-    #         for i in name:
-    #             for j in i.aliases:
-    #                 syntax += f'`{j}`, '
-    #             syntax += f'`{i.name}`'
-    #         print(syntax)
+    #         emoji = self.client.emojis
+    #         for i in emoji:
+    #            print(i)
+    #         await ctx.send('<:ok:899558562819358720>')
 
 
 def setup(client):

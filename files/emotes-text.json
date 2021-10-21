@@ -686,6 +686,24 @@
       ],
 
       "emoji":"joy"
+    },
+
+    "run":{
+
+      "solo":[
+      "$user1 is running away",
+      "$user1 runs away",
+      "$user1 sprints away",
+      "$user1 dashes away like wind",
+      "$user1 said 'Aight Imma head out'"
+      ],
+
+      "with":[
+        "$user1 is running away from $user2",
+        "$user1 runs away from $user2"
+      ],
+
+      "emoji": "none"
     }
 
 
@@ -744,7 +762,7 @@
 
     "angry":[
       "ヽ(ಠ_ಠ)ノ", "(ಠ¿ಠ)", "┌( ಠ_ಠ)┘", "ლ(ಠ_ಠლ)",
-      "ఠ_ఠ ಠ_ರೃ", "ޏ₍ ὸ.ό₎ރ", "¯\\_ಠ_ಠ_/¯", "( ..•˘___˘• .. )"
+      "ఠ_ఠ", "ಠ_ರೃ", "ޏ₍ ὸ.ό₎ރ", "¯\\_ಠ_ಠ_/¯", "( ..•˘___˘• .. )"
     ]
 
   }

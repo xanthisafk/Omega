@@ -3,20 +3,15 @@ import datetime
 import discord
 from discord.ext import commands, tasks
 
+import APIs.color as rang
+import loggers.logger as log
+
 
 class Birthday(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.cog_name = __name__[5:].capitalize()
-
-    @commands.command()
-    async def lelw(self, ctx):
-        embed = discord.Embed(title='lmfaoooooo')
-        embed.set_footer(text='i\'m dead')
-        embed.set_image(
-            url='https://cdn.discordapp.com/emojis/787709636479942656.png?v=1')
-        await ctx.send(embed=embed)
+        self.cog_name = __name__[9:].capitalize()
 
     @tasks.loop(seconds=1)
     async def print_birthday(self):
@@ -30,7 +25,6 @@ class Birthday(commands.Cog):
         channel = self.client.get_channel(703316133717213285)
         await channel.send('Happy birthday <@538338456074715136>! 💃💃🥳🎉🎊')
         await channel.send('https://media.discordapp.net/attachments/843508777177186334/886181309930688532/sexy-hot.gif')
-        print('sent')
         self.print_birthday.stop()
 
     @commands.command()
@@ -40,10 +34,12 @@ class Birthday(commands.Cog):
 
     @commands.command()
     async def birthday(self, ctx):
-        embed = discord.Embed(title='Happy birthday', color=0x551A8B)
-        embed.set_image(
-            url='https://media.giphy.com/media/bZuUnCvOSv3CTKleRz/giphy.gif')
-        await ctx.send(embed=embed)
+        color = rang.get_color()
+        name = 'Birthday'
+        embed = discord.Embed(title='Happy birthday', color=color)
+        embed.set_image(url='https://c.tenor.com/eDfWpD2K5m0AAAAC/hideri-anime.gif')
+        await ctx.reply(embed=embed)
+        await log.logger(ctx,name,self.cog_name,'INFO')
 
 
 def setup(client):

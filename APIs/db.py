@@ -121,6 +121,12 @@ class PostgreSQL():
 
         args:
             row: str -> name of row to be searches
+            table: str -> name of table to be searched
+
+        optional:
+            column: str -> Used to attach `WHERE` clause to the query.  This is the column value
+            value: str -> Value for `WHERE` clause
+
 
         returns:
             response: list of tupeles -> Containing all the fetched data.

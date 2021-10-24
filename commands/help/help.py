@@ -101,7 +101,7 @@ class Help(commands.Cog):
         if random.choice(range(1, 100)) == 50:
             embed.set_footer(text='Made by Xanthis')
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
         await log.logger(ctx, name, self.cog_name,"INFO")
 
     ############################
@@ -137,11 +137,11 @@ class Help(commands.Cog):
                                   description=desc, color=color)
             embed.add_field(name='Syntax', value=synt)
             embed.set_footer(text=footer)
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
             await log.logger(ctx, name, self.cog_name,"INFO")
 
         except Exception as e:
-            await ctx.reply(f'{config.EMOTE_ERROR} Something went wrong.')
+            await ctx.send(f'{config.EMOTE_ERROR} Something went wrong.')
             await log.logger(ctx, name.capitalize(), self.cog_name,"ERROR", e)
             raise e
 
@@ -179,11 +179,11 @@ class Help(commands.Cog):
                                   description=desc, color=color)
             embed.add_field(name='Syntax', value=synt)
             embed.set_footer(text=footer)
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
             await log.logger(ctx, name, self.cog_name,"INFO")
 
         except Exception as e:
-            await ctx.reply('Something went VERY wrong.')
+            await ctx.send('Something went VERY wrong.')
             await log.logger(ctx, name, self.cog_name,"ERROR", e)
             raise e
 
@@ -221,11 +221,11 @@ class Help(commands.Cog):
                                   description=desc, color=color)
             embed.add_field(name='Syntax', value=synt)
             embed.set_footer(text=footer)
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
             await log.logger(ctx, name, self.cog_name,"INFO")
 
         except Exception as e:
-            await ctx.reply('Something went VERY wrong.')
+            await ctx.send('Something went VERY wrong.')
             await log.logger(ctx, name, self.cog_name,"ERROR", e)
             raise e
 
@@ -273,7 +273,7 @@ class Help(commands.Cog):
         embed.add_field(
             name=f'Syntax (Page {page}):', value=synt[i], inline=False)
 
-        message = await ctx.reply(embed=embed)
+        message = await ctx.send(embed=embed)
         embed = None
 
         # https://stackoverflow.com/a/61793587/14504836
@@ -320,7 +320,7 @@ class Help(commands.Cog):
     # ANIMALS COG HELP SECTION #
     ############################
 
-    @help.command(aliases=['cat','dog','fox'])
+    @help.command(aliases=['cat','dog','fox', 'bird', 'duck', 'koala', 'panda', 'racoon'])
     async def animal_help(self, ctx):
         try:
             name = ctx.invoked_with
@@ -344,11 +344,11 @@ class Help(commands.Cog):
                                   description=desc, color=color)
             embed.add_field(name='Syntax', value=synt)
             embed.set_footer(text=footer)
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
             await log.logger(ctx, name, self.cog_name,"INFO")
 
         except Exception as e:
-            await ctx.reply('Something went VERY wrong.')
+            await ctx.send('Something went VERY wrong.')
             await log.logger(ctx, name, self.cog_name,"ERROR", e)
             raise e
         

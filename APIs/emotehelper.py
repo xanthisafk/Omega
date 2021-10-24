@@ -1,41 +1,6 @@
-import random, json, codecs, aiohttp
+import random, json, codecs
 
 class GIF_And_Text():
-
-    async def create_string(self,*,type,user1,user2):
-
-        """
-        Creates a string to be appended to the top of emote embed.
-        It loads files/emotes-text.json and retrieves text and random emoji if applicable.
-        Then it appends `user1` and `user2` names to string and returns it. 
-
-        args:
-            type: str -> Type of string to be requested
-            user1: str -> command's author's username
-            user2: str -> mentioned user's  username
-        
-        returns:
-            random_text: str -> The generated text
-        """
-
-        with open('files/emotes-text.json') as js:
-            data = json.load(js)
-            js.close()
-
-        if user2 == None:
-            people = 'solo'
-        else:
-            people = 'with'
-        
-        random_text = random.choice(data['emote'][type][people])
-
-        random_text = random_text.replace('$user1',user1)
-
-        try:
-            random_text = random_text.replace('$user2',user2)
-        except: pass
-
-        return random_text
 
     # -------------------------------- #
 
@@ -94,48 +59,48 @@ class GIF_And_Text():
 
     # -------------------------------- #
 
-    async def waifu_gif(self,endpoint: str) -> str:
+    async def waifu_gif(self,endpoint: str) -> list:
         """
         Generates a random gif from waifu.pics API.
-        
+        (Cached on disk for faster search)
         args: 
             endpoint: str -> category of image to get.
 
         output:
-            rq = returns a URL string
+            formed = returns a URL string and attribution
         """
-        
-        url = 'https://waifu.pics/api/sfw/'+endpoint
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                rq = await response.json()
-                await session.close()
-        rq = rq["url"]
-        return rq
+
+        with open('files/waifu.json','r') as f:
+            rq = json.load(f)
+            f.close()
+            rq = random.choice(rq[endpoint])
+            ft = "Powered by waifu.pics"
+            formed = [rq,ft]
+            return formed
 
     # -------------------------------- #
 
-    async def neko_gif(self,endpoint: str) -> str:
+    async def neko_gif(self,endpoint: str) -> list:
         """
-        Generates a random gif from waifu.pics API.
-        
+        Generates a random gif from nekos.life API.
+        (Cached on disk for faster search)
         args: 
             endpoint: str -> category of image to get.
 
         output:
-            rq = returns a URL string
+            rq = returns a URL string and attribution
         """
-        url = 'https://nekos.best/api/v1/'+endpoint
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                rq = await response.json()
-                await session.close()
-        rq = rq['url']
-        return rq
+        with open('files/nekos.json','r') as f:
+            rq = json.load(f)
+            f.close()
+            rq = random.choice(rq[endpoint])
+            ft = "Powered by nekos.life"
+            formed = [rq,ft]
+            return formed
 
     # -------------------------------- #
 
-    async def listed_gif(self,category: str) -> str:
+    async def listed_gif(self,category: str) -> list:
         """
         hmph, dance, sleep, vibe
 
@@ -150,16 +115,33 @@ class GIF_And_Text():
             kind = json.load(f)
             f.close()
         image = random.choice(kind[category])
+        if 'giphy' in image:
+            atr = "Powered by Giphy"
+        elif 'tenor' in image:
+            atr = "Powered by Tenor"
+        else:
+            atr = "Powered by Discord"
+        image = [image,atr]
         return image
 
     # -------------------------------- #
 
     async def create_string(self,*,type: str, user1: str, user2: str=None) -> str:
-
+        """
+        Creates a string for given category.\n
+        args:
+            type: str -> Category of string to be generated\n
+            user1: str -> Name of author of command\n
+            user2: str -> Name of mentioned user. Can be None if no one was mentioned
+        returns:
+            random_text: str -> Generated string
+        """
+        # Open and load the JSON file containing all the strings
         with codecs.open('files/emotes-text.json','r',encoding='utf-8') as js:
             data = json.load(js)
             js.close()
 
+        # Checks if it is solo or not
         if user2 == None:
             people = 'solo'
         else:

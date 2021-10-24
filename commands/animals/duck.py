@@ -8,7 +8,7 @@ class Duck(commands.Cog):
         self.cog_name = __name__[9:]
 
 
-    @commands.command(aliases=['quuck','quacc'])
+    @commands.command(aliases=['quack','quacc'])
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def duck(self, ctx):
 

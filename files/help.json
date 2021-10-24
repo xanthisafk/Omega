@@ -513,6 +513,41 @@
             "synt": ">fox",
             "alis": "None",
             "opti": 2
+        },
+
+        "bird":{
+            "desc": "Sends a random bird image.\nPowered by `some-random-api.ml`",
+            "synt": ">bird",
+            "alis": "`birb`",
+            "opti": 2
+        },
+
+        "duck":{
+            "desc": "Sends a random duck image.\nPowered by `random-d.uk`",
+            "synt": ">duck",
+            "alis": "`quack`, `quacc`",
+            "opti": 2
+        },
+
+        "koala":{
+            "desc": "Sends a random koala image.\nPowered by `some-random-api.ml`",
+            "synt": ">koala",
+            "alis": "None",
+            "opti": 2
+        },
+
+        "panda":{
+            "desc": "Sends a random panda image.\nPowered by `some-random-api.ml`\nUse `>panda red` to get a red panda.",
+            "synt": ">panda",
+            "alis": "None",
+            "opti": 2
+        },
+
+        "racoon":{
+            "desc": "Sends a random racoon image.\nPowered by `some-random-api.ml`",
+            "synt": ">racoon",
+            "alis": "None",
+            "opti": 2
         }
     }
 }

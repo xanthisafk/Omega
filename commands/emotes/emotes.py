@@ -80,7 +80,8 @@ class Emotes(commands.Cog):
 
         # Create and send the embed. Log the use of this command.
         embed = discord.Embed(title=string, color=color)
-        embed.set_image(url=image)
+        embed.set_image(url=image[0])
+        embed.set_footer(text=image[1])
         await ctx.send(embed=embed)
         await log.logger(ctx,name,self.cog_name,'INFO')
 

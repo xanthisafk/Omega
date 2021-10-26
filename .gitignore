@@ -13,3 +13,4 @@ runtime.txt
 queries.txt
 commands/!*
 commands/atk.py
+.vscode

@@ -79,7 +79,7 @@ async def load(ctx, extension = None):
 
                         except: pass
 
-            print('>> Unloaded: all')
+            print('>> Loaded: all')
 
         else:
             # Lower the extension text
@@ -95,7 +95,7 @@ async def load(ctx, extension = None):
                     if extension == file[:-3]:
                         client.load_extension(f'commands.{dir}.{extension}')
 
-            print(f'>> Unloaded: {extension}')
+            print(f'>> Loaded: {extension}')
 
         # Add success reaction
         await ctx.message.add_reaction(config.EMOTE_OK)

@@ -1,5 +1,5 @@
-import discord, aiohttp, APIs.color as rang, loggers.logger as log
-from discord.ext import commands
+import nextcord, aiohttp, APIs.color as rang, loggers.logger as log
+from nextcord.ext import commands
 
 
 class Duck(commands.Cog):
@@ -20,7 +20,7 @@ class Duck(commands.Cog):
                 res = await response.json()
                 await session.close()
         
-        embed = discord.Embed(description='[Here is a random duck](https://random-d.uk/)', color = color)
+        embed = nextcord.Embed(description='[Here is a random duck](https://random-d.uk/)', color = color)
         embed.set_image(url=res['url'])
         embed.set_footer(text=res['message'])
         await ctx.send(embed=embed)

@@ -1,5 +1,5 @@
-import discord, aiohttp, APIs.color as rang, loggers.logger as log
-from discord.ext import commands
+import nextcord, aiohttp, APIs.color as rang, loggers.logger as log
+from nextcord.ext import commands
 
 
 class Bird(commands.Cog):
@@ -21,7 +21,7 @@ class Bird(commands.Cog):
                 rs = await response.json()
                 await session.close()
         
-        embed = discord.Embed(description = text, color = color)
+        embed = nextcord.Embed(description = text, color = color)
         embed.set_image(url=rs['link'])
         embed.set_footer(text='Powered by Some Random Api')
         await ctx.send(embed=embed)

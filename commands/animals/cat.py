@@ -1,5 +1,5 @@
-import discord, aiohttp, APIs.color as rang, random, loggers.logger as log
-from discord.ext import commands
+import nextcord, aiohttp, APIs.color as rang, random, loggers.logger as log
+from nextcord.ext import commands
 
 
 class Cat(commands.Cog):
@@ -20,7 +20,7 @@ class Cat(commands.Cog):
                 js = await response.json()
                 await session.close()
 
-        embed=discord.Embed(description=f'[me{"o"*random.randint(1,10)}w](https://aws.random.cat/meow)',color=color)
+        embed=nextcord.Embed(description=f'[me{"o"*random.randint(1,10)}w](https://aws.random.cat/meow)',color=color)
         embed.set_image(url=js['file'])
         embed.set_footer(text='Powered by random.cat')
         await ctx.send(embed = embed)

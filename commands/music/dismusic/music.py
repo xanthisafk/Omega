@@ -1,9 +1,9 @@
 import asyncio
 import re
-import discord
+import nextcord
 import wavelink
 from .player import DisPlayer
-from discord.ext import commands
+from nextcord.ext import commands
 from .checks import in_same_channel, player_connected, voice_connected
 import config
 import APIs.color as rang
@@ -324,7 +324,7 @@ class Music(commands.Cog, name="music"):
         if len(queue) < 1:
             return await ctx.send(f"{config.EMOTE_ERROR} Nothing is in the queue.")
 
-        embed = discord.Embed(color=(await rang.get_color()))
+        embed = nextcord.Embed(color=(await rang.get_color()))
         embed.set_author(name="Queue", icon_url="https://media.discordapp.net/attachments/843508777177186334/903283524734439424/playlist.png")
 
         tracks = ""
@@ -363,7 +363,7 @@ class Music(commands.Cog, name="music"):
             "4️⃣": ["Piano", wavelink.eqs.Equalizer.piano()],
         }
 
-        embed = discord.Embed(title="Select Equalizer", color=(await rang.get_color()))
+        embed = nextcord.Embed(title="Select Equalizer", color=(await rang.get_color()))
         embed.description = f"Current Eq - **{player.eq.name}**\n\n1. Flat \n2. Boost\n3. Metal\n4. Piano"
         embed.set_thumbnail(url="https://media.discordapp.net/attachments/843508777177186334/903284330208587827/eq.gif")
 

@@ -1,17 +1,17 @@
-import discord
-from discord import integrations
-from discord.ext import commands
+import nextcord
+import nextcord
+from nextcord.ext import commands
 import APIs.color as rang
 import loggers.logger as log
 
 
-class Emoji(commands.Cog):
+class Emoteicon(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.cog_name = __name__[9:]
 
     @commands.command()
-    async def emoji(self, ctx, emote: discord.Emoji = None):
+    async def emoji(self, ctx, emote: nextcord.Emoji = None):
         name = "Emoji"
         color = await rang.get_color()
 
@@ -21,7 +21,7 @@ class Emoji(commands.Cog):
 
         try:
 
-            embed = discord.Embed(title=emote.name, description=(f'From: {emote.guild.name}'), color=color)
+            embed = nextcord.Embed(title=emote.name, description=(f'From: {emote.guild.name}'), color=color)
             embed.set_image(url=emote.url)
             await ctx.send(embed=embed)
             await log.logger(ctx, name, self.cog_name, "INFO")
@@ -38,4 +38,4 @@ class Emoji(commands.Cog):
             raise error
 
 def setup(bot):
-    bot.add_cog(Emoji(bot))
+    bot.add_cog(Emoteicon(bot))

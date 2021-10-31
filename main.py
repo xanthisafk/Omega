@@ -1,6 +1,6 @@
 import commands.music.dismusic.errors as errors
-import discord
-from discord.ext import commands, tasks
+import nextcord
+from nextcord.ext import commands, tasks
 import os
 from os import path
 import asyncio
@@ -32,7 +32,7 @@ async def on_ready():
             await log.debug(cog=cog_name,message='Running on Heroku')
     except: pass
 
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"{config.PREFIX[0]}help"))
+    await client.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.listening, name=f"{config.PREFIX[0]}help"))
 
 
 @client.command()

@@ -2,8 +2,8 @@ import asyncio
 import random
 
 import APIs.color as rang
-import discord
-from discord.ext import commands
+import nextcord
+from nextcord.ext import commands
 
 from loggers.logger import logger
 
@@ -54,17 +54,17 @@ class EightBall(commands.Cog):
             3: "And 🎱 says: "
         }
 
-        embed = discord.Embed(
+        embed = nextcord.Embed(
             title=f'{ctx.author} asked: "{question}"', description=(desc[1]), color=color)
         message = await ctx.reply(embed=embed)
         await asyncio.sleep(random.randint(1, 3))
 
-        embed = discord.Embed(
+        embed = nextcord.Embed(
             title=f'{ctx.author} asked: "{question}"', description=(desc[2]), color=color)
         await message.edit(embed=embed)
         await asyncio.sleep(random.randint(1, 3))
 
-        embed = discord.Embed(title=f'{ctx.author} asked: "{question}"', description=(
+        embed = nextcord.Embed(title=f'{ctx.author} asked: "{question}"', description=(
             desc[3]+random.choice(ball8)), color=color)
         await message.edit(embed=embed)
         await logger(ctx,name,self.cog_name,'INFO')

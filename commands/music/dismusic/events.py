@@ -1,6 +1,6 @@
 import wavelink
 from .player import DisPlayer
-from discord.ext import commands
+from nextcord.ext import commands
 
 
 class MusicEvents(commands.Cog, wavelink.WavelinkMixin):

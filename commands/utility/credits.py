@@ -1,6 +1,6 @@
 import asyncio
-import discord, APIs.color as rang,config
-from discord.ext import commands
+import nextcord, APIs.color as rang,config
+from nextcord.ext import commands
 from config import EMOTE_LEFT,EMOTE_RIGHT
 
 import loggers.logger as log
@@ -15,15 +15,16 @@ class Credits(commands.Cog):
     async def credits(self, ctx):
         name = 'Credits'
         color =  await rang.get_color()
-        embed = discord.Embed(title='Credits', color =  color)
+        embed = nextcord.Embed(title='Credits', color =  color)
 
         about = f"""Made by Xanthis. (cupnoodle#3924)
-This bot uses [discord.py](https://github.com/Rapptz/discord.py) Python library.
+This bot uses [nextcord](https://github.com/nextcord/nextcord) Python library.
+Previously, this bot used [discord.py](https://github.com/rapptz/discord.py) Python library.
 This bot's owner(s) are set to:"""
 
         j=1
         for i in config.OWNER:
-            about+= f'\n{j}. <@{i}>'
+            about+= f'\n{j}.\t<@{i}>'
             j+=1
         
         embed.add_field(name='General details',value=about)
@@ -47,8 +48,10 @@ This bot's owner(s) are set to:"""
 **Utility**
 [DiscordStatus.com](https://discordstatus.com) (Discrod status)"""
 
-        libs =  """[aiohttp](https://docs.aiohttp.org/en/stable/)
-[discord.py](https://github.com/Rapptz/discord.py)
+        libs =  """***In no particular order***
+[aiohttp](https://docs.aiohttp.org/en/stable/)
+[nextcord.py](https://github.com/nextcord/nextcord)
+*[discord.py](https://github.com/Rapptz/discord.py)* ***(Not used anymore)***
 [emojifier](https://github.com/MakufonSkifto/Emojifier)
 [psycopg2](https://www.psycopg.org/docs/)
 [requests](https://docs.python-requests.org/en/latest/)

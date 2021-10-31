@@ -1,5 +1,5 @@
-import discord, aiohttp, APIs.color as rang, loggers.logger as log
-from discord.ext import commands
+import nextcord, aiohttp, APIs.color as rang, loggers.logger as log
+from nextcord.ext import commands
 
 
 class Fox(commands.Cog):
@@ -20,7 +20,7 @@ class Fox(commands.Cog):
                 url = res['image']
                 await session.close()
 
-        embed = discord.Embed(description='[A fox image for you](https://randomfox.ca/)',color=color)
+        embed = nextcord.Embed(description='[A fox image for you](https://randomfox.ca/)',color=color)
         embed.set_image(url=url)
         embed.set_footer(text='Powered by randomfox.ca')
         await ctx.send(embed=embed)

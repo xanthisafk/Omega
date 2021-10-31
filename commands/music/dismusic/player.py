@@ -1,5 +1,5 @@
 import asyncio
-import discord
+import nextcord
 import async_timeout
 from wavelink import Player
 import APIs.color as rang
@@ -59,7 +59,7 @@ class DisPlayer(Player):
 
         track = self.current
 
-        embed = discord.Embed(
+        embed = nextcord.Embed(
             title=track.title, url=track.uri, color=(await rang.get_color())
         )
         embed.set_author(

@@ -4,9 +4,9 @@ from typing import Union
 
 import APIs.color as rang
 import APIs.emotehelper
-import discord
+import nextcord
 import loggers.logger as log
-from discord.ext import commands
+from nextcord.ext import commands
 
 
 class Emotes(commands.Cog):
@@ -20,13 +20,13 @@ class Emotes(commands.Cog):
                'hungry', 'bite', 'glomp', 'superhug', 'slap', 'kill', 'kick', 'wink', 'poke', 'cringe', 'baka', 'hmph', 'bored', 'facepalm', 'feed', 'laugh', 'shrug', 'stare', 'think', 'thonk', 'thumbsup', 'tickle', 'run']
 
     @commands.command(name='blush', aliases=aliases)
-    async def send_emotes(self, ctx, member: Union[discord.Member, str] = None):
+    async def send_emotes(self, ctx, member: Union[nextcord.Member, str] = None):
         """
         Sends an embeded GIF file based on the chosen category.
 
         args:
             ctx: disocrd.Context
-            member: discord.Member / str -> Mentioned user. If not provided where it is needed, an error message is sent. If member is str then it is considered solo.
+            member: nextcord.Member / str -> Mentioned user. If not provided where it is needed, an error message is sent. If member is str then it is considered solo.
         """
 
         # String that was used to invoke this command. It is used to gather information from files/help.json
@@ -79,7 +79,7 @@ class Emotes(commands.Cog):
         image = await self.gif.selector(category)
 
         # Create and send the embed. Log the use of this command.
-        embed = discord.Embed(title=string, color=color)
+        embed = nextcord.Embed(title=string, color=color)
         embed.set_image(url=image[0])
         embed.set_footer(text=image[1])
         await ctx.send(embed=embed)

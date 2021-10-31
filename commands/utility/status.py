@@ -2,11 +2,11 @@ import datetime
 from os import path
 from random import randint
 
-import discord
+import nextcord
 import loggers.logger as log
 import aiohttp
 import config
-from discord.ext import commands
+from nextcord.ext import commands
 
 
 class Status(commands.Cog):
@@ -134,7 +134,7 @@ class Status(commands.Cog):
                 color = 0xFF0000
 
             # Create embed
-            embed = discord.Embed(
+            embed = nextcord.Embed(
                 title='Status', description=desc, color=color)
             embed.add_field(name='Major Systems', value=major_systems)
             embed.add_field(name='Voice', value=voice)

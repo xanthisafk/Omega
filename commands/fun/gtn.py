@@ -1,5 +1,5 @@
-import discord
-from discord.ext import commands
+import nextcord
+from nextcord.ext import commands
 import asyncio, random
 import APIs.color as rang
 from loggers.logger import logger
@@ -28,7 +28,7 @@ class Guessthenumber(commands.Cog):
             r2=  100
 
         num = random.randint(r1,(r1+r2))
-        embed = discord.Embed(title="Guess the number game.", description=f'Guess a  number between {r1} and {r1+r2}', color = color)
+        embed = nextcord.Embed(title="Guess the number game.", description=f'Guess a  number between {r1} and {r1+r2}', color = color)
         embed.set_footer(text='You have 5 turns to guess.')
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         message = await ctx.reply(embed=embed)

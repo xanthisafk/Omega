@@ -1,8 +1,8 @@
 import json
 
-import discord
+import nextcord
 import loggers.logger as log
-from discord.ext import commands
+from nextcord.ext import commands
 from emojifier import Emojifier
 
 

@@ -1,8 +1,8 @@
 # This is the first cog that was written using Github copilot and so it has a lot of comments.
 # I am surprised that it works so well.
 # Wow.
-import discord
-from discord.ext import commands
+import nextcord
+from nextcord.ext import commands
 import APIs.color as rang
 import loggers.logger as log
 import redditeasy
@@ -47,7 +47,7 @@ class Get(commands.Cog):
                 return await ctx.send(random.choice(['Bonk','bonk!','bonk','Bonk!','🙄😶']))
 
         # Create embed and send
-        embed = discord.Embed(title=post.title, description=f'{config.EMOTE_UPVOTE}{post.score} | {config.EMOTE_DOWNVOTE}{post.downvotes}', url=post.post_url, color=await rang.get_color())
+        embed = nextcord.Embed(title=post.title, description=f'{config.EMOTE_UPVOTE}{post.score} | {config.EMOTE_DOWNVOTE}{post.downvotes}', url=post.post_url, color=await rang.get_color())
         embed.set_image(url=post.content)
         embed.set_footer(text=f'By {post.author} on r/{sub}')
         await ctx.send(embed=embed)

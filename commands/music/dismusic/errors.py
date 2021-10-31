@@ -1,4 +1,4 @@
-from discord.ext.commands.errors import CheckFailure
+from nextcord.ext.commands.errors import CheckFailure
 
 
 class NotConnectedToVoice(CheckFailure):

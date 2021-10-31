@@ -1,9 +1,9 @@
 import os
 
 import APIs.color as rang
-import discord
+import nextcord
 import loggers.logger as log
-from discord.ext import commands
+from nextcord.ext import commands
 
 class About(commands.Cog):
     def __init__(self, client):
@@ -61,8 +61,8 @@ class About(commands.Cog):
 
         thumb = self.client.user.avatar_url
 
-        embed = discord.Embed(
-            title='About', description='Discord bot, written in Python, uses `discord.py`', color=color)
+        embed = nextcord.Embed(
+            title='About', description='nextcord bot, written in Python, uses `nextcord.py`', color=color)
         embed.add_field(name='Usage', value=field_val, inline=False)
         embed.set_footer(text=footer)
         embed.set_thumbnail(url=thumb)

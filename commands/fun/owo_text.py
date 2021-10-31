@@ -1,7 +1,7 @@
-import discord
+import nextcord
 import loggers.logger as log
 import owo
-from discord.ext import commands
+from nextcord.ext import commands
 
 
 class owo_text(commands.Cog):

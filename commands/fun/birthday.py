@@ -1,7 +1,7 @@
 import datetime
 
-import discord
-from discord.ext import commands, tasks
+import nextcord
+from nextcord.ext import commands, tasks
 
 import APIs.color as rang
 import loggers.logger as log
@@ -36,7 +36,7 @@ class Birthday(commands.Cog):
     async def birthday(self, ctx):
         color = rang.get_color()
         name = 'Birthday'
-        embed = discord.Embed(title='Happy birthday', color=color)
+        embed = nextcord.Embed(title='Happy birthday', color=color)
         embed.set_image(url='https://c.tenor.com/eDfWpD2K5m0AAAAC/hideri-anime.gif')
         await ctx.reply(embed=embed)
         await log.logger(ctx,name,self.cog_name,'INFO')

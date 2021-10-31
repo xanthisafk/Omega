@@ -4,9 +4,9 @@ import json
 import random
 
 import APIs.color as rang
-import discord
+import nextcord
 import loggers.logger as log
-from discord.ext import commands
+from nextcord.ext import commands
 import config
 
 
@@ -90,7 +90,7 @@ class Help(commands.Cog):
 
         color = await rang.get_color()
 
-        embed = discord.Embed(title='Help dialogue',
+        embed = nextcord.Embed(title='Help dialogue',
                               description=hdr, color=color)
         embed.add_field(name='Emotes', value=emo, inline=False)
         embed.add_field(name='Fun', value=fun, inline=False)
@@ -133,7 +133,7 @@ class Help(commands.Cog):
             else:
                 footer = "No arguments"
 
-            embed = discord.Embed(title=name.capitalize(),
+            embed = nextcord.Embed(title=name.capitalize(),
                                   description=desc, color=color)
             embed.add_field(name='Syntax', value=synt)
             embed.set_footer(text=footer)
@@ -175,7 +175,7 @@ class Help(commands.Cog):
             else:
                 footer = "No arguments"
 
-            embed = discord.Embed(title=name.capitalize(),
+            embed = nextcord.Embed(title=name.capitalize(),
                                   description=desc, color=color)
             embed.add_field(name='Syntax', value=synt)
             embed.set_footer(text=footer)
@@ -217,7 +217,7 @@ class Help(commands.Cog):
             else:
                 footer = "No arguments"
 
-            embed = discord.Embed(title=name.capitalize(),
+            embed = nextcord.Embed(title=name.capitalize(),
                                   description=desc, color=color)
             embed.add_field(name='Syntax', value=synt)
             embed.set_footer(text=footer)
@@ -268,7 +268,7 @@ class Help(commands.Cog):
         page = 1
         total_pages = len(synt)
 
-        embed = discord.Embed(title=name, description=text, color=color)
+        embed = nextcord.Embed(title=name, description=text, color=color)
 
         embed.add_field(
             name=f'Syntax (Page {page}):', value=synt[i], inline=False)
@@ -290,7 +290,7 @@ class Help(commands.Cog):
                 try:
                     reaction, user = await self.client.wait_for("reaction_add", timeout=120, check=check)
 
-                    embed = discord.Embed(
+                    embed = nextcord.Embed(
                         title=name, description=text, color=color)
 
                     if str(reaction.emoji) == right_e and page != total_pages:
@@ -342,7 +342,7 @@ class Help(commands.Cog):
             else:
                 footer = "No arguments"
 
-            embed = discord.Embed(title=name.capitalize(),
+            embed = nextcord.Embed(title=name.capitalize(),
                                   description=desc, color=color)
             embed.add_field(name='Syntax', value=synt)
             embed.set_footer(text=footer)

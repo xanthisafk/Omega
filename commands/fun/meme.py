@@ -1,5 +1,5 @@
-import discord
-from discord.ext import commands
+import nextcord
+from nextcord.ext import commands
 import APIs.color as rang
 import loggers.logger as log
 import APIs.get_post as reddit
@@ -25,7 +25,7 @@ class Meme(commands.Cog):
             return await ctx.reply(f"{config.EMOTE_ERROR} Could not find a meme")
 
         # Create embed and send the post
-        embed = discord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
+        embed = nextcord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
         embed.set_image(url=post.content)
         embed.set_footer(text=f"By {post.author}")
         await ctx.send(embed=embed)
@@ -52,7 +52,7 @@ class Meme(commands.Cog):
             return await ctx.reply(f"{config.EMOTE_ERROR} Could not find a *dank* meme")
 
         # Create embed and send the post
-        embed = discord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
+        embed = nextcord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
         embed.set_image(url=post.content)
         embed.set_footer(text=f"By {post.author}")
         await ctx.send(embed=embed)
@@ -79,7 +79,7 @@ class Meme(commands.Cog):
             return await ctx.reply(f"{config.EMOTE_ERROR} Could not find a *terrible* meme from ~~Facebook~~ Meta")
 
         # Create embed and send the post
-        embed = discord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
+        embed = nextcord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
         embed.set_image(url=post.content)
         embed.set_footer(text=f"By {post.author}")
         await ctx.send(embed=embed)
@@ -106,7 +106,7 @@ class Meme(commands.Cog):
             return await ctx.reply(f"{config.EMOTE_ERROR} Jedi stopped me from looking for more memes :|")
 
         # Create embed and send the post
-        embed = discord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
+        embed = nextcord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
         embed.set_image(url=post.content)
         embed.set_footer(text=f"By {post.author}")
         await ctx.send(embed=embed)

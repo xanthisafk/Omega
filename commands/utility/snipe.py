@@ -1,6 +1,6 @@
 import APIs.color as rang
-import discord
-from discord.ext import commands
+import nextcord
+from nextcord.ext import commands
 
 from loggers.logger import logger
 
@@ -34,7 +34,7 @@ class Snipe(commands.Cog):
 
         name = msg.author.name
 
-        embed = discord.Embed(description=msg.content, color=color)
+        embed = nextcord.Embed(description=msg.content, color=color)
         embed.set_author(name=name, icon_url=thumb)
 
         if msg.attachments == []:

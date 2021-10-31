@@ -70,7 +70,7 @@ class GIF_And_Text():
             formed = returns a URL string and attribution
         """
 
-        with open('files/waifu.json','r') as f:
+        with open('files/emote-url-waifu.json','r') as f:
             rq = json.load(f)
             f.close()
             rq = random.choice(rq[endpoint])
@@ -90,7 +90,7 @@ class GIF_And_Text():
         output:
             rq = returns a URL string and attribution
         """
-        with open('files/nekos.json','r') as f:
+        with open('files/emote-url-nekos.json','r') as f:
             rq = json.load(f)
             f.close()
             rq = random.choice(rq[endpoint])

@@ -1,8 +1,10 @@
+import commands.music.dismusic.errors as errors
 import discord
 from discord.ext import commands, tasks
 import os
 from os import path
 import asyncio
+
 
 import loggers.logger as log
 
@@ -12,21 +14,6 @@ cog_name = 'Main'
 client = commands.Bot(command_prefix=config.PREFIX,case_insensitive=True)
 client.remove_command('help')
 
-@tasks.loop(seconds=60)
-async def change_presence():
-
-        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="over servers"))
-        await asyncio.sleep(60)
-    
-        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"{config.PREFIX[0]}help"))
-        await asyncio.sleep(60)
-
-        if path.exists('files/exists'):
-            desc = 'on my PC!'
-        else:
-            desc = 'on Heroku!'
-        
-        await client.change_presence(activity=discord.Game(name=desc))
 
 @client.event
 async def on_ready():
@@ -45,7 +32,7 @@ async def on_ready():
             await log.debug(cog=cog_name,message='Running on Heroku')
     except: pass
 
-    await change_presence.start()
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"{config.PREFIX[0]}help"))
 
 
 @client.command()
@@ -254,6 +241,7 @@ def load_cogs():
 @client.event
 async def on_command_error(ctx, error):
     name = 'No command'
+    
     if isinstance(error, commands.CommandNotFound):
         return
 
@@ -266,11 +254,23 @@ async def on_command_error(ctx, error):
         await log.logger(ctx,name,cog_name,'ERROR',error)
         await ctx.send("Invalid arguments. Please try again.")
         return
-    
+
     elif isinstance(error,commands.CommandOnCooldown):
         return
-    
-    if isinstance(error,commands.EmojiNotFound):
+
+    elif isinstance(error,commands.EmojiNotFound):
+        return
+
+    elif isinstance(error,errors.NotConnectedToVoice):
+        await ctx.send(error)
+        return
+
+    elif isinstance(error,errors.PlayerNotConnected):
+        await ctx.send(error)
+        return
+
+    elif isinstance(error,errors.MustBeSameChannel):
+        await ctx.send(error)
         return
 
     else:
@@ -292,8 +292,18 @@ if __name__ == '__main__':
     print('----------')
     print('Loading Cogs')
     print('----------')
+    client.lava_nodes = [
+        {
+            'host': 'lava.link',
+            'port': 80,
+            'rest_uri': 'http://lava.link:80',
+            'identifier': 'MAIN',
+            'password': 'OMEGA',
+            'region': 'singapore'
+        }
+    ]
     load_cogs()
     print("All cogs loaded")
     print("----------")
-    client.run(config.SECRET)
 
+    client.run(config.SECRET)

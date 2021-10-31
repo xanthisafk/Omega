@@ -1,8 +1,8 @@
-# Omega v1
+# Omega v1.1
 
 Omega is a multipurpose bot. Uses discord.py library.
 
-  
+# Now with a functional music bot!
 
 ## Features
 * Almost 50 roleplay emote function.
@@ -14,6 +14,10 @@ Omega is a multipurpose bot. Uses discord.py library.
 	* Easy to add and remove. Do it from discord!
 	* Uses PostgreSQL, so you know it is fast!
 	* Users can also make the bot ignore their messages using `ignore`
+
+* Get random animal images
+	* 9 different animals
+	* A TON of dog breeds
 
 * Emojify and OwOify
 	* Turn your text into OwO speak using `owoify`
@@ -41,8 +45,7 @@ Omega is a multipurpose bot. Uses discord.py library.
 
 ## Planned content
 
-* Music bot
-* Reddit image and video systems
+* Reddit image and video grabber
 * Video and photo editing capabilities
 * Admin systems
 

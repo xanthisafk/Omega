@@ -288,7 +288,7 @@ if __name__ == '__main__':
 
 """
     print(omega)
-    print("OMEGA BOT\nBy Xanthis\nVersion 1.019")
+    print("OMEGA BOT\nBy Xanthis\nVersion 1.1")
     print('----------')
     print('Loading Cogs')
     print('----------')

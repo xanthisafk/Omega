@@ -13,7 +13,7 @@ class Emotes(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.cog_name = __name__[9:].capitalize()
+        self.cog_name = __name__[9:]
         self.gif = APIs.emotehelper.GIF_And_Text()
 
     aliases = ['dance', 'wave', 'sleep', 'vibe', 'pat', 'cry', 'pout', 'kiss', 'bully', 'hug', 'cuddle', 'lick', 'smug', 'bonk', 'yeet', 'throw', 'smile', 'happy', 'highfive', 'handhold', 'hold', 'eat',

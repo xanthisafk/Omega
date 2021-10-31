@@ -89,7 +89,7 @@ class Guessthenumber(commands.Cog):
 
         except asyncio.TimeoutError:
                 await message.edit(content="Message timed out!")
-        await logger.logger(ctx,name,self.cog_name,'INFO')
+        await logger(ctx,name,self.cog_name,'INFO')
 
 def setup(bot):
     bot.add_cog(Guessthenumber(bot))

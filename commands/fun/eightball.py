@@ -67,7 +67,7 @@ class EightBall(commands.Cog):
         embed = discord.Embed(title=f'{ctx.author} asked: "{question}"', description=(
             desc[3]+random.choice(ball8)), color=color)
         await message.edit(embed=embed)
-        await logger.logger(ctx,name,self.cog_name,'INFO')
+        await logger(ctx,name,self.cog_name,'INFO')
 
 
 def setup(bot):

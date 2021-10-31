@@ -278,13 +278,13 @@ class Help(commands.Cog):
 
         # https://stackoverflow.com/a/61793587/14504836
         if len(synt) >= 2:
-            right_e = self.client.get_emoji(898963538004021318)
-            left_e = self.client.get_emoji(898963539912437771)
+            right_e = config.EMOTE_RIGHT
+            left_e = config.EMOTE_LEFT
             await message.add_reaction(left_e)
             await message.add_reaction(right_e)
 
             def check(reaction, user):
-                return user == ctx.author and reaction.emoji in [left_e, right_e]
+                return user == ctx.author and str(reaction.emoji) in [left_e, right_e]
 
             while True:
                 try:
@@ -293,14 +293,14 @@ class Help(commands.Cog):
                     embed = discord.Embed(
                         title=name, description=text, color=color)
 
-                    if reaction.emoji == right_e and page != total_pages:
+                    if str(reaction.emoji) == right_e and page != total_pages:
                         page += 1
                         embed.add_field(
                             name=f'Syntax (Page {page}):', value=synt[(page-1)], inline=False)
                         await message.edit(embed=embed)
                         await message.remove_reaction(reaction, user)
 
-                    elif reaction.emoji == left_e and page > 1:
+                    elif str(reaction.emoji) == left_e and page > 1:
                         page -= 1
                         embed.add_field(
                             name=f'Syntax (Page {page}):', value=synt[(page-1)], inline=False)
@@ -311,6 +311,8 @@ class Help(commands.Cog):
                         await message.remove_reaction(reaction, user)
 
                 except asyncio.TimeoutError:
+                    await message.clear_reaction(right_e)
+                    await message.clear_reaction(left_e)
                     await message.edit(content="Message timed out")
                     break
 
@@ -353,13 +355,13 @@ class Help(commands.Cog):
             raise e
         
 
-    # @commands.command()
-    # async def testin(self, ctx):
-    #     if ctx.author.id == 800400638156210176:
-    #         emoji = self.client.emojis
-    #         for i in emoji:
-    #            print(i)
-    #         await ctx.send('<:ok:899558562819358720>')
+    @commands.command()
+    async def testin(self, ctx):
+        if ctx.author.id == 800400638156210176:
+            emoji = self.client.emojis
+            for i in emoji:
+               print(i)
+            await ctx.send('<:ok:899558562819358720>')
 
 
 def setup(client):

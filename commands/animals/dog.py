@@ -3,9 +3,9 @@ import asyncio
 import aiohttp
 
 import APIs.color as rang
-import nextcord
+import discord
 import requests
-from nextcord.ext import commands
+from discord.ext import commands
 import loggers.logger as log
 
 class Dog(commands.Cog):
@@ -50,7 +50,7 @@ class Dog(commands.Cog):
         else:
             url = js['message']
 
-        embed = nextcord.Embed(description=text,color = color)
+        embed = discord.Embed(description=text,color = color)
         embed.set_image(url=url)
         embed.set_footer(text='Powered by dog.ceo')
         await ctx.send(embed=embed)
@@ -60,7 +60,7 @@ class Dog(commands.Cog):
     async def breeds(self,ctx):
 
         color = await rang.get_color()
-        embed = nextcord.Embed(color=color)
+        embed = discord.Embed(color=color)
 
         b1 = '`affenpinscher`, `african`, `airedale`, `akita`, `appenzeller`, `australlian shepherd`, `basenji`, `beagle`, `bluetick`, `borzoi`, `bouvier`, `boxer`, `brabancon`, `braiard`, `norwegian buhund`, `boston bulldog`, `english bulldog`, `french bulldog`, `staffordshire bullterrier`, `australlian cattledog`, `chihuahua`, `chow`, `clumber`, `cockapoo`, `border collie`, `coonhound`, `cardigan corgi`, `cotondetulear`, `dachshund`, `great dane`, `scottish deerhound`, `dhole`, `dingo`, `doberman`, `norwegian elhound`, `entlebucher`, `eskimo`, `lapphund finnish`, `bichon frise`, `german shepherd`, `italian greyhound`, `groenendael`, `havanese`, `afghan hound`, `basset hound`, `blood hound`, `english hound`, `ibizan hound`, `plott hound`, `walker hound`, `husky`, `keeshond`, `kelpie`, `komondor`, `kuvasz`, `labradoodle`, `labrador`, `leonberg`, `lhasa`, `malamute`, `malese`, `bull mastiff`, `tibetan mastiff`, `mexicanhairless`, `mix`, `bernese mountain`, `swiss mountain`, `newfoundland`, `otterhound`'
         b2 = '`caucasian ovcharka`, `papillon`, `perkinese`, `pembroke`, `miniature pinscher`, `pitbull`, `german pointer`, `germanlonghair pointer`, `pomeranian`, `miniature poodle`, `standard poodle`, `toy poodle`, `pug`, `ouggle`, `pyrenees`, `redbone`, `chesapeake retriever`, `curly retriever`, `flatcoated retriever`, `golden retriever`, `rhodesian ridgeback`, `rottwriler`, `saluki`, `samoyed`, `schipperke`, `giant schnauzer`, `miniature schnauzer`, `english setter`, `gordon setter`, `irish setter`, `english sheepdog`, `shetland sheepdog`, `shiba`, `shihtzu`, `blenheim spaniel`, `brittany spaniel`, `cocker spaniel`, `irish spaniel`, `japanese spaniel`, `sussex spaniel`, `welsh spaniel`, `english springer`, `stbernard`, `americal terrier`, `australlian terrier`, `bedlington terrier`, `border terrier`, `cairn terrier`, `irish terrier`, `kerryblue terrier`, `lakeland terrier`, `norfolk terrier`, `norwich terrier`, `patterdale terrier`, `russel terrier`, `scottish terrier`, `sealyham terrier`, `silky terrier`'

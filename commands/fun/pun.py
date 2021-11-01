@@ -1,9 +1,9 @@
 from requests.api import delete
 import APIs.color as rang
-import nextcord
+import discord
 import loggers.logger as log
 import aiohttp
-from nextcord.ext import commands
+from discord.ext import commands
 import config
 
 
@@ -19,7 +19,7 @@ class Pun(commands.Cog):
         name = 'Pun'
 
         try:
-            headers={"Accept": "application/json", "User-Agent": "Personal nextcord bot: github.com/xanthisafk/omega"}
+            headers={"Accept": "application/json", "User-Agent": "Personal discord bot: github.com/xanthisafk/omega"}
             if id == None:
                 url = 'https://icanhazdadjoke.com/'
             else:
@@ -34,7 +34,7 @@ class Pun(commands.Cog):
                 await ctx.send(f"{config.EMOTE_ERROR} Invalid ID.")
                 return
 
-            embed = nextcord.Embed(title="Pun", description=f['joke'], color=await rang.get_color())
+            embed = discord.Embed(title="Pun", description=f['joke'], color=await rang.get_color())
             embed.set_footer(text=f['id'])
 
             await ctx.send(embed=embed)

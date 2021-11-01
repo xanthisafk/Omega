@@ -1,6 +1,6 @@
 # Omega v1.1
 
-Omega is a multipurpose bot. Uses nextcord (previously discord.py) library.
+Omega is a multipurpose bot. Uses discord (previously discord.py) library.
 
 # Now with a functional music bot!
 

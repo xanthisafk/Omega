@@ -1,6 +1,6 @@
 import asyncio
-import nextcord, APIs.color as rang,config
-from nextcord.ext import commands
+import discord, APIs.color as rang,config
+from discord.ext import commands
 from config import EMOTE_LEFT,EMOTE_RIGHT
 
 import loggers.logger as log
@@ -15,10 +15,10 @@ class Credits(commands.Cog):
     async def credits(self, ctx):
         name = 'Credits'
         color =  await rang.get_color()
-        embed = nextcord.Embed(title='Credits', color =  color)
+        embed = discord.Embed(title='Credits', color =  color)
 
         about = f"""Made by Xanthis. (cupnoodle#3924)
-This bot uses [nextcord](https://github.com/nextcord/nextcord) Python library.
+This bot uses [discord](https://github.com/discord/discord) Python library.
 Previously, this bot used [discord.py](https://github.com/rapptz/discord.py) Python library.
 This bot's owner(s) are set to:"""
 
@@ -50,7 +50,7 @@ This bot's owner(s) are set to:"""
 
         libs =  """***In no particular order***
 [aiohttp](https://docs.aiohttp.org/en/stable/)
-[nextcord.py](https://github.com/nextcord/nextcord)
+[discord.py](https://github.com/discord/discord)
 *[discord.py](https://github.com/Rapptz/discord.py)* ***(Not used anymore)***
 [emojifier](https://github.com/MakufonSkifto/Emojifier)
 [psycopg2](https://www.psycopg.org/docs/)

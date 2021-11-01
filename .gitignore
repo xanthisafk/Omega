@@ -17,3 +17,5 @@ commands/atk.py
 scripts/
 pyvenv.cfg
 Lib
+Lavalink.jar
+application.yml

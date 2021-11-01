@@ -3,9 +3,9 @@ import re
 
 import APIs.db as pql
 import config
-import nextcord
+import discord
 import loggers.logger as log
-from nextcord.ext import commands
+from discord.ext import commands
 
 
 class ATK(commands.Cog):
@@ -110,7 +110,7 @@ class ATK(commands.Cog):
         Adds the user to a list of ignored users. People who use this function no longer trigger ATKs.
 
         args:
-            ctx: commands.Context -> ctx given by nextcord library
+            ctx: commands.Context -> ctx given by discord library
         returns:
             None (Adds user to database)
         """
@@ -141,7 +141,7 @@ class ATK(commands.Cog):
         Removes id of user from list of ignored people.
 
         args:
-            ctx: commands.Context -> ctx given by nextcord library
+            ctx: commands.Context -> ctx given by discord library
         :returns
             None (removes user from database)
         """
@@ -256,7 +256,7 @@ class ATK(commands.Cog):
         value back.
 
         args:
-            message: nextcord.Context -> Contains all the information needed to process the message
+            message: discord.Context -> Contains all the information needed to process the message
         returns:
             None
         """

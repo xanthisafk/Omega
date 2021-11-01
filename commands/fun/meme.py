@@ -1,5 +1,5 @@
-import nextcord
-from nextcord.ext import commands
+import discord
+from discord.ext import commands
 import APIs.color as rang
 import loggers.logger as log
 import APIs.get_post as reddit
@@ -18,6 +18,7 @@ class Meme(commands.Cog):
         """
         Sends a random meme from reddit.
         """
+        #subreddit = ["memes", "dankmemes", "meme", "memeeconomy", "dankmeme", "memeoftheday", "me_irl"]
         # Get a post from the subreddit
         post = await reddit.get_post("memes")
         # If there is no post, return
@@ -25,7 +26,7 @@ class Meme(commands.Cog):
             return await ctx.reply(f"{config.EMOTE_ERROR} Could not find a meme")
 
         # Create embed and send the post
-        embed = nextcord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
+        embed = discord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
         embed.set_image(url=post.content)
         embed.set_footer(text=f"By {post.author}")
         await ctx.send(embed=embed)
@@ -52,7 +53,7 @@ class Meme(commands.Cog):
             return await ctx.reply(f"{config.EMOTE_ERROR} Could not find a *dank* meme")
 
         # Create embed and send the post
-        embed = nextcord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
+        embed = discord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
         embed.set_image(url=post.content)
         embed.set_footer(text=f"By {post.author}")
         await ctx.send(embed=embed)
@@ -79,7 +80,7 @@ class Meme(commands.Cog):
             return await ctx.reply(f"{config.EMOTE_ERROR} Could not find a *terrible* meme from ~~Facebook~~ Meta")
 
         # Create embed and send the post
-        embed = nextcord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
+        embed = discord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
         embed.set_image(url=post.content)
         embed.set_footer(text=f"By {post.author}")
         await ctx.send(embed=embed)
@@ -106,7 +107,7 @@ class Meme(commands.Cog):
             return await ctx.reply(f"{config.EMOTE_ERROR} Jedi stopped me from looking for more memes :|")
 
         # Create embed and send the post
-        embed = nextcord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
+        embed = discord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
         embed.set_image(url=post.content)
         embed.set_footer(text=f"By {post.author}")
         await ctx.send(embed=embed)
@@ -120,7 +121,32 @@ class Meme(commands.Cog):
             await ctx.send(f"{config.EMOTE_ERROR} An error occured")
             log.logger(ctx, "prequelmeme", self.cog_name, "ERROR")
 
+    @commands.command(name="antimeme", aliases=["antimemes"])
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def _antimeme(self, ctx):
+        """
+        Sends a random meme from reddit.
+        """
+        # Get a post from the subreddit
+        post = await reddit.get_post("antimemes")
+        # If there is no post, return
+        if post is None:
+            return await ctx.reply(f"{config.EMOTE_ERROR} Some error, idk")
 
+        # Create embed and send the post
+        embed = discord.Embed(title=post.title, url=post.post_url, color=await rang.get_color())
+        embed.set_image(url=post.content)
+        embed.set_footer(text=f"By {post.author}")
+        await ctx.send(embed=embed)
+        return await log.logger(ctx, "antimemes", self.cog_name,"INFO")
+
+    @_prequelmeme.error
+    async def prequelmeme_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.reply(f"{config.EMOTE_WARNING} You are on cooldown for {round(error.retry_after,1)} seconds")
+        else:
+            await ctx.send(f"{config.EMOTE_ERROR} An error occured")
+            log.logger(ctx, "prequelmeme", self.cog_name, "ERROR")
 
 
 

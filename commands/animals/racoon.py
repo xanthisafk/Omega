@@ -1,5 +1,5 @@
-import nextcord, aiohttp, APIs.color as rang, loggers.logger as log
-from nextcord.ext import commands
+import discord, aiohttp, APIs.color as rang, loggers.logger as log
+from discord.ext import commands
 
 
 class Racoon(commands.Cog):
@@ -21,7 +21,7 @@ class Racoon(commands.Cog):
                 rs = await response.json()
                 await session.close()
         
-        embed = nextcord.Embed(description = text, color = color)
+        embed = discord.Embed(description = text, color = color)
         embed.set_image(url=rs['link'])
         embed.set_footer(text='Powered by Some Random Api')
         await ctx.send(embed=embed)

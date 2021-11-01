@@ -1,6 +1,5 @@
-import commands.music.dismusic.errors as errors
-import nextcord
-from nextcord.ext import commands, tasks
+import discord
+from discord.ext import commands, tasks
 import os
 from os import path
 import asyncio
@@ -32,7 +31,7 @@ async def on_ready():
             await log.debug(cog=cog_name,message='Running on Heroku')
     except: pass
 
-    await client.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.listening, name=f"{config.PREFIX[0]}help"))
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"{config.PREFIX[0]}help"))
 
 
 @client.command()
@@ -261,18 +260,6 @@ async def on_command_error(ctx, error):
     elif isinstance(error,commands.EmojiNotFound):
         return
 
-    elif isinstance(error,errors.NotConnectedToVoice):
-        await ctx.send(error)
-        return
-
-    elif isinstance(error,errors.PlayerNotConnected):
-        await ctx.send(error)
-        return
-
-    elif isinstance(error,errors.MustBeSameChannel):
-        await ctx.send(error)
-        return
-
     else:
         await log.logger(ctx,name,cog_name,'ERROR',error)
         raise error
@@ -292,16 +279,6 @@ if __name__ == '__main__':
     print('----------')
     print('Loading Cogs')
     print('----------')
-    client.lava_nodes = [
-        {
-            'host': 'lava.link',
-            'port': 80,
-            'rest_uri': 'http://lava.link:80',
-            'identifier': 'MAIN',
-            'password': 'OMEGA',
-            'region': 'singapore'
-        }
-    ]
     load_cogs()
     print("All cogs loaded")
     print("----------")

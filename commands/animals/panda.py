@@ -1,5 +1,5 @@
-import nextcord, aiohttp
-from nextcord.ext import commands
+import discord, aiohttp
+from discord.ext import commands
 import APIs.color as rang
 import loggers.logger as log
 
@@ -29,7 +29,7 @@ class Panda(commands.Cog):
                 rs = await response.json()
                 await session.close()
         
-        embed = nextcord.Embed(description = text, color = color)
+        embed = discord.Embed(description = text, color = color)
         embed.set_image(url=rs['link'])
         embed.set_footer(text='Powered by Some Random Api')
         await ctx.send(embed=embed)

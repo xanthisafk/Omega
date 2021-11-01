@@ -18,8 +18,7 @@ class Credits(commands.Cog):
         embed = discord.Embed(title='Credits', color =  color)
 
         about = f"""Made by Xanthis. (cupnoodle#3924)
-This bot uses [discord](https://github.com/discord/discord) Python library.
-Previously, this bot used [discord.py](https://github.com/rapptz/discord.py) Python library.
+This bot uses [discord.py](https://github.com/rapptz/discord.py) Python library.
 This bot's owner(s) are set to:"""
 
         j=1
@@ -50,8 +49,7 @@ This bot's owner(s) are set to:"""
 
         libs =  """***In no particular order***
 [aiohttp](https://docs.aiohttp.org/en/stable/)
-[discord.py](https://github.com/discord/discord)
-*[discord.py](https://github.com/Rapptz/discord.py)* ***(Not used anymore)***
+[discord.py](https://github.com/Rapptz/discord.py)
 [emojifier](https://github.com/MakufonSkifto/Emojifier)
 [psycopg2](https://www.psycopg.org/docs/)
 [requests](https://docs.python-requests.org/en/latest/)

@@ -17,12 +17,12 @@ class Avatar(commands.Cog):
         if user == None:
             nm = ctx.author.name + " 's avatar."
             embed = discord.Embed(title=nm, color=color)
-            embed.set_image(url=ctx.author.display_avatar.url)
+            embed.set_image(url=ctx.author.avatar_url)
 
         else:
             nm = user.name + "'s avatar."
             embed = discord.Embed(title=nm, color=color)
-            embed.set_image(url=user.display_avatar.url)
+            embed.set_image(url=user.avatar_url)
 
         await ctx.send(embed=embed)
         await logger(ctx, name, self.cog_name,"INFO")

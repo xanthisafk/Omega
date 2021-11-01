@@ -37,7 +37,7 @@ class Snipe(commands.Cog):
         if msg == None:
             return await ctx.send('No message to snipe!')
         try:
-            thumb = msg.author.display_avatar.url
+            thumb = msg.author.avatar_url
         except Exception as e:
             if isinstance(e, NameError):
                 await ctx.send("There is nothing to snipe...")
@@ -60,7 +60,7 @@ class Snipe(commands.Cog):
     async def editsnipe(self, ctx):
         global before, after
         try:
-            thumb = before.author.display_avatar.url
+            thumb = before.author.avatar_url
         except Exception as e:
             if isinstance(e, NameError):
                 return await ctx.send("There is nothing to snipe...")

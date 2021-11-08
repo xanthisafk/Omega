@@ -11,10 +11,9 @@ class Avatar(commands.Cog):
         self.cog_name = __name__[9:]
 
     @commands.command(aliases=['av'])
-    async def avatar(self, ctx, user: discord.Member = None):
-        name = 'Avatar'
+    async def avatar(self, ctx, user = None):
         color = await rang.get_color()
-        if user == None:
+        if user == None or not isinstance(user, discord.Member):
             nm = ctx.author.name + " 's avatar."
             embed = discord.Embed(title=nm, color=color)
             embed.set_image(url=ctx.author.avatar_url)
@@ -24,8 +23,12 @@ class Avatar(commands.Cog):
             embed = discord.Embed(title=nm, color=color)
             embed.set_image(url=user.avatar_url)
 
+    @avatar.error
+    async def avatar_error(self, ctx, error):
+        await ctx.send("An unxpected error occured")
+        raise error
+
         await ctx.send(embed=embed)
-        await logger(ctx, name, self.cog_name,"INFO")
 
 
 def setup(bot):

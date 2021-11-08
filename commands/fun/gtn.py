@@ -8,7 +8,7 @@ from loggers.logger import logger
 class Guessthenumber(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.cog_name = __name__[9:].capitalize()
+        self.cog_name = __name__[9:]
 
     @commands.command(name="guessthenumber", aliases=[ "gtn"])
     async def numberguessergame(self, ctx, diff: str = 'easy'):
@@ -43,7 +43,7 @@ class Guessthenumber(commands.Cog):
                 except ValueError: 
                     return False
             return inner_check
-        
+
         try:
             for i in range(5):
                 try:

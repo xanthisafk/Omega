@@ -57,7 +57,7 @@ class About(commands.Cog):
         tot_a = f'{atk_count} auto trigger keywords are loaded.'
         field_val = tot_s+tot_c+tot_a
 
-        footer = f'v1.1 - Made by Xanthis!'
+        footer = f'v1.2 - Made by Xanthis!'
 
         thumb = self.client.user.avatar_url
 
@@ -67,7 +67,6 @@ class About(commands.Cog):
         embed.set_footer(text=footer)
         embed.set_thumbnail(url=thumb)
         await ctx.reply(embed=embed)
-        await log.logger(ctx, command_name, cog_name,"INFO")
 
 
 def setup(client):

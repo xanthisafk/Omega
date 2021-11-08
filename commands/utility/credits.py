@@ -2,7 +2,6 @@ import asyncio
 import discord, APIs.color as rang,config
 from discord.ext import commands
 from config import EMOTE_LEFT,EMOTE_RIGHT
-
 import loggers.logger as log
 
 
@@ -13,11 +12,16 @@ class Credits(commands.Cog):
 
     @commands.command(aliases=['credit'])
     async def credits(self, ctx):
-        name = 'Credits'
         color =  await rang.get_color()
         embed = discord.Embed(title='Credits', color =  color)
+        omega= r"""
+█▀▀█ █▀▄▀█ █▀▀ █▀▀▀ █▀▀█ 
+█──█ █─▀─█ █▀▀ █─▀█ █▄▄█ 
+▀▀▀▀ ▀───▀ ▀▀▀ ▀▀▀▀ ▀──▀
+"""
 
-        about = f"""Made by Xanthis. (cupnoodle#3924)
+        about = f"""{omega}
+        Made by Xanthis. (cupnoodle#3924)
 This bot uses [discord.py](https://github.com/rapptz/discord.py) Python library.
 This bot's owner(s) are set to:"""
 
@@ -34,7 +38,6 @@ This bot's owner(s) are set to:"""
 [Nekos.best](https://nekos.best)
 [Giphy](https://giphy.com)
 [Tenor](https://tenor.com)
-[Some Random Api](https://some-random-api.ml)
 
 **Fun**
 [icanhazdadjoke](https://icanhazdadjoke.com) (puns)
@@ -43,11 +46,13 @@ This bot's owner(s) are set to:"""
 [Dog.ceo](https://dog.ceo/) (Dog photos)
 [Random.cats](https://random.cats) (Cat photos)
 [Randomfox.ca](https://randomfox.ca) (Fox photos)
+[random-d.uk](https://random-d.uk) (Duck photos)
+[Some Random Api](https://some-random-api.ml) (Bird, Koala, Panda, Racoon photos)
 
 **Utility**
-[DiscordStatus.com](https://discordstatus.com) (Discrod status)"""
+[DiscordStatus.com](https://discordstatus.com) (Discord status)"""
 
-        libs =  """***In no particular order***
+        libs =  """**In no particular order**
 [aiohttp](https://docs.aiohttp.org/en/stable/)
 [discord.py](https://github.com/Rapptz/discord.py)
 [emojifier](https://github.com/MakufonSkifto/Emojifier)
@@ -55,7 +60,7 @@ This bot's owner(s) are set to:"""
 [requests](https://docs.python-requests.org/en/latest/)
 [text-to-owo](https://github.com/piethrower/OwO)
 [Pillow](https://pypi.org/project/Pillow/)
-[dismusic](https://pypi.org/project/dismusic/) - Modified to work with this bot
+[pyfiglet](https://github.com/pwaller/pyfiglet)
 [wavelink](https://github.com/PythonistaGuild/Wavelink)
 [redditeasy](https://pypi.org/project/redditeasy/)"""
 
@@ -110,9 +115,12 @@ This bot's owner(s) are set to:"""
             except asyncio.TimeoutError:
                 await message.clear_reaction(right_e)
                 await message.clear_reaction(left_e)
-                await message.edit(content="Message timed out")
-                break
-        await log.logger(ctx, name, self.cog_name,"INFO")
+                return await message.edit(content="Message timed out")
+
+    @credits.error
+    async def credits_error(self, ctx, error):
+        await ctx.send(f'An unxpected error occured')
+        raise error
 
 def setup(bot):
     bot.add_cog(Credits(bot))

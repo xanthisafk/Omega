@@ -5,13 +5,14 @@ from discord.ext import commands, tasks
 
 import APIs.color as rang
 import loggers.logger as log
+import config
 
 
 class Birthday(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.cog_name = __name__[9:].capitalize()
+        self.cog_name = __name__[9:]
 
     @tasks.loop(seconds=1)
     async def print_birthday(self):
@@ -19,7 +20,7 @@ class Birthday(commands.Cog):
         current_time = now.strftime("%H:%M:%S")
         if(current_time == '15:05:00'):
             await self.send_birthday()
-            return 0
+            return
 
     async def send_birthday(self):
         channel = self.client.get_channel(703316133717213285)
@@ -40,6 +41,16 @@ class Birthday(commands.Cog):
         embed.set_image(url='https://c.tenor.com/eDfWpD2K5m0AAAAC/hideri-anime.gif')
         await ctx.reply(embed=embed)
         await log.logger(ctx,name,self.cog_name,'INFO')
+
+    @start.error
+    async def start_error(self,ctx,err):
+        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        raise err
+
+    @birthday.error
+    async def birthday_error(self,ctx,err):
+        await ctx.end(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        raise err
 
 
 def setup(client):

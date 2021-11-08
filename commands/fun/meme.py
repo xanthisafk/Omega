@@ -18,7 +18,6 @@ class Meme(commands.Cog):
         """
         Sends a random meme from reddit.
         """
-        #subreddit = ["memes", "dankmemes", "meme", "memeeconomy", "dankmeme", "memeoftheday", "me_irl"]
         # Get a post from the subreddit
         post = await reddit.get_post("memes")
         # If there is no post, return
@@ -141,13 +140,15 @@ class Meme(commands.Cog):
         return await log.logger(ctx, "antimemes", self.cog_name,"INFO")
 
     @_prequelmeme.error
-    async def prequelmeme_error(self, ctx, error):
+    async def antimeme_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.reply(f"{config.EMOTE_WARNING} You are on cooldown for {round(error.retry_after,1)} seconds")
         else:
             await ctx.send(f"{config.EMOTE_ERROR} An error occured")
-            log.logger(ctx, "prequelmeme", self.cog_name, "ERROR")
+            raise error
 
+
+    
 
 
 

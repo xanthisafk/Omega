@@ -16,25 +16,20 @@ class Emoteicon(commands.Cog):
         color = await rang.get_color()
 
         if emote == None:
-            await ctx.send("Please mention an emoji")
-            return
+            raise commands.MissingRequiredArgument('emoji')
 
-        try:
-
-            embed = discord.Embed(title=emote.name, description=(f'From: {emote.guild.name}'), color=color)
-            embed.set_image(url=emote.url)
-            await ctx.send(embed=embed)
-            await log.logger(ctx, name, self.cog_name, "INFO")
-        except Exception as error:
-            await log.logger(ctx, name, self.cog_name, "ERROR" ,error)
+        embed = discord.Embed(title=emote.name, description=(f'From: {emote.guild.name}'), color=color)
+        embed.set_image(url=emote.url)
+        await ctx.send(embed=embed)
     
     @emoji.error
     async def emoji_error(self,ctx,error):
         if isinstance(error,commands.EmojiNotFound):
             await ctx.send(f'{error.argument} is not a valid emoji.')
-            await log.logger(ctx, 'Emoji', self.cog_name, "ERROR" ,error)
+        elif isinstance(error,commands.MissingRequiredArgument):
+            await ctx.send(f'You need to specify an emoji.')
         else:
-            await log.logger(ctx, 'Emoji', self.cog_name, "ERROR" ,error)
+            await ctx.send(f"An unxpected error occured.")
             raise error
 
 def setup(bot):

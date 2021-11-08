@@ -6,15 +6,21 @@ import discord
 from discord.ext import commands
 
 from loggers.logger import logger
+from config import EMOTE_ERROR
+
+class MissingQuestion(Exception):
+    def __init__(self):
+        super().__init__(f'{EMOTE_ERROR} You need to ask a question for 🎱 to work.')
 
 
 class EightBall(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.cog_name = __name__[9:].capitalize()
-        
+        self.cog_name = __name__[9:]
+
 
     @commands.command(name='8ball')
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def ball_8(self, ctx, *, question: str = None) -> None:
 
         name = '8ball'
@@ -43,8 +49,7 @@ class EightBall(commands.Cog):
         ]
 
         if question is None:
-            await ctx.send("You need to ask a question for 🎱 to work.")
-            return
+            raise MissingQuestion()
 
         color = await rang.get_color()
 
@@ -69,6 +74,17 @@ class EightBall(commands.Cog):
         await message.edit(embed=embed)
         await logger(ctx,name,self.cog_name,'INFO')
 
+    @ball_8.error
+    async def ball_8_error(self, ctx, error):
+        if isinstance(error,commands.CommandInvokeError):
+            if isinstance(error.original, MissingQuestion):
+                await ctx.send(error.original)
+        elif isinstance(error,commands.CommandOnCooldown):
+            return await ctx.send(f'{EMOTE_ERROR} Command is on cooldown. Try again in {round(error.retry_after,1)} seconds.')
+
+        else: 
+            await ctx.send(f'{EMOTE_ERROR} An error has occured.')
+            raise error
 
 def setup(bot):
     bot.add_cog(EightBall(bot))

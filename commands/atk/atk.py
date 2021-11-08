@@ -1,5 +1,6 @@
 import random
 import re
+from datetime import datetime
 
 import APIs.db as pql
 import config
@@ -16,6 +17,8 @@ class ATK(commands.Cog):
                                 DB_PASS=config.DB_PASS, DB_NAME=config.DB_NAME)
         self.tempp = 0
         self.atks = {}
+        self.dt = {}
+        self.keys  = []
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -54,7 +57,10 @@ class ATK(commands.Cog):
         self.keys = []
         length = len(atk)
 
-        for i in range(0, length):
+        for i in range(length):
+            if range(length) == 0:
+                self.atks={}
+                return self.atks
             self.keys.append(atk[i][0])
 
         string = "SELECT value FROM atks"
@@ -95,17 +101,16 @@ class ATK(commands.Cog):
 
         self.aignores = []
 
-        length = len(ignores)-1
+        length = len(ignores)
         if length == 0:
-            length += 1
+            return self.aignores
 
-        for i in range(0, length):
+        for i in range(length):
             self.aignores.append(ignores[i][0])
-
         return self.aignores
 
     @commands.command(aliases=["atk_ignore"])
-    async def ignore(self, ctx: commands.Context) -> None:
+    async def ignore(self, ctx: commands.Context, user = None) -> None:
         """
         Adds the user to a list of ignored users. People who use this function no longer trigger ATKs.
 
@@ -115,25 +120,32 @@ class ATK(commands.Cog):
             None (Adds user to database)
         """
         command_name = "Ignore"
-        try:
+        if user is None or not isinstance(user, discord.Member):
             id = str(ctx.author.id)
+        else:
+            if ctx.author.has_permissions(administrator=True):
+                id = str(user.id) + "--admin"
+            else:
+                raise commands.MissingRole()
 
-            data = self.aignores
+        data = self.aignores
 
-            if id in data:
-                await ctx.reply(f'{config.EMOTE_ERROR} Error: You are already on list.')
-                return
+        if id in data:
+            await ctx.reply(f'{config.EMOTE_ERROR} Error: You are already on list.')
+            return
 
-            await self.p.insert(table='ignores', fields='id', values=id)
-            await self.p.commit()
-            await self.get_new_ignores()
-            await ctx.reply(f"{config.EMOTE_OK} Success: You are added to list")
-            await log.logger(ctx,command_name,self.cog_name,'INFO')
-
-        except Exception as e:
-            await ctx.reply("Something went wrong")
-            await log.logger(ctx,command_name,self.cog_name,'ERROR', e)
-            raise e
+        await self.p.insert(table='ignores', fields='id', values=id)
+        await self.p.commit()
+        await self.get_new_ignores()
+        await ctx.reply(f"{config.EMOTE_OK} Success: You are added to list")
+    
+    @ignore.error
+    async def ignore_error(self, ctx: commands.Context, error):
+        if isinstance(error, commands.MissingRole):
+            await ctx.reply(f'{config.EMOTE_ERROR} Error: You do not have permission to use this command.')
+        else:
+            await ctx.reply(f"{config.EMOTE_ERROR} Something unexpected happened.")
+            raise error
 
     @commands.command(aliases=["atk_unignore"])
     async def unignore(self, ctx: commands.Context) -> None:
@@ -158,11 +170,9 @@ class ATK(commands.Cog):
             await self.p.commit()
             await self.get_new_ignores()
             await ctx.reply(f"{config.EMOTE_OK} Success: You are removed from ignore list.")
-            await log.logger(ctx,command_name,self.cog_name,'INFO')
 
         except Exception as e:
             await ctx.reply("Something went wrong")
-            await log.logger(ctx,command_name,self.cog_name,'ERROR', e)
             raise e
 
     @commands.command(aliases=["atk_add"])
@@ -210,12 +220,10 @@ class ATK(commands.Cog):
             else:
                 e = f'{config.EMOTE_ERROR} Error: `{name}` could not be bound'
                 await ctx.send(e)
-                await log.logger(ctx,command_name,self.cog_name,'ERROR',e)
 
         except Exception as e:
 
             await ctx.send(f"{config.EMOTE_ERROR}: Something went wrong.")
-            await log.logger(ctx,command_name,self.cog_name,'ERROR',e)
             raise e
 
     @commands.command(aliases=["atk_remove", "atk_delete"])
@@ -256,73 +264,102 @@ class ATK(commands.Cog):
         value back.
 
         args:
-            message: discord.Context -> Contains all the information needed to process the message
+            message: discord.Message -> The message
         returns:
             None
         """
 
+        # If messege sender is the bot, ignore
         if message.author == self.client.user or message.author.bot:
             return
         try:
+            # If message sender is in ignore list, ignore
             if str(message.author.id) in self.aignores:
                 return
         except Exception:
             pass
 
+        # Check for timestamp
+        def check():
+            try:
+                last = self.dt[message.guild.id][message.author.id]
+            except: return True
+
+            if (datetime.utcnow() - last).total_seconds() < 5:
+                for x in message.mentions:
+                    if(x == self.client.user):
+                        return False
+                return False
+            else:
+                return True
+
+        # Check for URL
+        def urlcheck():
+            if re.search(r'(https?://\S+)', message.content): return False
+            else: return True
+
+        # Check if message starts with special characters
+        spechar = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '{', '}', '[', ']', '|', '\\', ':', '"', '<', '>', '?', '/', '`', '~', '.', ',']
+        def specialcheck():
+            if any (x in message.content for x in spechar): return False
+            else: return True
+
+        # Lower case message
         s = message.content.lower()
 
+        # Split message into words
         split_s = s.split(' ')
 
-        if s.startswith('>'):
+        # if sentence starts with a special characters, ignore
+        for i in spechar:
+            if s.startswith(i):
+                return
+
+        # if sentence starts with prefix, ignore
+        if any (x in s for x in config.PREFIX):
             return
 
+        # If message starts with prefix
         for word in split_s:
-
-            if word.startswith(':') or word.startswith('>') or word.startswith('-'):
-                return
-
-            if re.search(r'\bnooooo', word):
-
-                await message.channel.send(random.choice(self.atks['nooooo']))
-                await log.logger(message,s,self.cog_name,'INFO')
-                return
-            
-            if re.search(r'\bhhh', word):
-
-                await message.channel.send(self.atks['hhh'])
-                await log.logger(message,s,self.cog_name,'INFO')
-
-        try:
-            for word in self.atks:
-
-                check1 = r":"+word+r":"
-                check2 = r"\b-"+word+r"\b"
-                check3 = r"\b>"+word+r"\b"
-                if re.search(check1, s) or re.search(check2, s) or re.search(check3, s):
+            for i in config.PREFIX:
+                if word.startswith(i):
                     return
 
-                regex_string = r"\b"+word + r"\b"
+            if re.search(r'\bnooooo', word):
+                if check():
+                    await message.channel.send(random.choice(self.atks['nooooo']))
+                else:
+                    return await message.add_reaction(random.choice(['⌚','⏳','⏰','🕛','🕐','🕖','🕕','🕔','🕚','🕙','🕓','🕒','🕗','🕑']))
+                return self.dt.update({message.guild.id: {message.author.id: datetime.utcnow()}})
 
-                if re.search(regex_string, s):
+            if re.search(r'\bhhh', word):
+                if check():
+                    await message.channel.send(self.atks['hhh'])
+                else:
+                    return await message.add_reaction(random.choice(['⌚','⏳','⏰','🕛','🕐','🕖','🕕','🕔','🕚','🕙','🕓','🕒','🕗','🕑']))
+                return self.dt.update({message.guild.id: {message.author.id: datetime.utcnow()}})
 
-                    if type(self.atks[word]) == list:
-                        await message.channel.send(random.choice(self.atks[word]))
-                        await log.logger(message,s,self.cog_name,'INFO')
-                        return
+        potential_atk = []
+        for i in self.keys:
+            if i in s:
+                potential_atk.append(i)
 
+        if len(potential_atk) <= 0:
+            return
+        
+        potential_atk.sort(key=len, reverse=True)
+        
+        for i in potential_atk:
+            regex = re.compile(rf'\b{i}\b')
+            if regex.search(s):
+                if check():
+                    if type(self.atks[i]) == list:
+                        await message.channel.send(random.choice(self.atks[i]))
                     else:
-                        await message.channel.send(self.atks[word])
-                        await log.logger(message,s,self.cog_name,'INFO')
-                        return
-
-        except Exception as e:
-
-            if isinstance(e, IndexError):
-                await message.channel.send("Please enter in format of `text1, text2` (Comma is important)")
-            else:
-                await message.channel.send('Something went wrong.')
-                await log.logger(message,s,self.cog_name,'ERROR',e)
-                raise e
+                        await message.channel.send(self.atks[i])
+                else:
+                    return await message.add_reaction(random.choice(['⌚','⏳','⏰','🕛','🕐','🕖','🕕','🕔','🕚','🕙','🕓','🕒','🕗','🕑']))
+                return self.dt.update({message.guild.id: {message.author.id: datetime.utcnow()}})
 
         for x in message.mentions:
             if(x == self.client.user):
@@ -330,10 +367,34 @@ class ATK(commands.Cog):
                     await message.channel.send('Sorry, I\'m busy right now:')
                     await message.channel.send('https://media.discordapp.net/attachments/845191720224161824/889751939053682748/coom.png')
 
-                    s = 'Mentioned'
-                    await log.logger(message,s,self.cog_name,'INFO')
                 else:
                     return
+
+    @commands.command(name='flush', aliases=['flush_atks','reload_atk','reload_atks','flush_irgnore','flush_ignores'])
+    @commands.is_owner()
+    async def flush_atks(self, ctx) -> None:
+        await self.get_new_atks()
+        await self.get_new_ignores()
+        await ctx.message.add_reaction(config.EMOTE_OK)
+
+    @commands.command(name='atk_list', aliases=['atk_list_all','atk_list_all_atks','list_atk','listatk'])
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def atk_list(self, ctx) -> None:
+        cog = self.client.get_cog('Help')
+        await ctx.invoke(cog.atk_help)
+
+    @flush_atks.error
+    async def flush_atks_error(self, ctx, error):
+        await ctx.message.add_reaction(config.EMOTE_ERROR)
+        raise error
+
+    @atk_list.error
+    async def atk_list_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(f'{config.EMOTE_ERROR} You are on cooldown for next {error.retry_after}')
+        else:
+            await ctx.reply("Some unexpected error occured")
+            raise error
 
 
 

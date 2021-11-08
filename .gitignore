@@ -19,3 +19,4 @@ pyvenv.cfg
 Lib
 Lavalink.jar
 application.yml
+files/logs

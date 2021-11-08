@@ -1,3 +1,9 @@
+# https://www.youtube.com/watch?v=OGeu_IS0o1A
+# This entire code is based on this tutorial. ^^^
+# A lot of changes were made to the code so that it would behave like I wanted to.
+# I also added a few more things to make it more user friendly.
+# Thank you https://github.com/Carberra/discord.py-music-tutorial
+
 import asyncio
 import datetime as dt
 import enum
@@ -8,89 +14,111 @@ from enum import Enum
 
 import aiohttp
 import discord
+from discord.ext.commands.errors import CommandInvokeError
 import wavelink
 from discord.ext import commands
-from config import EMOTE_ERROR,EMOTE_OK,EMOTE_WARNING
+from config import EMOTE_ERROR, EMOTE_LEFT,EMOTE_OK, EMOTE_RIGHT,NAME as configname, EMOTE_ZERO,EMOTE_ONE,EMOTE_TWO,EMOTE_THREE,EMOTE_FOUR,EMOTE_FIVE,EMOTE_SIX
+
+rang = [
+    0x6100fd, 0xf800b8, 0xff0074, 0xff7343, 0xffbe39, 0xf9f871
+]
 
 URL_REGEX = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
 LYRICS_URL = "https://some-random-api.ml/lyrics?title="
 HZ_BANDS = (20, 40, 63, 100, 150, 250, 400, 450, 630, 1000, 1600, 2500, 4000, 10000, 16000)
 TIME_REGEX = r"([0-9]{1,2})[:ms](([0-9]{1,2})s?)?"
 OPTIONS = {
-    "1️⃣": 0,
-    "2⃣": 1,
-    "3⃣": 2,
-    "4⃣": 3,
-    "5⃣": 4,
+    EMOTE_ONE: 0,
+    EMOTE_TWO: 1,
+    EMOTE_THREE: 2,
+    EMOTE_FOUR: 3,
+    EMOTE_FIVE: 4,
 }
 
 
 class AlreadyConnectedToChannel(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Already connected to a channel.")
 
 
 class NoVoiceChannel(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} No voice channel found.")
 
 
 class QueueIsEmpty(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Queue is empty.")
 
 
 class NoTracksFound(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} No tracks found.")
 
 
 class PlayerIsAlreadyPaused(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Player is already paused.")
 
 
 class NoMoreTracks(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} No more tracks.")
 
 
 class NoPreviousTracks(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} No previous tracks.")
 
 
 class InvalidRepeatMode(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Invalid repeat mode.")
 
 
 class VolumeTooLow(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Volume too low.")
 
 
 class VolumeTooHigh(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Volume too high.")
 
 
 class MaxVolume(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Volume is at maximum.")
 
 
 class MinVolume(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Volume is at minimum.")
 
 
 class NoLyricsFound(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} No lyrics found.")
 
 
 class InvalidEQPreset(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Invalid EQ preset.")
 
 
 class NonExistentEQBand(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Non-existent EQ band.")
 
 
 class EQGainOutOfBounds(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Gain out of bounds.")
 
 
 class InvalidTimeString(commands.CommandError):
-    pass
+    def __init__(self):
+        super().__init__(f"{EMOTE_ERROR} Invalid time string.")
 
 
 class RepeatMode(Enum):
@@ -181,6 +209,7 @@ class Player(wavelink.Player):
         super().__init__(*args, **kwargs)
         self.queue = Queue()
         self.eq_levels = [0.] * 15
+        self.cog_name = __name__[9:]
 
     async def connect(self, ctx, channel=None):
         if self.is_connected:
@@ -198,7 +227,7 @@ class Player(wavelink.Player):
         except KeyError:
             pass
 
-    async def add_tracks(self, ctx, tracks):
+    async def add_tracks(self, ctx, tracks, choose=False):
         if not tracks:
             raise NoTracksFound
 
@@ -208,9 +237,14 @@ class Player(wavelink.Player):
             self.queue.add(tracks[0])
             await ctx.send(f"Added {tracks[0].title} to the queue.")
         else:
-            if (track := await self.choose_track(ctx, tracks)) is not None:
-                self.queue.add(track)
-                await ctx.send(f"Added {track.title} to the queue.")
+            if choose == False:
+                if (track := tracks[0]) is not None:
+                    self.queue.add(track)
+                    await ctx.send(f"Added {track.title} to the queue.")
+            else:
+                if (track := await self.choose_track(ctx, tracks)) is not None:
+                    self.queue.add(track)
+                    await ctx.send(f"Added {track.title} to the queue.")
 
         if not self.is_playing and not self.queue.is_empty:
             await self.start_playback()
@@ -218,7 +252,7 @@ class Player(wavelink.Player):
     async def choose_track(self, ctx, tracks):
         def _check(r, u):
             return (
-                r.emoji in OPTIONS.keys()
+                str(r.emoji) in OPTIONS.keys()
                 and u == ctx.author
                 and r.message.id == msg.id
             )
@@ -231,10 +265,10 @@ class Player(wavelink.Player):
                     for i, t in enumerate(tracks[:5])
                 )
             ),
-            colour=ctx.author.colour,
+            colour=random.choice(rang),
             timestamp=dt.datetime.utcnow()
         )
-        embed.set_author(name="Query Results")
+        embed.set_author(name="Query Results", icon_url='https://i.ibb.co/CB0KQWM/icons8-search-64.png')
         embed.set_footer(text=f"Invoked by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
 
         msg = await ctx.send(embed=embed)
@@ -242,33 +276,34 @@ class Player(wavelink.Player):
             await msg.add_reaction(emoji)
 
         try:
-            reaction, _ = await self.bot.wait_for("reaction_add", timeout=60.0, check=_check)
+            reaction, _ = await self.bot.wait_for("reaction_add", timeout=20.0, check=_check)
         except asyncio.TimeoutError:
+            embed = discord.Embed(description=f'Playing **`{tracks[0]}`**')
             await msg.delete()
-            await ctx.message.delete()
         else:
             await msg.delete()
-            return tracks[OPTIONS[reaction.emoji]]
+            return tracks[OPTIONS[str(reaction.emoji)]]
 
     async def start_playback(self):
         await self.play(self.queue.current_track)
+
 
     async def advance(self):
         try:
             if (track := self.queue.get_next_track()) is not None:
                 await self.play(track)
-        except QueueIsEmpty:
+        except QueueIsEmpty: 
             pass
 
     async def repeat_track(self):
         await self.play(self.queue.current_track)
-
 
 class Music(commands.Cog, wavelink.WavelinkMixin):
     def __init__(self, bot):
         self.bot = bot
         self.wavelink = wavelink.Client(bot=bot)
         self.bot.loop.create_task(self.start_nodes())
+        self.botchannel = {}
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
@@ -278,7 +313,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
     @wavelink.WavelinkMixin.listener()
     async def on_node_ready(self, node):
-        print(f" Wavelink node `{node.identifier}` ready.")
+        print(f"Music connected to node: `{node.identifier}`")
 
     @wavelink.WavelinkMixin.listener("on_track_stuck")
     @wavelink.WavelinkMixin.listener("on_track_end")
@@ -288,10 +323,27 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             await payload.player.repeat_track()
         else:
             await payload.player.advance()
+            embed = discord.Embed(color = random.choice(rang), timestamp=dt.datetime.utcnow())
+            embed.set_author(name="Now Playing", icon_url='https://i.ibb.co/2dnLj8b/icons8-play-64.png')
+            try:
+                embed.add_field(name="Title", value=payload.player.queue.current_track.title)
+            except:
+                await payload.player.teardown()
+                self.botchannel.update({payload.player.guild_id: None})
+                return
+            embed.add_field(name="Uploader", value=payload.player.queue.current_track.author)
+            embed.set_thumbnail(url=payload.player.queue.current_track.thumb)
+
+            position = divmod(payload.player.position, 60000)
+            length = divmod(payload.player.queue.current_track.length, 60000)
+            embed.add_field(name="Position",value=f"{int(position[0])}:{round(position[1]/1000):02}/{int(length[0])}:{round(length[1]/1000):02}")
+
+            channel = self.bot.get_channel(self.botchannel[payload.player.guild_id])
+            await channel.send(embed=embed)
 
     async def cog_check(self, ctx):
         if isinstance(ctx.channel, discord.DMChannel):
-            await ctx.send("Music commands are not available in DMs.")
+            await ctx.send(f"{EMOTE_ERROR} Music commands are not available in DMs.")
             return False
 
         return True
@@ -305,7 +357,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
                 "port": 2333,
                 "rest_uri": "http://127.0.0.1:2333",
                 "password": "youshallnotpass",
-                "identifier": "OMEGA",
+                "identifier": configname,
                 "region": "india",
             }
         }
@@ -323,22 +375,48 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     async def connect_command(self, ctx, *, channel: t.Optional[discord.VoiceChannel]):
         player = self.get_player(ctx)
         channel = await player.connect(ctx, channel)
-        await ctx.send(f"Connected to {channel.name}.")
+        embed = discord.Embed(color=random.choice(rang), timestamp=dt.datetime.utcnow())
+        embed.set_author(name="Connection", icon_url='https://i.ibb.co/9tggL7N/icons8-connected-64.png')
+        embed.set_footer(text=f"{ctx.author}", icon_url=ctx.author.avatar_url)
+        embed.description = f"Connected to **`{channel.name}`**"
+        await ctx.send(embed=embed)
+        self.botchannel.update({ctx.guild.id: ctx.channel.id})
 
     @connect_command.error
     async def connect_command_error(self, ctx, exc):
         if isinstance(exc, AlreadyConnectedToChannel):
-            await ctx.send("Already connected to a voice channel.")
+            await ctx.send(f"{EMOTE_ERROR} Already connected to a voice channel.")
         elif isinstance(exc, NoVoiceChannel):
-            await ctx.send("No suitable voice channel was provided.")
+            await ctx.send(f"{EMOTE_ERROR} No suitable voice channel was provided.")
+        else: raise exc
 
-    @commands.command(name="disconnect", aliases=["leave"])
+    @commands.command(name="disconnect", aliases=["leave", "dc", "clear"])
     async def disconnect_command(self, ctx):
         player = self.get_player(ctx)
         await player.teardown()
-        await ctx.send("Disconnected.")
+        embed = discord.Embed(color=random.choice(rang), timestamp=dt.datetime.utcnow())
+        embed.set_author(name="Connection", icon_url='https://i.ibb.co/6Jzs4mF/icons8-disconnected-64.png')
+        embed.set_footer(text=f"{ctx.author}", icon_url=ctx.author.avatar_url)
+        embed.description = "Successfully disconnected"
+        await ctx.send(embed=embed)
+        self.botchannel.update({ctx.guild.id: None})
+    
+    @disconnect_command.error
+    async def disconnect_command_error(self, ctx, exc):
+        await ctx.send(f'{EMOTE_ERROR} An unexpected error occured.')
+        raise exc
+    
+    @commands.command(name="resume", aliases=["unpause"])
+    async def resume_command(self, ctx):
+        player = self.get_player(ctx)
+        await player.set_pause(False)
+        embed = discord.Embed(color=random.choice(rang), timestamp=dt.datetime.utcnow())
+        embed.set_author(name="Player", icon_url='https://i.ibb.co/mcPgy27/icons8-circled-play-64-1.png')
+        embed.set_footer(text=f"{ctx.author}", icon_url=ctx.author.avatar_url)
+        embed.description = "Resumed"
+        await ctx.send(embed=embed)
 
-    @commands.command(name="play")
+    @commands.command(name="play",aliases=['p'])
     async def play_command(self, ctx, *, query: t.Optional[str]):
         player = self.get_player(ctx)
 
@@ -350,21 +428,38 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
                 raise QueueIsEmpty
 
             await player.set_pause(False)
-            await ctx.send("Playback resumed.")
+            embed = discord.Embed(color=random.choice(rang), timestamp=dt.datetime.utcnow())
+            embed.set_author(name="Player", icon_url='https://i.ibb.co/mcPgy27/icons8-circled-play-64-1.png')
+            embed.set_footer(text=f"{ctx.author}", icon_url=ctx.author.avatar_url)
+            embed.description = "Resumed"
+            await ctx.send(embed=embed)
 
         else:
+            if '--choose' in query:
+                query = query.replace('--choose', '')
+                choose = True
+            else:
+                choose = False
             query = query.strip("<>")
             if not re.match(URL_REGEX, query):
                 query = f"ytsearch:{query}"
+            if not player.is_playing and player.queue.is_empty:
+                await player.add_tracks(ctx, await self.wavelink.get_tracks(query),choose)
+                await ctx.invoke(self.playing_command)
+            else:
+                await player.add_tracks(ctx, await self.wavelink.get_tracks(query),choose)
 
-            await player.add_tracks(ctx, await self.wavelink.get_tracks(query))
+        self.botchannel.update({ctx.guild.id: ctx.channel.id})
 
     @play_command.error
     async def play_command_error(self, ctx, exc):
         if isinstance(exc, QueueIsEmpty):
-            await ctx.send("No songs to play as the queue is empty.")
+            await ctx.send(exc)
         elif isinstance(exc, NoVoiceChannel):
-            await ctx.send("No suitable voice channel was provided.")
+            await ctx.send(exc)
+        else:
+            await ctx.send(f'{EMOTE_ERROR} An unexpected error occured.')
+            raise exc
 
     @commands.command(name="pause")
     async def pause_command(self, ctx):
@@ -374,38 +469,50 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             raise PlayerIsAlreadyPaused
 
         await player.set_pause(True)
-        await ctx.send("Playback paused.")
+        embed = discord.Embed(description = "Paused the player",color=random.choice(rang), timestamp=dt.datetime.utcnow())
+        embed.set_author(name="Player", icon_url='https://i.ibb.co/Cs5fMSS/icons8-pause-button-64-1.png')
+        embed.set_footer(text=f"{ctx.author}", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
 
     @pause_command.error
     async def pause_command_error(self, ctx, exc):
         if isinstance(exc, PlayerIsAlreadyPaused):
-            await ctx.send("Already paused.")
+            await ctx.send(f"{EMOTE_ERROR} Player Already paused.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
     @commands.command(name="stop")
     async def stop_command(self, ctx):
         player = self.get_player(ctx)
         player.queue.empty()
         await player.stop()
-        await ctx.send("Playback stopped.")
+        embed = discord.Embed(description = "Stopped",color=random.choice(rang), timestamp=dt.datetime.utcnow())
+        embed.set_author(name="Player", icon_url='https://i.ibb.co/9hbsQWR/icons8-stop-64.png')
+        embed.set_footer(text=f"{ctx.author}", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
 
     @commands.command(name="next", aliases=["skip"])
     async def next_command(self, ctx):
         player = self.get_player(ctx)
 
         if not player.queue.upcoming:
-            raise NoMoreTracks
+            return await ctx.invoke(self.stop_command)
+            #raise NoMoreTracks
 
         await player.stop()
-        await ctx.send("Playing next track in queue.")
 
     @next_command.error
     async def next_command_error(self, ctx, exc):
         if isinstance(exc, QueueIsEmpty):
-            await ctx.send("This could not be executed as the queue is currently empty.")
+            await ctx.send(f"{EMOTE_ERROR} Queue is empty.")
         elif isinstance(exc, NoMoreTracks):
-            await ctx.send("There are no more tracks in the queue.")
+            await ctx.send(f"{EMOTE_ERROR} No more tracks in queue")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occured.")
+            raise exc
 
-    @commands.command(name="previous")
+    @commands.command(name="previous", aliases=["prev","last"])
     async def previous_command(self, ctx):
         player = self.get_player(ctx)
 
@@ -414,36 +521,132 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
         player.queue.position -= 2
         await player.stop()
-        await ctx.send("Playing previous track in queue.")
 
     @previous_command.error
     async def previous_command_error(self, ctx, exc):
         if isinstance(exc, QueueIsEmpty):
-            await ctx.send("This could not be executed as the queue is currently empty.")
+            await ctx.send(f"{EMOTE_ERROR} Queue is empty.")
         elif isinstance(exc, NoPreviousTracks):
-            await ctx.send("There are no previous tracks in the queue.")
+            await ctx.send(f"{EMOTE_ERROR} There are no previous tracks in the queue.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
     @commands.command(name="shuffle")
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def shuffle_command(self, ctx):
         player = self.get_player(ctx)
         player.queue.shuffle()
-        await ctx.send("Queue shuffled.")
+        embed = discord.Embed()
+        embed.set_author(name="Player", icon_url="https://i.ibb.co/dbg9XxS/icons8-shuffle-64-1.png")
+        embed.set_footer(text=f"{ctx.author}", icon_url=ctx.author.avatar_url)
+        embed.description = "Shuffled the queue."
+        await ctx.send(embed=embed)
 
     @shuffle_command.error
     async def shuffle_command_error(self, ctx, exc):
-        if isinstance(exc, QueueIsEmpty):
-            await ctx.send("The queue could not be shuffled as it is currently empty.")
+        if isinstance(exc, commands.CommandInvokeError):
+            if isinstance(exc, QueueIsEmpty):
+                await ctx.send(f"{EMOTE_ERROR} The queue could not be shuffled as it is currently empty.")
+            else:
+                await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+                raise exc
+        elif isinstance(exc, commands.CommandOnCooldown):
+            await ctx.send(f"{EMOTE_ERROR} You are on cooldown. Please wait {round(exc.retry_after,1)} seconds.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
-    @commands.command(name="repeat")
-    async def repeat_command(self, ctx, mode: str):
-        if mode not in ("none", "1", "all"):
-            raise InvalidRepeatMode
-
+    @commands.command(name="repeat",aliases=['loop'])
+    @commands.cooldown(1, 60, commands.BucketType.user)
+    async def repeat_command(self, ctx, mode: str=None):
         player = self.get_player(ctx)
-        player.queue.set_repeat_mode(mode)
-        await ctx.send(f"The repeat mode has been set to {mode}.")
+        if mode is None:
+            current = str(player.queue.repeat_mode).split(".")[1]
+            if current == "NONE":
+                current = "No repeat"
+            elif current == "ONE":
+                current = "Repeat current track"
+            elif current == "ALL":
+                current = "Repeat all tracks"
 
-    @commands.command(name="queue")
+            embed = discord.Embed(title='Current Mode', description=current, color=(random.choice(rang)))
+            embed.add_field(name='New repeat mode', value=f'{EMOTE_ONE}:\tNone\n{EMOTE_TWO}:\tOne\n{EMOTE_THREE}:\tAll', inline=False)
+            embed.set_author(name=f'Invoked by {ctx.author.display_name}', icon_url='https://i.ibb.co/Dgd6bTv/icons8-repeat-64.png')
+            
+            message = await ctx.send(embed=embed)
+
+            await message.add_reaction(EMOTE_ONE)
+            await message.add_reaction(EMOTE_TWO)
+            await message.add_reaction(EMOTE_THREE)
+
+            def check(reaction, user):
+                return user == ctx.author and str(reaction.emoji) in [EMOTE_ONE, EMOTE_TWO, EMOTE_THREE]
+
+            while True:
+                try:
+                    reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
+
+                    if str(reaction.emoji) == EMOTE_ONE:
+                        player.queue.set_repeat_mode("none")
+                        embed.description = 'No repeat'
+                        await message.edit(embed=embed)
+                        await message.remove_reaction(reaction, user)
+
+                    elif str(reaction.emoji) == EMOTE_TWO:
+                        player.queue.set_repeat_mode("1")
+                        embed.description = 'Repeat one song'
+                        await message.edit(embed=embed)
+                        await message.remove_reaction(reaction, user)
+
+                    elif str(reaction.emoji) == EMOTE_THREE:
+                        player.queue.set_repeat_mode("all")
+                        embed.description = 'Repeat all songs'
+                        await message.edit(embed=embed)
+                        await message.remove_reaction(reaction, user)
+
+                    else:
+                        await message.remove_reaction(reaction, user)
+
+                except asyncio.TimeoutError:
+                    await message.clear_reactions()
+                    embed.remove_field(0)
+                    await message.edit(embed=embed)
+                    return await message.edit(content=f"Message timed out.")
+
+        else:
+            mode = mode.lower()
+            if mode in ['one','single','current']:
+                mode = '1'
+            if mode not in ("none", "1", "all"):
+                raise InvalidRepeatMode
+
+            player.queue.set_repeat_mode(mode)
+
+            if mode == "none":
+                mode = "No repeat"
+            elif mode == "one":
+                mode = "Repeat current track"
+            elif mode == "all":
+                mode = "Repeat all tracks"
+
+            embed = discord.Embed(title='Updated repeat mode', description=f'Current:\t{mode}', color=(random.choice(rang)))
+            embed.set_author(name=f'Invoked by {ctx.author.display_name}', icon_url='https://i.ibb.co/Dgd6bTv/icons8-repeat-64.png')
+            return await ctx.send(embed=embed)
+
+    @repeat_command.error
+    async def repeat_command_error(self, ctx, exc):
+        if isinstance(exc, commands.CommandOnCooldown):
+            await ctx.send(f'{EMOTE_ERROR} Command is on cooldown. Try again in {round(exc.retry_after,1)} seconds.')
+        elif isinstance(exc, commands.CommandInvokeError):
+            if isinstance(exc.original, InvalidRepeatMode):
+                return await ctx.send(f"{EMOTE_ERROR} Invalid repeat mode.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
+
+    @commands.command(name="queue", aliases=["q", "playlist"])
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def queue_command(self, ctx, show: t.Optional[int] = 10):
         player = self.get_player(ctx)
 
@@ -451,16 +654,15 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             raise QueueIsEmpty
 
         embed = discord.Embed(
-            title="Queue",
             description=f"Showing up to next {show} tracks",
-            colour=ctx.author.colour,
+            colour= random.choice(rang),
             timestamp=dt.datetime.utcnow()
         )
-        embed.set_author(name="Query Results")
+        embed.set_author(name="Queue", icon_url="https://i.ibb.co/Stq2xxD/icons8-list-64.png")
         embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
         embed.add_field(
             name="Currently playing",
-            value=getattr(player.queue.current_track, "title", "No tracks currently playing."),
+            value=f'**{getattr(player.queue.current_track, "title", "No tracks currently playing.")}**',
             inline=False
         )
         if upcoming := player.queue.upcoming:
@@ -472,32 +674,123 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
         msg = await ctx.send(embed=embed)
 
+        if len(upcoming) > 10:
+            await msg.add_reaction(EMOTE_LEFT)
+            await msg.add_reaction(EMOTE_RIGHT)
+
+            def check(reaction, user):
+                return user == ctx.author and str(reaction.emoji) in [EMOTE_LEFT, EMOTE_RIGHT]
+            
+            while True:
+                try:
+                    reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
+
+                    if str(reaction.emoji) == EMOTE_LEFT:
+                        show -= 10
+                        if show == 0:
+                            show += 10
+                        
+                    elif str(reaction.emoji) == EMOTE_RIGHT:
+                        show += 10
+
+                    embed.clear_fields()
+                    embed.add_field(
+                                    name="Next up",
+                                    value="\n".join(t.title for t in upcoming[show-10:show]),
+                                    inline=False
+                                    )
+                    await msg.edit(embed=embed)
+                    await msg.remove_reaction(reaction, user)
+
+                except asyncio.TimeoutError:
+                    await msg.clear_reactions()
+                    return await msg.edit(content=f"Message timed out.")
+
     @queue_command.error
     async def queue_command_error(self, ctx, exc):
         if isinstance(exc, QueueIsEmpty):
-            await ctx.send("The queue is currently empty.")
+            await ctx.send(f"{EMOTE_ERROR} The queue is currently empty.")
+        elif isinstance(exc, commands.CommandOnCooldown):
+            await ctx.send(f'{EMOTE_ERROR} Command is on cooldown. Try again in {round(exc.retry_after,1)} seconds.')
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
+
 
     # Requests -----------------------------------------------------------------
 
     @commands.group(name="volume", invoke_without_command=True)
-    async def volume_group(self, ctx, volume: int):
+    async def volume_group(self, ctx, volume: int = None):
         player = self.get_player(ctx)
+        if volume is None:
+            embed = discord.Embed(color = random.choice(rang), timestamp=dt.datetime.utcnow())
+            embed.set_author(name=f'Volume', icon_url='https://i.ibb.co/6RBLQqK/icons8-speaker-64.png')
+            embed.add_field(name='Current volume', value=f'{player.volume}%', inline=False)
+            embed.set_footer(text=f'Requested by {ctx.author.display_name}', icon_url=ctx.author.avatar_url)
+            embed.add_field(name='Legend', value='🔉:\t**-10**\n🔊:\t**+10**', inline=False)
+            msg = await ctx.send(embed=embed)
 
-        if volume < 0:
-            raise VolumeTooLow
+            await msg.add_reaction('🔉')
+            await msg.add_reaction('🔊')
 
-        if volume > 150:
-            raise VolumeTooHigh
+            def check(reaction, user):
+                return user == ctx.author and str(reaction.emoji) in ['🔉', '🔊']
 
-        await player.set_volume(volume)
-        await ctx.send(f"Volume set to {volume:,}%")
+            while True:
+                try:
+                    reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
+
+                    volume = player.volume
+
+                    if str(reaction.emoji) == '🔉':
+                        volume -= 10
+                    elif str(reaction.emoji) == '🔊':
+                        volume += 10
+
+                    if volume < 0:
+                        volume = 0
+
+                    if volume > 150:
+                        volume = 150
+
+                    await player.set_volume(volume)
+                    embed.clear_fields()
+                    embed.add_field(name='Current volume', value=f'{player.volume}%', inline=False)
+                    await msg.edit(embed=embed)
+                    await msg.remove_reaction(reaction, user)
+
+                except asyncio.TimeoutError:
+                    await msg.clear_reactions()
+                    embed.clear_fields()
+                    await msg.edit(embed=embed, content=f"Message timed out.")
+
+        else:
+            
+            if volume < 0:
+                raise VolumeTooLow
+
+            if volume > 150:
+                raise VolumeTooHigh
+
+            await player.set_volume(volume)
+            embed = discord.Embed(
+                description=f"Volume set to {volume}%",
+                colour=random.choice(rang),
+                timestamp=dt.datetime.utcnow()
+            )
+            embed.set_author(name="Volume", icon_url="https://i.ibb.co/6RBLQqK/icons8-speaker-64.png")
+            embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
     @volume_group.error
     async def volume_group_error(self, ctx, exc):
         if isinstance(exc, VolumeTooLow):
-            await ctx.send("The volume must be 0% or above.")
+            await ctx.send(exc)
         elif isinstance(exc, VolumeTooHigh):
-            await ctx.send("The volume must be 150% or below.")
+            await ctx.send(exc)
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
     @volume_group.command(name="up")
     async def volume_up_command(self, ctx):
@@ -507,12 +800,22 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             raise MaxVolume
 
         await player.set_volume(value := min(player.volume + 10, 150))
-        await ctx.send(f"Volume set to {value:,}%")
+        embed = discord.Embed(
+                description=f"Volume set to {value:,}%",
+                colour=random.choice(rang),
+                timestamp=dt.datetime.utcnow()
+            )
+        embed.set_author(name="Volume", icon_url="https://i.ibb.co/6RBLQqK/icons8-speaker-64.png")
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
 
     @volume_up_command.error
     async def volume_up_command_error(self, ctx, exc):
         if isinstance(exc, MaxVolume):
             await ctx.send("The player is already at max volume.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
     @volume_group.command(name="down")
     async def volume_down_command(self, ctx):
@@ -522,12 +825,22 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             raise MinVolume
 
         await player.set_volume(value := max(0, player.volume - 10))
-        await ctx.send(f"Volume set to {value:,}%")
+        embed = discord.Embed(
+                description=f"Volume set to {value:,}%",
+                colour=random.choice(rang),
+                timestamp=dt.datetime.utcnow()
+            )
+        embed.set_author(name="Volume", icon_url="https://i.ibb.co/6RBLQqK/icons8-speaker-64.png")
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
 
     @volume_down_command.error
     async def volume_down_command_error(self, ctx, exc):
         if isinstance(exc, MinVolume):
-            await ctx.send("The player is already at min volume.")
+            await ctx.send(f"{EMOTE_ERROR} The player is already at min volume.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
     @commands.command(name="lyrics")
     async def lyrics_command(self, ctx, name: t.Optional[str]):
@@ -547,33 +860,93 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
                 embed = discord.Embed(
                     title=data["title"],
                     description=data["lyrics"],
-                    colour=ctx.author.colour,
+                    colour=random.choice(rang),
                     timestamp=dt.datetime.utcnow(),
                 )
                 embed.set_thumbnail(url=data["thumbnail"]["genius"])
-                embed.set_author(name=data["author"])
+                embed.set_author(name=data["author"], icon_url='https://i.ibb.co/W66B2xd/icons8-musical-notes-64.png')
                 await ctx.send(embed=embed)
 
     @lyrics_command.error
     async def lyrics_command_error(self, ctx, exc):
         if isinstance(exc, NoLyricsFound):
-            await ctx.send("No lyrics could be found.")
+            await ctx.send(f"{EMOTE_ERROR} No lyrics could be found.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
     @commands.command(name="eq")
-    async def eq_command(self, ctx, preset: str):
+    async def eq_command(self, ctx, preset: str = None):
         player = self.get_player(ctx)
 
-        eq = getattr(wavelink.eqs.Equalizer, preset, None)
-        if not eq:
-            raise InvalidEQPreset
+        if preset is None:
+            embed = discord.Embed(
+                description=f"Current preset: **{player.eq.name}**",
+                colour=random.choice(rang),
+                timestamp=dt.datetime.utcnow()
+            )
+            embed.set_author(name="Equalizer", icon_url="https://i.ibb.co/rwHVm3s/icons8-control-panel-64.png")
+            embed.add_field(name="Presets", value=f"{EMOTE_ONE}:\tFlat\n{EMOTE_TWO}:\tBoost\n{EMOTE_THREE}:\tMetal\n{EMOTE_FOUR}:\tPiano", inline=False)
+            embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
+            msg =  await ctx.send(embed=embed)
 
-        await player.set_eq(eq())
-        await ctx.send(f"Equaliser adjusted to the {preset} preset.")
+            await msg.add_reaction(EMOTE_ONE)
+            await msg.add_reaction(EMOTE_TWO)
+            await msg.add_reaction(EMOTE_THREE)
+            await msg.add_reaction(EMOTE_FOUR)
+
+            def check(reaction, user):
+                return user == ctx.author and str(reaction.emoji) in [EMOTE_ONE, EMOTE_TWO, EMOTE_THREE, EMOTE_FOUR]
+
+            while True:
+                try:
+                    reaction, user = await self.bot.wait_for("reaction_add", timeout=60, check=check)
+
+                    if str(reaction.emoji) == EMOTE_ONE:
+                        preset = "flat"
+
+                    elif str(reaction.emoji) == EMOTE_TWO:
+                        preset = "boost"
+
+                    elif str(reaction.emoji) == EMOTE_THREE:
+                        preset = "metal"
+
+                    elif str(reaction.emoji) == EMOTE_FOUR:
+                        preset = "piano"
+
+                    eq = getattr(wavelink.eqs.Equalizer, preset, None)
+                    await player.set_eq(eq())
+
+                    embed.description = f"Current preset: **{player.eq.name}**"
+
+                    await msg.edit(embed=embed)
+                    await msg.remove_reaction(reaction.emoji, user)
+                
+                except asyncio.TimeoutError:
+                    embed.clear_fields()
+                    await msg.clear_reactions()
+                    await msg.edit(embed=embed)
+                    await msg.edit(content = "Message timed out.")
+
+        else:
+
+            eq = getattr(wavelink.eqs.Equalizer, preset, None)
+            if not eq:
+                raise InvalidEQPreset
+
+            await player.set_eq(eq())
+            embed = discord.Embed(description=f"Equalizer preset set to **{preset}**", colour=random.choice(rang), timestamp=dt.datetime.utcnow())
+            embed.set_author(name="Equalizer", icon_url="https://i.ibb.co/rwHVm3s/icons8-control-panel-64.png")
+            embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
     @eq_command.error
     async def eq_command_error(self, ctx, exc):
         if isinstance(exc, InvalidEQPreset):
-            await ctx.send("The EQ preset must be either 'flat', 'boost', 'metal', or 'piano'.")
+            await ctx.send("The EQ preset must be either **`flat`**, **`boost`**, **`metal`**, or **`piano`**.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
     @commands.command(name="adveq", aliases=["aeq"])
     async def adveq_command(self, ctx, band: int, gain: float):
@@ -591,17 +964,24 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         player.eq_levels[band - 1] = gain / 10
         eq = wavelink.eqs.Equalizer(levels=[(i, gain) for i, gain in enumerate(player.eq_levels)])
         await player.set_eq(eq)
-        await ctx.send("Equaliser adjusted.")
+        embed = discord.Embed(description=f"Equalizer adjusted:\nband **{band}** set to **{gain}**", colour=random.choice(rang), timestamp=dt.datetime.utcnow())
+        embed.set_author(name="Equalizer", icon_url="https://i.ibb.co/rwHVm3s/icons8-control-panel-64.png")
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
 
     @adveq_command.error
     async def adveq_command_error(self, ctx, exc):
-        if isinstance(exc, NonExistentEQBand):
+        if isinstance(exc, commands.MissingRequiredArgument):
+            await ctx.send(f"{EMOTE_ERROR} You must specify a band and gain.")
+        elif isinstance(exc, NonExistentEQBand):
             await ctx.send(
                 "This is a 15 band equaliser -- the band number should be between 1 and 15, or one of the following "
                 "frequencies: " + ", ".join(str(b) for b in HZ_BANDS)
             )
         elif isinstance(exc, EQGainOutOfBounds):
             await ctx.send("The EQ gain for any band should be between 10 dB and -10 dB.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
     @commands.command(name="playing", aliases=["np"])
     async def playing_command(self, ctx):
@@ -611,21 +991,20 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             raise PlayerIsAlreadyPaused
 
         embed = discord.Embed(
-            title="Now playing",
-            colour=ctx.author.colour,
+            colour=random.choice(rang),
             timestamp=dt.datetime.utcnow(),
         )
-        embed.set_author(name="Playback Information")
+        embed.set_author(name="Now playing", icon_url="https://i.ibb.co/2dnLj8b/icons8-play-64.png")
         embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
-        embed.add_field(name="Track title", value=player.queue.current_track.title, inline=False)
-        embed.add_field(name="Artist", value=player.queue.current_track.author, inline=False)
+        embed.add_field(name="Title", value=player.queue.current_track.title)
+        embed.add_field(name="Uploader", value=player.queue.current_track.author)
+        embed.set_thumbnail(url=player.queue.current_track.thumb)
 
         position = divmod(player.position, 60000)
         length = divmod(player.queue.current_track.length, 60000)
         embed.add_field(
             name="Position",
-            value=f"{int(position[0])}:{round(position[1]/1000):02}/{int(length[0])}:{round(length[1]/1000):02}",
-            inline=False
+            value=f"{int(position[0])}:{round(position[1]/1000):02}/{int(length[0])}:{round(length[1]/1000):02}"
         )
 
         await ctx.send(embed=embed)
@@ -633,7 +1012,10 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @playing_command.error
     async def playing_command_error(self, ctx, exc):
         if isinstance(exc, PlayerIsAlreadyPaused):
-            await ctx.send("There is no track currently playing.")
+            await ctx.send(f"{EMOTE_ERROR} There is no track currently playing.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
     @commands.command(name="skipto", aliases=["playindex"])
     async def skipto_command(self, ctx, index: int):
@@ -648,6 +1030,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         player.queue.position = index - 2
         await player.stop()
         await ctx.send(f"Playing track in position {index}.")
+        await ctx.invoke(self.playing_command)
 
     @skipto_command.error
     async def skipto_command_error(self, ctx, exc):
@@ -655,6 +1038,9 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             await ctx.send("There are no tracks in the queue.")
         elif isinstance(exc, NoMoreTracks):
             await ctx.send("That index is out of the bounds of the queue.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
     @commands.command(name="restart")
     async def restart_command(self, ctx):
@@ -665,11 +1051,15 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
         await player.seek(0)
         await ctx.send("Track restarted.")
+        await ctx.invoke(self.playing_command)
 
     @restart_command.error
     async def restart_command_error(self, ctx, exc):
         if isinstance(exc, QueueIsEmpty):
             await ctx.send("There are no tracks in the queue.")
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
     @commands.command(name="seek")
     async def seek_command(self, ctx, position: str):
@@ -688,6 +1078,17 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
         await player.seek(secs * 1000)
         await ctx.send("Seeked.")
+        await ctx.invoke(self.playing_command)
+    
+    @seek_command.error
+    async def seek_command_error(self, ctx, exc):
+        if isinstance(exc, QueueIsEmpty):
+            await ctx.send(exc)
+        elif isinstance(exc, InvalidTimeString):
+            await ctx.send(exc)
+        else:
+            await ctx.send(f"{EMOTE_ERROR} An unknown error occurred.")
+            raise exc
 
 
 def setup(bot):

@@ -2,8 +2,8 @@
     "emotes":{
 
         "blush":{
-            "desc": "Your cheeks turn red!😊 Blush at someone.",
-            "synt": ">blush [member]",
+            "desc": "Your cheeks turn red! 😊 Blush at someone.",
+            "synt": "$PREFIXblush [member]",
             "alis": "None",
             "opti": 1,
             "cate": "blush"
@@ -11,7 +11,7 @@
 
         "dance":{
             "desc": "Let your feet move to the rythm 💃🕺 Do the dance",
-            "synt": ">dance [member]",
+            "synt": "$PREFIXdance [member]",
             "alis": "None",
             "opti": 1,
             "cate": "dance"
@@ -19,7 +19,7 @@
 
         "wave":{
             "desc":"Say hi to someone... or just wave your hands",
-            "synt":">wave [member]",
+            "synt":"$PREFIXwave [member]",
             "alis":"None",
             "opti": 1,
             "cate": "wave"
@@ -27,7 +27,7 @@
 
         "sleep":{
             "desc":"Get some shut eye. Go to sleep. 💤",
-            "synt":">sleep",
+            "synt":"$PREFIXsleep",
             "alis":"None",
             "opti": 2,
             "cate": "sleep"
@@ -35,7 +35,7 @@
 
         "vibe":{
             "desc":"For when you are in the groove. Vibe to music",
-            "synt":">vibe [member]",
+            "synt":"$PREFIXvibe [member]",
             "alis":"None",
             "opti": 1,
             "cate": "vibe"
@@ -43,7 +43,7 @@
 
         "pat":{
             "desc":"Be proud and show some affection. Pat someone 🐱",
-            "synt":">pat [member]",
+            "synt":"$PREFIXpat [member]",
             "alis":"None",
             "opti": 0,
             "erro": "Mention someone to pat them",
@@ -52,7 +52,7 @@
 
         "cry":{
             "desc":"Let some tears go. Cry a bit.",
-            "synt":">cry [member]",
+            "synt":"$PREFIXcry [member]",
             "alis":"None",
             "opti": 1,
             "cate": "cry"
@@ -60,7 +60,7 @@
 
         "pout":{
             "desc":"Pout away 😾",
-            "synt":">pout [member]",
+            "synt":"$PREFIXpout [member]",
             "alis":"None",
             "opti": 1,
             "cate": "pout"
@@ -68,7 +68,7 @@
 
         "kiss":{
             "desc":"Let your affection speak for itself. Kiss someone!",
-            "synt":">kiss <member>",
+            "synt":"$PREFIXkiss <member>",
             "alis":"None",
             "opti": 0,
             "erro": "Mention someone to kiss them ¯\\_(ツ)_/¯",
@@ -77,7 +77,7 @@
 
         "bully":{
             "desc":"Bully someone. 💢",
-            "synt":">bully <member>",
+            "synt":"$PREFIXbully <member>",
             "alis":"None",
             "opti": 0,
             "erro": "Ok you asked me to bully but who? Why did you not mention them??",
@@ -86,7 +86,7 @@
 
         "cuddle":{
             "desc":"Cuddle with someone.",
-            "synt":">cuddle <member>",
+            "synt":"$PREFIXcuddle <member>",
             "alis":"None",
             "opti": 0,
             "erro": "Since you did not mention whom I should cuddle, have some cuddles from me (❁´◡`❁)",
@@ -95,7 +95,7 @@
 
         "hug":{
             "desc":"Hold someone close to yourself. Give them a hug.",
-            "synt":">hug <member>",
+            "synt":"$PREFIXhug <member>",
             "alis":"None",
             "opti": 0,
             "erro": "Tell me tell me who you want to hug?",
@@ -104,7 +104,7 @@
 
         "lick":{
             "desc":"lick... something",
-            "synt":">lick [member]",
+            "synt":"$PREFIXlick [member]",
             "alis":"None",
             "opti": 1,
             "cate": "lick"
@@ -112,7 +112,7 @@
 
         "smug":{
             "desc":"Get your smug face on :3",
-            "synt":">smug [member]",
+            "synt":"$PREFIXsmug [member]",
             "alis":"None",
             "opti": 1,
             "cate": "smug"
@@ -120,7 +120,7 @@
 
         "bonk":{
             "desc":"Hit someone on their head!",
-            "synt":">bonk [member]",
+            "synt":"$PREFIXbonk [member]",
             "alis":"None",
             "opti": 1,
             "cate": "bonk"
@@ -128,7 +128,7 @@
 
         "yeet":{
             "desc":"Yeet someone off this place.",
-            "synt":">yeet <member>",
+            "synt":"$PREFIXyeet <member>",
             "alis":"`throw`",
             "opti": 0,
             "erro": "Who needs to be yeeted off this planet?",
@@ -137,7 +137,7 @@
 
         "throw":{
             "desc":"Throw someone off this place.",
-            "synt":">throw <member>",
+            "synt":"$PREFIXthrow <member>",
             "alis":"`yeet`",
             "opti": 0,
             "erro": "Who needs to be thrown off this place?",
@@ -146,7 +146,7 @@
 
         "smile":{
             "desc":"Show off your happiness and smile a bit!",
-            "synt":">smile [member]",
+            "synt":"$PREFIXsmile [member]",
             "alis":"`happy`",
             "opti": 1,
             "cate": "smile"
@@ -154,7 +154,7 @@
 
         "happy":{
             "desc":"Show off your happiness and smile a bit!",
-            "synt":">happy [member]",
+            "synt":"$PREFIXhappy [member]",
             "alis":"`smile`",
             "opti": 1,
             "cate": "smile"
@@ -162,7 +162,7 @@
 
         "highfive":{
             "desc":"Highfive someone",
-            "synt":">highfive <member>",
+            "synt":"$PREFIXhighfive <member>",
             "alis":"None",
             "opti": 0,
             "erro": "You can not high five alone. That is called clapping. Mention who to highfive.",
@@ -171,7 +171,7 @@
 
         "handhold":{
             "desc":"Hold one's hands!",
-            "synt":">handhold <member>",
+            "synt":"$PREFIXhandhold <member>",
             "alis":"`hold`",
             "opti": 0,
             "erro": "Mention the person you want to hold hands with",
@@ -180,7 +180,7 @@
 
         "hold":{
             "desc":"Hold one's hands!",
-            "synt":">hold <member>",
+            "synt":"$PREFIXhold <member>",
             "alis":"`handhold`",
             "opti": 0,
             "erro": "Mention the person you wanna hold hands with",
@@ -189,7 +189,7 @@
 
         "eat":{
             "desc":"Feeling hungry? Grab something to eat.",
-            "synt":">eat [member]",
+            "synt":"$PREFIXeat [member]",
             "alis":"`hungry`",
             "opti": 1,
             "cate": "nom"
@@ -197,7 +197,7 @@
 
         "hungry":{
             "desc":"Feeling hungry? Grab something to eat.",
-            "synt":">hungry [member]",
+            "synt":"$PREFIXhungry [member]",
             "alis":"`hungry`",
             "opti": 1,
             "cate": "nom"
@@ -205,7 +205,7 @@
 
         "bite":{
             "desc":"Sink your teeth in. Bite someone. 🧛‍♀️",
-            "synt":">bite <member>",
+            "synt":"$PREFIXbite <member>",
             "alis":"`nom`",
             "opti": 0,
             "erro": "Mention someone to bite them",
@@ -214,7 +214,7 @@
 
         "nom":{
             "desc":"Sink your teeth in. Bite someone. 🧛‍♀️",
-            "synt":">nom <member>",
+            "synt":"$PREFIXnom <member>",
             "alis":"`bite`",
             "opti": 0,
             "erro": "Mention someone to bite them",
@@ -223,7 +223,7 @@
 
         "glomp":{
             "desc":"Hold someone close. Just make sure to not crush their bones.",
-            "synt":">glomp <glomp>",
+            "synt":"$PREFIXglomp <glomp>",
             "alis":"`superhug`",
             "opti": 0,
             "erro": "You got the energy.. now just mention you wanna glomp.",
@@ -232,7 +232,7 @@
 
         "superhug":{
             "desc":"Hold someone close. Just make sure to not crush their bones.",
-            "synt":">glomp <glomp>",
+            "synt":"$PREFIXglomp <glomp>",
             "alis":"`glomp`",
             "opti": 0,
             "erro": "TELL ME! Who to SUPERHUG?",
@@ -241,7 +241,7 @@
 
         "slap":{
             "desc":"Similar to patting someone.. just with a bit more force.",
-            "synt":">slap <member>",
+            "synt":"$PREFIXslap <member>",
             "alis":"None",
             "opti": 0,
             "erro": "Slap what? air? Mention someone",
@@ -250,7 +250,7 @@
 
         "kill":{
             "desc":"Just commit cold blooded murder, I guess.",
-            "synt":">kill <member>",
+            "synt":"$PREFIXkill <member>",
             "alis":"None",
             "opti": 0,
             "erro": "Look, murder takes planning and you are just `kill`. WHO DO I KILL? Mention them",
@@ -259,7 +259,7 @@
 
         "kick":{
             "desc":"Similar to slapping but with legs",
-            "synt":">kick <member>",
+            "synt":"$PREFIXkick <member>",
             "alis":"None",
             "opti": 0,
             "erro": "I will do it to you if don't mention someone.",
@@ -268,7 +268,7 @@
 
         "wink":{
             "desc":"Did your eye twitch or you are winking?",
-            "synt":">wink [member]",
+            "synt":"$PREFIXwink [member]",
             "alis":"None",
             "opti": 1,
             "cate": "wink"
@@ -276,7 +276,7 @@
 
         "poke":{
             "desc":"Poke someone to look cute... or annoying",
-            "synt":">poke <member>",
+            "synt":"$PREFIXpoke <member>",
             "alis":"None",
             "opti": 0,
             "erro": "This is not Facebook. Mention who to poke",
@@ -285,7 +285,7 @@
 
         "cringe":{
             "desc":"Cringe is what we will do if we read all these desc.",
-            "synt":">cringe [member]",
+            "synt":"$PREFIXcringe [member]",
             "alis":"None",
             "opti": 1,
             "cate": "cringe"
@@ -293,7 +293,7 @@
 
         "baka":{
             "desc":"Think someone is stoopid? Call them a baka!",
-            "synt":">baka <member>",
+            "synt":"$PREFIXbaka <member>",
             "alis":"None",
             "opti":0,
             "erro": "Who do you want me to call stupid? YOU? Tag them.",
@@ -302,7 +302,7 @@
 
         "hmph":{
             "desc": "Got mad at someone. Give them an angry pout.",
-            "synt": ">hmph [member]",
+            "synt": "$PREFIXhmph [member]",
             "alis": "None",
             "opti": 1,
             "cate": "hmph"
@@ -310,7 +310,7 @@
 
         "bored":{
             "desc": "When nothing is going on and you have to express your feeling that you are bored af.",
-            "synt": ">bored [member]",
+            "synt": "$PREFIXbored [member]",
             "alis": "None",
             "opti": 1,
             "cate": "bored"
@@ -318,7 +318,7 @@
 
         "facepalm":{
             "desc": "You think that was stupid? Do a facepalm.",
-            "synt": ">facepalm [member]",
+            "synt": "$PREFIXfacepalm [member]",
             "alis": "None",
             "opti": 1,
             "cate": "facepalm"
@@ -326,7 +326,7 @@
 
         "feed":{
             "desc": "Show some love and feed other people.",
-            "synt": ">feed <member>",
+            "synt": "$PREFIXfeed <member>",
             "alis": "None",
             "opti": 0,
             "erro": "Who do you want to feed? Mention them..",
@@ -335,7 +335,7 @@
 
         "laugh":{
             "desc": "Laugh your heart out.",
-            "synt": ">laugh [member]",
+            "synt": "$PREFIXlaugh [member]",
             "alis": "None",
             "opti": 1,
             "cate": "laugh"
@@ -343,7 +343,7 @@
 
         "shrug":{
             "desc": "What was that dumb thing? Who cares?",
-            "synt": ">shrug",
+            "synt": "$PREFIXshrug",
             "alis": "None",
             "opti": 2,
             "cate": "shrug"
@@ -351,7 +351,7 @@
 
         "stare":{
             "desc": "Stare into someone's soul",
-            "synt": ">stare <member>",
+            "synt": "$PREFIXstare <member>",
             "alis": "None",
             "opti": 0,
             "erro": "Who do you want to STARE into? Mention them.",
@@ -360,7 +360,7 @@
 
         "think":{
             "desc": "Use your thinking powers. THINK!",
-            "synt": ">think [member]",
+            "synt": "$PREFIXthink [member]",
             "alis": "`thonk`",
             "opti": 1,
             "cate": "think"
@@ -368,7 +368,7 @@
 
         "thonk":{
             "desc": "Use your thonking powers!",
-            "synt": ">thonk [member]",
+            "synt": "$PREFIXthonk [member]",
             "alis": "`think`",
             "opti": 1,
             "cate": "think"
@@ -376,7 +376,7 @@
 
         "thumbsup":{
             "desc": "It is not the taste of thunder.",
-            "synt": ">thumpsup [member]",
+            "synt": "$PREFIXthumpsup [member]",
             "alis": "None",
             "opti": 1,
             "cate": "thumbsup"
@@ -384,7 +384,7 @@
 
         "tickle":{
             "desc": "Tickle someone until they cry. It is cute, trust me.",
-            "synt": ">tickle <member>",
+            "synt": "$PREFIXtickle <member>",
             "alis": "None",
             "opti": 0,
             "erro": "Mention someone to tickle them :3",
@@ -393,7 +393,7 @@
 
         "run":{
             "desc": "Run away from someone as fast as you can!",
-            "synt": ">run [member]",
+            "synt": "$PREFIXrun [member]",
             "alis": "None",
             "opti": 1,
             "cate": "run"
@@ -406,37 +406,65 @@
 
         "emojify":{
             "desc":"Emojifies the :fire: text by adding emojis :heart_decoration::male_sign: all :joy::persevere: over :sweat_drops::b: it. :drooling_face:\nMaximum 1500 characters. :woman::busts_in_silhouette:",
-            "synt":">emojify <text>",
+            "synt":"$PREFIXemojify <text>",
             "alis":"None",
             "opti": 0
         },
 
         "owoify":{
             "desc":"Haiiii! OwOifies da text to wook mowe wike fuwwy speak <{^v^}>\nMaximum 1800 chawactews. (❁´◡`❁)",
-            "synt":">owoify <text>",
+            "synt":"$PREFIXowoify <text>",
             "alis":"None",
             "opti": 0
         },
 
         "pun":{
             "desc":"Sends a random dad joke.\nEach dad joke is assigned with an ID found in footer. Add ID next to command to get joke assigned to ID.",
-            "synt":">pun [ID]",
+            "synt":"$PREFIXpun [ID]",
             "alis":"`dadjoke`",
             "opti": 1
         },
 
         "8ball":{
             "desc": "Ask a question from 8Ball and it will tell you what it thinks.",
-            "synt": ">8ball <question>",
+            "synt": "$PREFIX8ball <question>",
             "alis": "None",
             "opti": 0
         },
 
         "gtn":{
             "desc": "Guess a random number.\nAvaailable difficulties: `easy`, `medium`, `hard`",
-            "synt": ">gtk [difficulty]",
+            "synt": "$PREFIXgtk [difficulty]",
             "alis": "None",
             "opti": 1
+        },
+
+        "meme":{
+            "desc": "Sends a random meme.",
+            "synt": "$PREFIXmeme",
+            "alis": "None",
+            "opti": 2
+        },
+        
+        "dankmeme":{
+            "desc": "Sends a random dank meme.",
+            "synt": "$PREFIXdankmeme",
+            "alis": "None",
+            "opti": 2
+        },
+        
+        "terriblefacebookmeme":{
+            "desc": "Sends a random terrible facebook meme.",
+            "synt": "$PREFIXterriblefacebookmeme",
+            "alis": "None",
+            "opti": 2
+        },
+
+        "prequelmeme":{
+            "desc": "Sends a random star wars prequel meme.",
+            "synt": "$PREFIXprequelmeme",
+            "alis": "None",
+            "opti": 2
         }
     },
 
@@ -444,51 +472,72 @@
 
         "ignore":{
             "desc":"Disable bot auto trigger words for you.",
-            "synt":">ignore",
+            "synt":"$PREFIXignore",
             "alis":"None",
             "opti": 2
         },
 
         "unignore":{
             "desc": "Enable bot auto trigger words for you.",
-            "synt": ">unignore",
+            "synt": "$PREFIXunignore",
             "alis":"None",
             "opti": 2
         },
 
         "add_atk":{
             "desc":"Adds an Auto Trigger Keyword (ATK) to list. This can then be called by anyone.\nRequires administration privilage.\nTrigger word is the word that triggers the bot.\nValue is what will be sent by bot after being triggered.\nComma between them is required. Only 1 comma is allowed.",
-            "synt":">add_atk <trigger word, value>",
+            "synt":"$PREFIXadd_atk <trigger word, value>",
             "alis":"`atk_add`",
             "opti":0
         },
 
         "remove_atk":{
             "desc":"Removes an Auto Trigger Keyword (ATK) from the list.\nRequires administration privilage.",
-            "synt":">remove_atk <name>",
+            "synt":"$PREFIXremove_atk <name>",
             "alis":"`atk_remove`",
             "opti": 0
         },
 
         "status":{
             "desc":"Checks the bot connection, database connection and Discord API status.",
-            "synt":">status",
-            "alis":"`ping`",
+            "synt":"$PREFIXstatus",
+            "alis":"None",
+            "opti": 2
+        },
+
+        "ping":{
+            "desc":"Pings the bot.",
+            "synt":"$PREFIXping",
+            "alis":"None",
             "opti": 2
         },
 
         "snipe":{
             "desc": "Sends the last deleted message.",
-            "synt": ">snipe",
+            "synt": "$PREFIXsnipe",
             "alis": "None",
+            "opti": 2
+        },
+
+        "editsnipe":{
+            "desc": "Sends the last edited message.",
+            "synt": "$PREFIXeditsnipe",
+            "alis": "`es`",
             "opti": 2
         },
 
         "avatar":{
             "desc": "Enlarges someone's profile photo.",
-            "synt": ">avatar [member]",
+            "synt": "$PREFIXavatar [member]",
             "alis": "`av`",
             "opti": 1
+        },
+
+        "qr":{
+            "desc": "Generates a QR code.",
+            "synt": "$PREFIXqr <text>",
+            "alis": "`qr`",
+            "opti": 0
         }
     },
 
@@ -496,58 +545,161 @@
 
         "cat":{
             "desc": "Sends a random photo of a cat.\nPowered by `random.cat`",
-            "synt": ">cat",
+            "synt": "$PREFIXcat",
             "alis": "`meow`, `purr`, `kitty`",
             "opti": 2
         },
 
         "dog":{
-            "desc": "Fetches a random photo of a dog.\nA breed can be specified. Use `>breeds` command to list available breeds.\nPowered by `dog.ceo`",
-            "synt": ">dog [breed]",
+            "desc": "Fetches a random photo of a dog.\nA breed can be specified. Use `$PREFIXbreeds` command to list available breeds.\nPowered by `dog.ceo`",
+            "synt": "$PREFIXdog [breed]",
             "alis": "`puppy`, `doggo`,`puper`,`doggy`,`pupper`",
             "opti": 1
         },
 
         "fox":{
             "desc": "Sends a random fox image.\nPowered by `randomfox.ca`",
-            "synt": ">fox",
+            "synt": "$PREFIXfox",
             "alis": "None",
             "opti": 2
         },
 
         "bird":{
             "desc": "Sends a random bird image.\nPowered by `some-random-api.ml`",
-            "synt": ">bird",
+            "synt": "$PREFIXbird",
             "alis": "`birb`",
             "opti": 2
         },
 
         "duck":{
             "desc": "Sends a random duck image.\nPowered by `random-d.uk`",
-            "synt": ">duck",
+            "synt": "$PREFIXduck",
             "alis": "`quack`, `quacc`",
             "opti": 2
         },
 
         "koala":{
             "desc": "Sends a random koala image.\nPowered by `some-random-api.ml`",
-            "synt": ">koala",
+            "synt": "$PREFIXkoala",
             "alis": "None",
             "opti": 2
         },
 
         "panda":{
             "desc": "Sends a random panda image.\nPowered by `some-random-api.ml`\nUse `>panda red` to get a red panda.",
-            "synt": ">panda",
+            "synt": "$PREFIXpanda",
             "alis": "None",
             "opti": 2
         },
 
         "racoon":{
             "desc": "Sends a random racoon image.\nPowered by `some-random-api.ml`",
-            "synt": ">racoon",
+            "synt": "$PREFIXracoon",
             "alis": "None",
             "opti": 2
+        }
+    },
+
+    "music":{
+
+        "play":{
+            "desc": "Plays a song.\nUse `--choose` to display a song chooser.",
+            "synt": "$PREFIXplay <song name/URL>",
+            "alis": "`p`",
+            "opti": 0
+        },
+
+        "pause":{
+            "desc": "Pauses the current song.",
+            "synt": "$PREFIXpause",
+            "alis": "None",
+            "opti": 2
+        },
+
+        "resume":{
+            "desc": "Resumes the current song.",
+            "synt": "$PREFIXresume",
+            "alis": "None",
+            "opti": 2
+        },
+
+        "stop":{
+            "desc": "Stops the current song.",
+            "synt": "$PREFIXstop",
+            "alis": "None",
+            "opti": 2
+        },
+
+        "skip":{
+            "desc": "Skips the current song.",
+            "synt": "$PREFIXskip",
+            "alis": "None",
+            "opti": 2
+        },
+
+        "queue":{
+            "desc": "Shows the current queue.",
+            "synt": "$PREFIXqueue",
+            "alis": "None",
+            "opti": 2
+        },
+
+        "volume":{
+            "desc": "Changes the volume of the current song.",
+            "synt": "$PREFIXvolume <volume>",
+            "alis": "None",
+            "opti": 1
+        },
+
+        "np":{
+            "desc": "Shows the current song.",
+            "synt": "$PREFIXnp",
+            "alis": "None",
+            "opti": 2
+        },
+
+        "shuffle":{
+            "desc": "Shuffles the current queue.",
+            "synt": "$PREFIXshuffle",
+            "alis": "None",
+            "opti": 2
+        },
+
+        "loop":{
+            "desc": "Loops the current song.",
+            "synt": "$PREFIXloop",
+            "alis": "`repeat`",
+            "opti": 2
+        },
+
+        "connect":{
+            "desc": "Connects the bot to a voice channel.",
+            "synt": "$PREFIXconnect",
+            "alis": "`join`",
+            "opti": 1
+        },
+
+        "disconnect":{
+            "desc": "Disconnects the bot from a voice channel.",
+            "synt": "$PREFIXdisconnect",
+            "alis": "`dc`, `leave`, `clear`",
+            "opti": 1
+        },
+
+        "eq":{
+            "desc": "Shows the current EQ settings.",
+            "synt": "$PREFIXeq",
+            "alis": "None",
+            "opti": 1
+        }
+    },
+
+    "reddit":{
+        "get":{
+            "desc": "Gets a random photo from a subreddit.\nAdd `--new`, `--hot`, `--top`, `--controversial` at the end of request to get a photo from that sorted category.",
+            "synt": "$PREFIXget [subreddit]",
+            "alis": "None",
+            "opti": 1
         }
     }
 }

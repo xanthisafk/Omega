@@ -75,6 +75,19 @@ class Help(commands.Cog):
         syntax = syntax[:-2]
 
         return syntax
+    
+    async def mus_section(self):
+        with codecs.open('files/help.json', 'r', encoding='utf-8') as js:
+            data = json.load(js)
+            js.close()
+
+        syntax = ''
+
+        for i in data['music']:
+            syntax += f'`{i}`, '
+        syntax = syntax[:-2]
+
+        return syntax
 
     @commands.group(invoke_without_command=True)
     async def help(self, ctx):
@@ -85,24 +98,30 @@ class Help(commands.Cog):
         fun = await self.fun_section()
         uti = await self.uti_section()
         paw = await self.paw_section()
-        atk = 'List all Auto Trigger Keywords using `>help atk`'
-        hdr = 'Bot for ***Nowhere Space***.\nUse `>help <command>` for more information.'
+        mus = await self.mus_section()
+        atk = f'List all Auto Trigger Keywords using `{config.PREFIX[0]}help atk`'
+        hdr = f'Bot for ***Nowhere Space***.\nUse `{config.PREFIX[0]}help <command>` for more information.'
 
         color = await rang.get_color()
 
         embed = discord.Embed(title='Help dialogue',
                               description=hdr, color=color)
+        embed.add_field(name='Animals', value=paw, inline=False)
         embed.add_field(name='Emotes', value=emo, inline=False)
         embed.add_field(name='Fun', value=fun, inline=False)
-        embed.add_field(name='Animals', value=paw, inline=False)
-        embed.add_field(name='Auto trigger keywords', value=atk, inline=False)
+        embed.add_field(name='Music', value=mus, inline=False)
         embed.add_field(name='Utility', value=uti, inline=False)
+        embed.add_field(name='Auto trigger keywords', value=atk, inline=False)
 
         if random.choice(range(1, 100)) == 50:
             embed.set_footer(text='Made by Xanthis')
 
         await ctx.send(embed=embed)
-        await log.logger(ctx, name, self.cog_name,"INFO")
+    
+    @help.error
+    async def help_error(self,ctx,err):
+        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        raise err
 
     ############################
     # EMOTES COG HELP SECTION  #
@@ -115,35 +134,37 @@ class Help(commands.Cog):
         There are a lot of these. I feel stupid for handwriting all that before now.
 
         """
-        try:
-            name = ctx.invoked_with
-            color = await rang.get_color()
-            with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
-                data = json.load(js)
-                js.close()
+        name = ctx.invoked_with
+        color = await rang.get_color()
+        with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
+            data = json.load(js)
+            js.close()
 
-            desc = data['emotes'][name]['desc'] + \
-                '\nAliases: ' + data['emotes'][name]['alis']
-            synt = '`' + data['emotes'][name]['synt'] + '`'
+        desc = data['emotes'][name]['desc'] + \
+            '\nAliases: ' + data['emotes'][name]['alis']
+        synt = '`' + data['emotes'][name]['synt'] + '`'
 
-            if data['emotes'][name]['opti'] == 0:
-                footer = 'Argument is <required>'
-            elif data['emotes'][name]['opti'] == 1:
-                footer = 'Argument is [optional]'
-            else:
-                footer = "No arguments"
+        desc = desc.replace('$PREFIX', config.PREFIX[0])
+        synt = synt.replace('$PREFIX', config.PREFIX[0])
 
-            embed = discord.Embed(title=name.capitalize(),
-                                  description=desc, color=color)
-            embed.add_field(name='Syntax', value=synt)
-            embed.set_footer(text=footer)
-            await ctx.send(embed=embed)
-            await log.logger(ctx, name, self.cog_name,"INFO")
+        if data['emotes'][name]['opti'] == 0:
+            footer = 'Argument is <required>'
+        elif data['emotes'][name]['opti'] == 1:
+            footer = 'Argument is [optional]'
+        else:
+            footer = "No arguments"
 
-        except Exception as e:
-            await ctx.send(f'{config.EMOTE_ERROR} Something went wrong.')
-            await log.logger(ctx, name.capitalize(), self.cog_name,"ERROR", e)
-            raise e
+        embed = discord.Embed(title=name.capitalize(),
+                                description=desc, color=color)
+        embed.add_field(name='Syntax', value=synt)
+        embed.set_footer(text=footer)
+        await ctx.send(embed=embed)
+
+    @emotes_help.error
+    async def emotes_help_error(self,ctx,err):
+        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        raise err
+
 
     ########################
     # FUN COG HELP SECTION #
@@ -151,41 +172,43 @@ class Help(commands.Cog):
 
     @help.command(aliases=[
         'emojify', 'owoify',
-        'pun', 'dadjoke', '8ball', 'gtn'
+        'pun', 'dadjoke', '8ball', 'gtn',
+        'meme', 'terriblefacebookmeme', 'dankmeme', 'prequelmeme'
     ])
     async def fun_help(self, ctx):
         """
         Sends out help embed for every element in fun in help.json
         """
-        try:
-            name = ctx.invoked_with
-            color = await rang.get_color()
-            with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
-                data = json.load(js)
-                js.close()
 
-            desc = data['fun'][name]['desc'] + \
-                '\nAliases: ' + data['fun'][name]['alis']
-            synt = '`' + data['fun'][name]['synt'] + '`'
+        name = ctx.invoked_with
+        color = await rang.get_color()
+        with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
+            data = json.load(js)
+            js.close()
 
-            if data['fun'][name]['opti'] == 0:
-                footer = 'Argument is <required>'
-            elif data['fun'][name]['opti'] == 1:
-                footer = 'Argument is [optional]'
-            else:
-                footer = "No arguments"
+        desc = data['fun'][name]['desc'] + '\nAliases: ' + data['fun'][name]['alis']
+        synt = '`' + data['fun'][name]['synt'] + '`'
 
-            embed = discord.Embed(title=name.capitalize(),
-                                  description=desc, color=color)
-            embed.add_field(name='Syntax', value=synt)
-            embed.set_footer(text=footer)
-            await ctx.send(embed=embed)
-            await log.logger(ctx, name, self.cog_name,"INFO")
+        desc = desc.replace('$PREFIX', config.PREFIX[0])
+        synt = synt.replace('$PREFIX', config.PREFIX[0])
 
-        except Exception as e:
-            await ctx.send('Something went VERY wrong.')
-            await log.logger(ctx, name, self.cog_name,"ERROR", e)
-            raise e
+        if data['fun'][name]['opti'] == 0:
+            footer = 'Argument is <required>'
+        elif data['fun'][name]['opti'] == 1:
+            footer = 'Argument is [optional]'
+        else:
+            footer = "No arguments"
+
+        embed = discord.Embed(title=name.capitalize(),
+                                description=desc, color=color)
+        embed.add_field(name='Syntax', value=synt)
+        embed.set_footer(text=footer)
+        await ctx.send(embed=embed)
+
+    @fun_help.error
+    async def fun_help_error(self,ctx,err):
+        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        raise err
 
     ############################
     # UTILITY COG HELP SECTION #
@@ -193,41 +216,42 @@ class Help(commands.Cog):
 
     @help.command(aliases=[
         'ignore', 'uignore', 'add_atk', 'remove_atk',
-        'atk_add', 'atk_remove', 'status', 'ping', 'snipe', 'avatar', 'av'
+        'atk_add', 'atk_remove', 'status', 'ping', 'snipe', 'avatar', 'av', 'editsnipe', 'ev'
     ])
     async def utility_help(self, ctx):
         """
         Sends out help embed for every element in utility in help.json
         """
-        try:
-            name = ctx.invoked_with
-            color = await rang.get_color()
-            with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
-                data = json.load(js)
-                js.close()
+        name = ctx.invoked_with
+        color = await rang.get_color()
+        with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
+            data = json.load(js)
+            js.close()
 
-            desc = data['utility'][name]['desc'] + \
-                '\nAliases: ' + data['utility'][name]['alis']
-            synt = '`' + data['utility'][name]['synt'] + '`'
+        desc = data['utility'][name]['desc'] + \
+            '\nAliases: ' + data['utility'][name]['alis']
+        synt = '`' + data['utility'][name]['synt'] + '`'
 
-            if data['utility'][name]['opti'] == 0:
-                footer = 'Argument is <required>'
-            elif data['utility'][name]['opti'] == 1:
-                footer = 'Argument is [optional]'
-            else:
-                footer = "No arguments"
+        desc = desc.replace('$PREFIX', config.PREFIX[0])
+        synt = synt.replace('$PREFIX', config.PREFIX[0])
 
-            embed = discord.Embed(title=name.capitalize(),
-                                  description=desc, color=color)
-            embed.add_field(name='Syntax', value=synt)
-            embed.set_footer(text=footer)
-            await ctx.send(embed=embed)
-            await log.logger(ctx, name, self.cog_name,"INFO")
+        if data['utility'][name]['opti'] == 0:
+            footer = 'Argument is <required>'
+        elif data['utility'][name]['opti'] == 1:
+            footer = 'Argument is [optional]'
+        else:
+            footer = "No arguments"
 
-        except Exception as e:
-            await ctx.send('Something went VERY wrong.')
-            await log.logger(ctx, name, self.cog_name,"ERROR", e)
-            raise e
+        embed = discord.Embed(title=name.capitalize(),
+                                description=desc, color=color)
+        embed.add_field(name='Syntax', value=synt)
+        embed.set_footer(text=footer)
+        await ctx.send(embed=embed)
+
+    @utility_help.error
+    async def utility_help_error(self,ctx,err):
+        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        raise err
 
     #################################
     # AUTO TRIGGER COG HELP SECTION #
@@ -316,7 +340,10 @@ class Help(commands.Cog):
                     await message.edit(content="Message timed out")
                     break
 
-        await log.logger(ctx, name, self.cog_name,"INFO")
+    @atk_help.error
+    async def atk_help_error(self,ctx,err):
+        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        raise err
 
     ############################
     # ANIMALS COG HELP SECTION #
@@ -324,36 +351,75 @@ class Help(commands.Cog):
 
     @help.command(aliases=['cat','dog','fox', 'bird', 'duck', 'koala', 'panda', 'racoon'])
     async def animal_help(self, ctx):
-        try:
-            name = ctx.invoked_with
-            color = await rang.get_color()
-            with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
-                data = json.load(js)
-                js.close()
+        name = ctx.invoked_with
+        color = await rang.get_color()
+        with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
+            data = json.load(js)
+            js.close()
 
-            desc = data['animals'][name]['desc'] + \
-                '\nAliases: ' + data['animals'][name]['alis']
-            synt = '`' + data['animals'][name]['synt'] + '`'
+        desc = data['animals'][name]['desc'] + \
+            '\nAliases: ' + data['animals'][name]['alis']
+        synt = '`' + data['animals'][name]['synt'] + '`'
 
-            if data['animals'][name]['opti'] == 0:
-                footer = 'Argument is <required>'
-            elif data['animals'][name]['opti'] == 1:
-                footer = 'Argument is [optional]'
-            else:
-                footer = "No arguments"
+        desc = desc.replace('$PREFIX', config.PREFIX[0])
+        synt = synt.replace('$PREFIX', config.PREFIX[0])
 
-            embed = discord.Embed(title=name.capitalize(),
-                                  description=desc, color=color)
-            embed.add_field(name='Syntax', value=synt)
-            embed.set_footer(text=footer)
-            await ctx.send(embed=embed)
-            await log.logger(ctx, name, self.cog_name,"INFO")
+        if data['animals'][name]['opti'] == 0:
+            footer = 'Argument is <required>'
+        elif data['animals'][name]['opti'] == 1:
+            footer = 'Argument is [optional]'
+        else:
+            footer = "No arguments"
 
-        except Exception as e:
-            await ctx.send('Something went VERY wrong.')
-            await log.logger(ctx, name, self.cog_name,"ERROR", e)
-            raise e
-        
+        embed = discord.Embed(title=name.capitalize(),
+                                description=desc, color=color)
+        embed.add_field(name='Syntax', value=synt)
+        embed.set_footer(text=footer)
+        await ctx.send(embed=embed)
+
+    @animal_help.error
+    async def animal_help_error(self,ctx,err):
+        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        raise err
+
+    ##########################
+    # MUSIC COG HELP SECTION #
+    ##########################
+
+    @help.command(name='play',aliases=[
+        'pause', 'resume', 'stop', 'skip', 'queue', 'volume', 'np', 'eq', 'shuffle', 'connect', 'disconnect', 'loop'
+    ])
+    async def music_help(self, ctx):
+        name = ctx.invoked_with
+        color = await rang.get_color()
+        with codecs.open('./files/help.json', 'r', encoding='utf-8') as js:
+            data = json.load(js)
+            js.close()
+
+        desc = data['music'][name]['desc'] + \
+            '\nAliases: ' + data['music'][name]['alis']
+        synt = '`' + data['music'][name]['synt'] + '`'
+        desc = desc.replace('$PREFIX', config.PREFIX[0])
+        synt = synt.replace('$PREFIX', config.PREFIX[0])
+        if data['music'][name]['opti'] == 0:
+            footer = 'Argument is <required>'
+        elif data['music'][name]['opti'] == 1:
+            footer = 'Argument is [optional]'
+        else:
+            footer = "No arguments"
+
+        embed = discord.Embed(title=name.capitalize(),
+                                description=desc, color=color)
+        embed.add_field(name='Syntax', value=synt)
+        embed.set_footer(text=footer)
+        await ctx.send(embed=embed)
+
+    @music_help.error
+    async def music_help_error(self,ctx,err):
+        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        raise err
+
+
 
     @commands.command()
     async def testin(self, ctx):
@@ -361,7 +427,7 @@ class Help(commands.Cog):
             emoji = self.client.emojis
             for i in emoji:
                print(i)
-            await ctx.send('<:ok:899558562819358720>')
+            await ctx.message.add_reaction(config.EMOTE_OK)
 
 
 def setup(client):

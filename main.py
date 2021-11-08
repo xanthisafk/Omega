@@ -1,9 +1,11 @@
+from datetime import datetime
 import discord
+from commands.music.music import InvalidRepeatMode
 from discord.ext import commands, tasks
 import os
 from os import path
-import asyncio
-
+import traceback
+from pyfiglet import figlet_format
 
 import loggers.logger as log
 
@@ -234,48 +236,54 @@ def load_cogs():
                 elif file.endswith('.py') and file.startswith('!') == False and not file == 'logger.py':
                     client.load_extension(f'commands.{dir}.{file[:-3]}')
                     print(f'> Loaded: {file[:-3]}')
-            
+
         print('----------')
 
 @client.event
+async def on_command_completion(ctx):
+
+    try:
+        cog = ctx.cog.qualified_name
+    except:
+        cog = 'None'
+
+    await log.logger(ctx,ctx.command.name,cog,'INFO')
+    try:
+        channel =  client.get_channel(config.DEBUG)
+        embed = discord.Embed(title='INFO', description=f'{ctx.author} used {ctx.invoked_with} in {ctx.channel.name}', color = discord.Color.blue(),timestamp=datetime.utcnow())
+        await channel.send(embed=embed)
+    except:
+        pass
+
+@client.event
 async def on_command_error(ctx, error):
-    name = 'No command'
-    
-    if isinstance(error, commands.CommandNotFound):
+    try:
+        cog = ctx.cog.qualified_name
+    except:
+        cog = 'None'
+    if isinstance(error, commands.CommandInvokeError):
+        await log.logger(ctx,ctx.command.name,cog,'ERROR',str(error.original))
+    elif isinstance(error, commands.CommandNotFound):
         return
-
-    elif isinstance(error,commands.MemberNotFound):
-        await log.logger(ctx,name,cog_name,'ERROR',error)
-        await ctx.send(error)
-        return
-
-    elif isinstance(error,commands.MissingRequiredArgument):
-        await log.logger(ctx,name,cog_name,'ERROR',error)
-        await ctx.send("Invalid arguments. Please try again.")
-        return
-
-    elif isinstance(error,commands.CommandOnCooldown):
-        return
-
-    elif isinstance(error,commands.EmojiNotFound):
-        return
-
     else:
-        await log.logger(ctx,name,cog_name,'ERROR',error)
-        raise error
+        await log.logger(ctx,ctx.command.name,cog,'ERROR',str(error))
+    
+    try:
+        channel =  client.get_channel(config.DEBUG)
+        embed = discord.Embed(title='ERROR', description=f'{ctx.author} used {ctx.command.name} in {ctx.channel.name}', color = discord.Color.red(),timestamp=datetime.utcnow())
+        embed.add_field(name='Error', value=str(error))
+        tb = traceback.format_exc()
+        embed.add_field(name='Traceback',value=tb,inline=False)
+        await channel.send(embed=embed)
+    except:
+        pass
+
+    #raise error
+
     
 if __name__ == '__main__':
-
-    omega= r"""   ____  __  __ ______ _____          
-  / __ \|  \/  |  ____/ ____|   /\    
- | |  | | \  / | |__ | |  __   /  \   
- | |  | | |\/| |  __|| | |_ | / /\ \  
- | |__| | |  | | |___| |__| |/ ____ \ 
-  \____/|_|  |_|______\_____/_/    \_\
-
-"""
-    print(omega)
-    print("OMEGA BOT\nBy Xanthis\nVersion 1.1")
+    print(figlet_format(config.NAME,font='slant'))
+    print("OMEGA BOT\nBy Xanthis\nVersion 1.2\nCreate an issue at https://github.com/xanthisafk/omega")
     print('----------')
     print('Loading Cogs')
     print('----------')

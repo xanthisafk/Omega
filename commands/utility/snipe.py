@@ -4,78 +4,126 @@ from discord.ext import commands
 
 from loggers.logger import logger
 
+class NothingToSnipe(Exception):
+    def __init__(self):
+        super().__init__("Nothing to snipe.")
+
 
 class Snipe(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.cog_name = __name__[9:]
-
-    msg = ''
-    before = ''
-    after = ''
+        self.snip = {}
+        self.before = {}
 
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        
-        global msg
-        msg = message
+
+        if message.author.bot:
+            return
+
+        guildid = message.guild.id
+        user = message.author.name + '#' + message.author.discriminator
+        avatar = message.author.avatar_url
+        content = message.content
+        time = message.created_at
+
+        self.snip.update({
+            guildid: {
+                "user":user,
+                "avatar":avatar,
+                "content":content,
+                "time":time
+            }
+        })
 
     @commands.Cog.listener()
     async def on_message_edit(self, bf, at):
 
-        global before
-        global after
-        before = bf
-        after = at
+        guildid = bf.guild.id
+        user = bf.author.name + '#' + bf.author.discriminator
+        avatar = bf.author.avatar_url
+        before = bf.content
+        after = at.content
+        time = bf.created_at
+
+        self.before.update({
+            guildid: {
+                "user":user,
+                "avatar":avatar,
+                "before":before,
+                "after":after,
+                "time":time
+            }
+        })
 
     @commands.command()
     async def snipe(self, ctx):
-        global msg
-        color = await rang.get_color()
-        
-        if msg == None:
-            return await ctx.send('No message to snipe!')
+        if not self.snip:
+            raise NothingToSnipe()
+
+        guildid = ctx.guild.id
         try:
-            thumb = msg.author.avatar_url
-        except Exception as e:
-            if isinstance(e, NameError):
-                await ctx.send("There is nothing to snipe...")
-                return
+            user = self.snip[guildid]["user"]
+        except:
+            raise NothingToSnipe()
+        avatar = self.snip[guildid]["avatar"]
+        content = self.snip[guildid]["content"]
+        time = self.snip[guildid]["time"]
 
-        name = msg.author.name
+        embed = discord.Embed(color = await rang.get_color(), timestamp = time)
+        embed.set_author(name = user, icon_url = avatar)
+        embed.description = content
 
-        embed = discord.Embed(description=msg.content, color=color)
-        embed.set_author(name=name, icon_url=thumb)
+        await ctx.send(embed = embed)
 
-        if msg.attachments == []:
-            pass
+    @snipe.error
+    async def sniped_error(self, ctx, error):
+        if isinstance(error, commands.CommandInvokeError):
+            if isinstance(error.original, NothingToSnipe):
+                await ctx.send(f"{ctx.author.mention} Nothing to snipe.")
+            else:
+                await ctx.send(f"{ctx.author.mention} An error occured.")
+                raise error
         else:
-            embed.set_image(url=(msg.attachments[0].url))
+            await ctx.send(f"{ctx.author.mention} An error occured.")
+            raise error
 
-        await ctx.send(embed=embed)
-        await logger(ctx, 'snipe', self.cog_name,"INFO")
+    @commands.command(name='editsnipe',aliases=['es'])
+    async def snipebefore(self, ctx):
+        if not self.before:
+            raise NothingToSnipe()
 
-    @commands.command(aliases=['es'])
-    async def editsnipe(self, ctx):
-        global before, after
+        guildid = ctx.guild.id
         try:
-            thumb = before.author.avatar_url
-        except Exception as e:
-            if isinstance(e, NameError):
-                return await ctx.send("There is nothing to snipe...")
+            user = self.before[guildid]["user"]
+        except:
+            raise NothingToSnipe()
+        avatar = self.before[guildid]["avatar"]
+        before_content = self.before[guildid]["before"]
+        after_content = self.before[guildid]["after"]
+        time = self.before[guildid]["time"]
 
-        name = before.author.name
+        embed = discord.Embed(color = await rang.get_color(), timestamp = time)
+        embed.set_author(name = user, icon_url = avatar)
+        embed.add_field(name = "Before", value = before_content, inline = False)
+        embed.add_field(name = "After", value = after_content, inline = False)
 
-        embed = discord.Embed(color=await rang.get_color())
-        embed.set_author(name=name, icon_url=thumb)
 
-        embed.add_field(name="Before", value=before.content)
-        embed.add_field(name="After", value=after.content, inline=False)
+        await ctx.send(embed = embed)
 
-        await ctx.send(embed=embed)
-        return await logger(ctx, 'editsnipe', self.cog_name,"INFO")
-
+    @snipebefore.error
+    async def snipebefore_error(self, ctx, error):
+        if isinstance(error, commands.CommandInvokeError):
+            if isinstance(error.original, NothingToSnipe):
+                await ctx.send(f"{ctx.author.mention} Nothing to snipe.")
+            else:
+                await ctx.send(f"{ctx.author.mention} An error occured.")
+                raise error
+        else:
+            await ctx.send(f"{ctx.author.mention} An error occured.")
+            raise error
 
 def setup(bot):
     bot.add_cog(Snipe(bot))

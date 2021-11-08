@@ -36,11 +36,13 @@ class Panda(commands.Cog):
         await log.logger(ctx,name,self.cog_name,'INFO')
 
     @panda.error
-    async def pun_error(self, ctx, error):
+    async def panda_error(self, ctx, error):
         if isinstance(error,commands.CommandOnCooldown):
             await ctx.send(f'I accidentally used black & white filter on pandas. Please wait {round(error.retry_after, 2)} seconds.')
             await log.logger(ctx,'Panda',self.cog_name,'ERROR',message=error)
-            return
+        else:
+            await ctx.send(f'An unexpected error occured.')
+            raise error
 
 def setup(bot):
     bot.add_cog(Panda(bot))

@@ -1,10 +1,15 @@
-# Omega v1.1
+# Omega v1.2
 
 Omega is a multipurpose bot. Uses discord (previously discord.py) library.
 
 # Now with a functional music bot!
 
 ## Features
+* Music bot _Powered by Lavalink_
+	* User friendly interface
+	* Customizable by editing `config.py`
+	* Playlists, Volume and customizable Equalizers
+
 * Almost 50 roleplay emote function.
 	* Multiple sources of GIFs.
 	* Randomized sentences with emotes to accopany them.
@@ -14,6 +19,11 @@ Omega is a multipurpose bot. Uses discord (previously discord.py) library.
 	* Easy to add and remove. Do it from discord!
 	* Uses PostgreSQL, so you know it is fast!
 	* Users can also make the bot ignore their messages using `ignore`
+
+* Reddit
+	* Gets a random photo from Reddit
+	* Sort by adding `--top`, `--new`, `--hot` and `--controversial` in your text
+		* Currently only supports images. 
 
 * Get random animal images
 	* 9 different animals
@@ -39,13 +49,15 @@ Omega is a multipurpose bot. Uses discord (previously discord.py) library.
   
 ## How to download
  * Clone the repo `git clone https://github.com/xanthisafk/omega`
- * Run `setup.py` and follow the instructions.
- * Run `main.py` and the bot will now work.
- * Send a `ping` command just to make sure.
+ * Download latest `Lavalink.jar` from `https://github.com/freyacodes/Lavalink/releases` and put it in `omega/files` folder.
+ * Windows
+	* Run `run.bat`
+ * Linux
+	* Run `setup.py` and follow the instructions
+	* Run `main.py` and the bot will now work.
 
 ## Planned content
 
-* Reddit image and video grabber
 * Video and photo editing capabilities
 * Admin systems
 

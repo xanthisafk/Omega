@@ -9,6 +9,7 @@ import redditeasy
 import config
 import random
 from datetime import datetime
+from asyncio import TimeoutError
 
 class Get(commands.Cog):
     def __init__(self, bot):
@@ -16,7 +17,7 @@ class Get(commands.Cog):
         self.cog_name = __name__[9:]
 
     @commands.command()
-    @commands.cooldown(1, 10, commands.BucketType.user)
+    #@commands.cooldown(1, 10, commands.BucketType.user)
     async def get(self, ctx, sub=''):
         """
         Gets a random post from a subreddit.
@@ -38,26 +39,26 @@ class Get(commands.Cog):
                 if '--new' in sub:
                     sub = sub.replace('--new', '')
                     post = await rd.get_new_post(subreddit=sub)
-                    if post.content_type == 'Image':
+                    if post.content_type in ['Image', "Text"]:
                         break
                 elif '--hot' in sub:
                     sub = sub.replace('--hot', '')
                     post = await rd.get_hot_post(subreddit=sub)
-                    if post.content_type == 'Image':
+                    if post.content_type in ['Image', "Text"]:
                         break
                 elif '--top' in sub:
                     sub = sub.replace('--top', '')
                     post = await rd.get_top_post(subreddit=sub)
-                    if post.content_type == 'Image':
+                    if post.content_type in ['Image', "Text"]:
                         break
                 elif '--controversial' in sub:
                     sub = sub.replace('--controversial', '')
                     post = await rd.get_controversial_post(subreddit=sub)
-                    if post.content_type == 'Image':
+                    if post.content_type in ['Image', "Text"]:
                         break
                 else:
                     post = await rd.get_post(subreddit=sub)
-                    if post.content_type == 'Image':
+                    if post.content_type in ['Image', "Text"]:
                         break
                 i -= 1
             except Exception as e:
@@ -73,16 +74,77 @@ class Get(commands.Cog):
 
         # Create embed and send
         embed = discord.Embed(title=post.title, description=f'{config.EMOTE_UPVOTE}{post.score}', url=post.post_url, color=await rang.get_color())
-        embed.set_image(url=post.content)
+        
         embed.timestamp = datetime.fromtimestamp(post.created_at)
         embed.set_footer(text=f'By {post.author} on r/{sub}')
-        return await ctx.send(embed=embed)
+        if post.content_type == 'Image':
+            embed.set_image(url=post.content)
+        elif post.content_type == 'Text':
+            if len(post.content) > 1000:
+                embed.add_field(name="Content:",value=(post.content[:1000] + ' **...**'))
+            else:
+                embed.add_field(name="Content:",value=post.content)
+        message = await ctx.send(embed=embed)
+
+        if len(post.content) < 1000:
+            return
+        else:
+
+            await message.add_reaction(config.EMOTE_LEFT)
+            await message.add_reaction(config.EMOTE_RIGHT)
+            await message.add_reaction(config.EMOTE_ERROR)
+            embed.add_field(name="Usage",value=f"{config.EMOTE_LEFT}: Previous  {config.EMOTE_RIGHT}: Next  {config.EMOTE_ERROR}: Close",inline=False)
+            embed.set_author(name=f"{ctx.author}",icon_url=ctx.author.avatar_url)
+            await message.edit(embed=embed)
+
+            page = 1
+            mp = 1
+            content = []
+            n = 1000
+            for i in range(0,len(post.content),n):
+                content.append(post.content[i:i+n])
+            
+            total = len(content)
+            for i in range(0,total-1):
+                content[i] = content[i] + " **...**"
+
+            def check(reaction, user):
+                return user == ctx.author and str(reaction.emoji) in [config.EMOTE_LEFT, config.EMOTE_RIGHT, config.EMOTE_ERROR]
+
+            while True:
+
+                try:
+                    reaction, user = await self.bot.wait_for('reaction_add', timeout=60, check=check)
+
+                    if str(reaction.emoji) == config.EMOTE_RIGHT and page != total:
+                        page += 1
+                    elif str(reaction.emoji) == config.EMOTE_LEFT and page > 1:
+                        page -= 1
+                    elif str(reaction.emoji) == config.EMOTE_ERROR:
+                        embed.remove_field(1)
+                        await message.edit(embed=embed)
+                        await message.clear_reactions()
+                        break
+
+                    embed.set_field_at(0, name="Content:", value=content[page-1])
+
+                    await message.remove_reaction(reaction.emoji, user)
+                    await message.edit(embed=embed)
+
+                except TimeoutError:
+                    await message.clear_reactions()
+                    embed.remove_field(1)
+                    await message.edit(content="Message timed out", embed=embed)
+                    break
+
+
+
 
     @get.error
     async def get_error(self, ctx, error):
         # Error handling for cooldown
         if isinstance(error, commands.CommandOnCooldown):
-            return await ctx.reply(f'Slow down! Cooldown ends in: {round(error.retry_after,1)}s')
+            return await ctx.reply(f'Slow down! Cooldown ends in: {round(error.retry_after,2)}s')
         elif isinstance(error, redditeasy.exceptions.RequestError):
             return await ctx.reply(f'Error: {error.with_traceback}')
         elif isinstance(error,redditeasy.exceptions.EmptyResult):

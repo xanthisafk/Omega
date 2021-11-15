@@ -269,6 +269,11 @@ class ATK(commands.Cog):
             None
         """
 
+        for x in message.mentions:
+            if(x == self.client.user):
+                if random.randrange(1, 10) == 7:
+                    return await message.reply('Sorry, I\'m busy right now:\nhttps://media.discordapp.net/attachments/845191720224161824/889751939053682748/coom.png')
+
         # If messege sender is the bot, ignore
         if message.author == self.client.user or message.author.bot:
             return
@@ -295,14 +300,22 @@ class ATK(commands.Cog):
 
         # Check for URL
         def urlcheck():
-            if re.search(r'(https?://\S+)', message.content): return False
-            else: return True
+            if re.search(r'^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$', message.content): return True
+            else: return False
+
 
         # Check if message starts with special characters
         spechar = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '{', '}', '[', ']', '|', '\\', ':', '"', '<', '>', '?', '/', '`', '~', '.', ',']
         def specialcheck():
-            if any (x in message.content for x in spechar): return False
-            else: return True
+            for x in spechar:
+                if message.content.startswith(x):
+                    
+                    if re.search(r"<[?@!:a-z]+[0-9]+>", message.content):
+                        pass
+                    else:
+                        return False
+            return True
+
 
         # Lower case message
         s = message.content.lower()
@@ -311,13 +324,9 @@ class ATK(commands.Cog):
         split_s = s.split(' ')
 
         # if sentence starts with a special characters, ignore
-        for i in spechar:
-            if s.startswith(i):
-                return
-
-        # if sentence starts with prefix, ignore
-        if any (x in s for x in config.PREFIX):
+        if not specialcheck() or urlcheck():
             return
+
 
         # If message starts with prefix
         for word in split_s:
@@ -325,7 +334,7 @@ class ATK(commands.Cog):
                 if word.startswith(i):
                     return
 
-            if re.search(r'\bnooooo', word):
+            if re.search(r'\bnooooo\b', word):
                 if check():
                     await message.channel.send(random.choice(self.atks['nooooo']))
                 else:
@@ -348,6 +357,8 @@ class ATK(commands.Cog):
             return
         
         potential_atk.sort(key=len, reverse=True)
+
+        ##print(potential_atk)
         
         for i in potential_atk:
             regex = re.compile(rf'\b{i}\b')
@@ -361,14 +372,7 @@ class ATK(commands.Cog):
                     return await message.add_reaction(random.choice(['⌚','⏳','⏰','🕛','🕐','🕖','🕕','🕔','🕚','🕙','🕓','🕒','🕗','🕑']))
                 return self.dt.update({message.guild.id: {message.author.id: datetime.utcnow()}})
 
-        for x in message.mentions:
-            if(x == self.client.user):
-                if random.randrange(1, 10) == 7:
-                    await message.channel.send('Sorry, I\'m busy right now:')
-                    await message.channel.send('https://media.discordapp.net/attachments/845191720224161824/889751939053682748/coom.png')
 
-                else:
-                    return
 
     @commands.command(name='flush', aliases=['flush_atks','reload_atk','reload_atks','flush_irgnore','flush_ignores'])
     @commands.is_owner()

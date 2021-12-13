@@ -2,7 +2,7 @@ import discord
 import discord
 from discord.ext import commands
 import APIs.color as rang
-import loggers.logger as log
+
 
 
 class Emoteicon(commands.Cog):
@@ -12,20 +12,20 @@ class Emoteicon(commands.Cog):
 
     @commands.command()
     async def emoji(self, ctx, emote: discord.Emoji = None):
-        name = "Emoji"
         color = await rang.get_color()
 
         if emote == None:
             raise commands.MissingRequiredArgument('emoji')
 
-        embed = discord.Embed(title=emote.name, description=(f'From: {emote.guild.name}'), color=color)
+        embed = discord.Embed(title=emote.name, color=color)
+        embed.set_footer(text=('From: '+emote.guild.name), icon_url=emote.guild.icon_url)
         embed.set_image(url=emote.url)
         await ctx.send(embed=embed)
     
     @emoji.error
     async def emoji_error(self,ctx,error):
         if isinstance(error,commands.EmojiNotFound):
-            await ctx.send(f'{error.argument} is not a valid emoji.')
+            await ctx.send(f'{error.argument} is not a valid emoji or is a default emoji.')
         elif isinstance(error,commands.MissingRequiredArgument):
             await ctx.send(f'You need to specify an emoji.')
         else:

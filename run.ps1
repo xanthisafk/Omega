@@ -1,5 +1,5 @@
 Write-Output "Checking if config files exists.."
-if (Test-Path -path .\config.py){
+if (Test-Path -path .\config.json){
     Write-Output "Config file exists; starting bot"
     Write-Output "Installing requirements"
     Start-Process PowerShell -ArgumentList "python.exe -m pip install -r requirements.txt" -Wait

@@ -1,11 +1,8 @@
 import datetime
 from os import path
-from random import randint
 
 import discord
-import loggers.logger as log
 import aiohttp
-import config
 from discord.ext import commands
 
 
@@ -26,7 +23,7 @@ class Status(commands.Cog):
                 await session.close()
 
         # Checks if file exist. It does so to check if bot is being hosted on my PC or not.
-        if path.exists('./exist_check'):
+        if path.exists('files/exists'):
             desc = 'Self hosted. Variable speeds'
         else:
             desc = 'Hosted on Heroku. Stable speeds. Bot may crash.'
@@ -73,15 +70,12 @@ class Status(commands.Cog):
             elif comps["name"] == "CloudFlare":
                 cf_status = comps["status"].capitalize()
 
-        url = 'https://status.elephantsql.com/api/v2/components.json'
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                db_status = await response.json()
-                await session.close()
-
-        for comps in db_status["components"]:
-            if comps["id"] == "9s1ddgddw9cn":
-                db_status = comps["status"].capitalize()
+        cog = self.client.get_cog('ATK')
+        try:
+            cog.redis.ping()
+            db_status = 'Online'
+        except:
+            db_status = 'Offline'
 
         # Gathers latency information and turns it into string
         ping = round(self.client.latency*1000)

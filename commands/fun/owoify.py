@@ -2,20 +2,26 @@ import discord
 import loggers.logger as log
 import owo
 from discord.ext import commands
-from config import EMOTE_ERROR
+import json
+import codecs
+
 
 class NoText(Exception):
     def __init__(self):
-        super().__init__(f"{EMOTE_ERROR} No text provided")
+        super().__init__("No text provided")
 
 class TextTooLong(Exception):
     def __init__(self):
-        super().__init__(f"{EMOTE_ERROR} Text should be less than **`1800`** characters.")
+        super().__init__("Text should be less than **`1800`** characters.")
 
 class owo_text(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.cog_name = __name__[9:].capitalize()
+        with codecs.open('config.json', 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            self.error_emote = config['emotes']['ERROR']
+            config = None
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -33,12 +39,12 @@ class owo_text(commands.Cog):
     @owoify.error
     async def owoify_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            return await ctx.send(f"{EMOTE_ERROR} Command is on cooldown. Try again in {round(error.retry_after,1)} seconds.")
+            return await ctx.send(f"{self.error_emote} Command is on cooldown. Try again in {round(error.retry_after,1)} seconds.")
         elif isinstance(error, commands.CommandInvokeError):
             if isinstance(error.original, NoText):
-                return await ctx.send(error.original)
+                return await ctx.send(f"{self.error_emote} Error: {error.original}")
             elif isinstance(error.original, TextTooLong):
-                return await ctx.send(error.original)
+                return await ctx.send(f"{self.error_emote} Error: {error.original}")
         else:
             raise error
 

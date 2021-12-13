@@ -6,7 +6,6 @@ from discord.ext import commands
 import APIs.color as rang
 import loggers.logger as log
 import redditeasy
-import config
 import random
 from datetime import datetime
 from asyncio import TimeoutError
@@ -15,6 +14,13 @@ class Get(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.cog_name = __name__[9:]
+        self.REDDIT_ID = self.bot.config['reddit']["ID"]
+        self.REDDIT_SECRET = self.bot.config['reddit']['SECRET']
+        self.EMOTE_UPVOTE = self.bot.config['emotes']['UPVOTE']
+        self.EMOTE_LEFT = self.bot.config['emotes']['LEFT']
+        self.EMOTE_RIGHT = self.bot.config['emotes']['RIGHT']
+        self.EMOTE_ERROR = self.bot.config['emotes']['ERROR']
+
 
     @commands.command()
     #@commands.cooldown(1, 10, commands.BucketType.user)
@@ -26,10 +32,10 @@ class Get(commands.Cog):
         if sub == '' or sub in ['--controversial', '--hot', '--new','--top']:
             sub += random.choice(['cats', 'rarepuppers', 'memes', 'pics', 'gifs', 'aww', 'gaming', 'funny', 'movies', 'music', 'science', 'sports', 'television'])
         # Create object
-        if config.REDDIT_CLIENT_ID == 'None' or config.REDDIT_CLIENT_SECRET == 'None':
+        if self.REDDIT_ID == 'None' or self.REDDIT_SECRET == 'None':
             rd = redditeasy.AsyncSubreddit()
         else:
-            rd = redditeasy.AsyncSubreddit(client_id=config.REDDIT_CLIENT_ID, client_secret=config.REDDIT_CLIENT_SECRET, user_agent = 'https://github.com/xanthisafk/omega')
+            rd = redditeasy.AsyncSubreddit(client_id=self.REDDIT_ID, client_secret=self.REDDIT_SECRET, user_agent = 'https://github.com/xanthisafk/omega')
 
         # Get post and loop until image is found
         # If no image is found, return error
@@ -73,7 +79,7 @@ class Get(commands.Cog):
                 return await ctx.send(random.choice(['Bonk','bonk!','bonk','Bonk!','🙄😶','🙈']))
 
         # Create embed and send
-        embed = discord.Embed(title=post.title, description=f'{config.EMOTE_UPVOTE}{post.score}', url=post.post_url, color=await rang.get_color())
+        embed = discord.Embed(title=(post.title[:250]+"..."), description=f'{self.EMOTE_UPVOTE}{post.score}', url=post.post_url, color=await rang.get_color())
         
         embed.timestamp = datetime.fromtimestamp(post.created_at)
         embed.set_footer(text=f'By {post.author} on r/{sub}')
@@ -81,7 +87,7 @@ class Get(commands.Cog):
             embed.set_image(url=post.content)
         elif post.content_type == 'Text':
             if len(post.content) > 1000:
-                embed.add_field(name="Content:",value=(post.content[:1000] + ' **...**'))
+                embed.add_field(name="Content:",value=(post.content[:1000] + '    **contd.**'))
             else:
                 embed.add_field(name="Content:",value=post.content)
         message = await ctx.send(embed=embed)
@@ -90,10 +96,10 @@ class Get(commands.Cog):
             return
         else:
 
-            await message.add_reaction(config.EMOTE_LEFT)
-            await message.add_reaction(config.EMOTE_RIGHT)
-            await message.add_reaction(config.EMOTE_ERROR)
-            embed.add_field(name="Usage",value=f"{config.EMOTE_LEFT}: Previous  {config.EMOTE_RIGHT}: Next  {config.EMOTE_ERROR}: Close",inline=False)
+            await message.add_reaction(self.EMOTE_LEFT)
+            await message.add_reaction(self.EMOTE_RIGHT)
+            await message.add_reaction(self.EMOTE_ERROR)
+            embed.add_field(name="Usage",value=f"{self.EMOTE_LEFT}: Previous  {self.EMOTE_RIGHT}: Next  {self.EMOTE_ERROR}: Close",inline=False)
             embed.set_author(name=f"{ctx.author}",icon_url=ctx.author.avatar_url)
             await message.edit(embed=embed)
 
@@ -106,21 +112,21 @@ class Get(commands.Cog):
             
             total = len(content)
             for i in range(0,total-1):
-                content[i] = content[i] + " **...**"
+                content[i] = content[i] + "    **contd.**"
 
             def check(reaction, user):
-                return user == ctx.author and str(reaction.emoji) in [config.EMOTE_LEFT, config.EMOTE_RIGHT, config.EMOTE_ERROR]
+                return user == ctx.author and str(reaction.emoji) in [self.EMOTE_LEFT, self.EMOTE_RIGHT, self.EMOTE_ERROR]
 
             while True:
 
                 try:
                     reaction, user = await self.bot.wait_for('reaction_add', timeout=60, check=check)
 
-                    if str(reaction.emoji) == config.EMOTE_RIGHT and page != total:
+                    if str(reaction.emoji) == self.EMOTE_RIGHT and page != total:
                         page += 1
-                    elif str(reaction.emoji) == config.EMOTE_LEFT and page > 1:
+                    elif str(reaction.emoji) == self.EMOTE_LEFT and page > 1:
                         page -= 1
-                    elif str(reaction.emoji) == config.EMOTE_ERROR:
+                    elif str(reaction.emoji) == self.EMOTE_ERROR:
                         embed.remove_field(1)
                         await message.edit(embed=embed)
                         await message.clear_reactions()
@@ -148,9 +154,9 @@ class Get(commands.Cog):
         elif isinstance(error, redditeasy.exceptions.RequestError):
             return await ctx.reply(f'Error: {error.with_traceback}')
         elif isinstance(error,redditeasy.exceptions.EmptyResult):
-            return await ctx.reply(f"{config.EMOTE_ERROR} Results came back empty!")
+            return await ctx.reply(f"{self.EMOTE_ERROR} Results came back empty!")
         else:
-            await ctx.send(f'{config.EMOTE_ERROR} An unexpected error occured')
+            await ctx.send(f'{self.EMOTE_ERROR} An unexpected error occured')
             raise error
 
 

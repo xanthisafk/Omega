@@ -1,5 +1,5 @@
 #!/bin/sh
-FILE=./config.py
+FILE=./config.json
 if [ -f "$FILE" ]; then
     pip install -r requirements.txt
     cd files

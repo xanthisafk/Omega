@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 import asyncio, random
 import APIs.color as rang
-from loggers.logger import logger
 
 
 class Guessthenumber(commands.Cog):
@@ -89,7 +88,6 @@ class Guessthenumber(commands.Cog):
 
         except asyncio.TimeoutError:
                 await message.edit(content="Message timed out!")
-        await logger(ctx,name,self.cog_name,'INFO')
 
 def setup(bot):
     bot.add_cog(Guessthenumber(bot))

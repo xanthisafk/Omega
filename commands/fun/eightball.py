@@ -5,22 +5,25 @@ import APIs.color as rang
 import discord
 from discord.ext import commands
 
-from loggers.logger import logger
-from config import EMOTE_ERROR
+import codecs, json
 
 class MissingQuestion(Exception):
     def __init__(self):
-        super().__init__(f'{EMOTE_ERROR} You need to ask a question for 🎱 to work.')
+        super().__init__(f'You need to ask a question for 🎱 to work.')
 
 
 class EightBall(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.cog_name = __name__[9:]
+        with codecs.open('config.json', 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            self.error_emote = config['emotes']['ERROR']
+            config = None
 
 
     @commands.command(name='8ball')
-    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def ball_8(self, ctx, *, question: str = None) -> None:
 
         name = '8ball'
@@ -72,18 +75,17 @@ class EightBall(commands.Cog):
         embed = discord.Embed(title=f'{ctx.author} asked: "{question}"', description=(
             desc[3]+random.choice(ball8)), color=color)
         await message.edit(embed=embed)
-        await logger(ctx,name,self.cog_name,'INFO')
 
     @ball_8.error
     async def ball_8_error(self, ctx, error):
         if isinstance(error,commands.CommandInvokeError):
             if isinstance(error.original, MissingQuestion):
-                await ctx.send(error.original)
+                await ctx.send(f'{self.error_emote} Error: {error.original}')
         elif isinstance(error,commands.CommandOnCooldown):
-            return await ctx.send(f'{EMOTE_ERROR} Command is on cooldown. Try again in {round(error.retry_after,1)} seconds.')
+            return await ctx.send(f'{self.error_emote} Command is on cooldown. Try again in {round(error.retry_after,1)} seconds.')
 
         else: 
-            await ctx.send(f'{EMOTE_ERROR} An error has occured.')
+            await ctx.send(f'{self.error_emote} An error has occured.')
             raise error
 
 def setup(bot):

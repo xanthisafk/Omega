@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import APIs.color as rang
-import loggers.logger as log
+import datetime
 import qrcode
 from io import BytesIO
 
@@ -26,7 +26,12 @@ class Qr(commands.Cog):
         with BytesIO() as image_binary:
             image.save(image_binary, "PNG")
             image_binary.seek(0)
-            await ctx.send('Here is your QR code:',file=discord.File(fp=image_binary,filename="qr.png"))
+            embed = discord.Embed(description=f"Here is your QR code.", color=await rang.get_color())
+            embed.set_footer(text=ctx.author, icon_url=ctx.author.avatar_url)
+            embed.timestamp = datetime.datetime.utcnow()
+            file=discord.File(fp=image_binary,filename="qr.png")
+            embed.set_image(url="attachment://qr.png")
+            await ctx.send(embed=embed, file=file)
 
     @qrcode.error
     async def qrcode_error(self, ctx, error):

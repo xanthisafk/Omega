@@ -4,15 +4,17 @@ import discord
 from discord.ext import commands, tasks
 
 import APIs.color as rang
-import loggers.logger as log
-import config
-
+import codecs, json
 
 class Birthday(commands.Cog):
 
     def __init__(self, client):
         self.client = client
         self.cog_name = __name__[9:]
+        with codecs.open('config.json', 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            self.error_emote = config['emotes']['ERROR']
+            config = None
 
     @tasks.loop(seconds=1)
     async def print_birthday(self):
@@ -40,16 +42,15 @@ class Birthday(commands.Cog):
         embed = discord.Embed(title='Happy birthday', color=color)
         embed.set_image(url='https://c.tenor.com/eDfWpD2K5m0AAAAC/hideri-anime.gif')
         await ctx.reply(embed=embed)
-        await log.logger(ctx,name,self.cog_name,'INFO')
 
     @start.error
     async def start_error(self,ctx,err):
-        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        await ctx.send(f"{self.error_emote} Something unexpected happened.")
         raise err
 
     @birthday.error
     async def birthday_error(self,ctx,err):
-        await ctx.end(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        await ctx.end(f"{self.error_emote} Something unexpected happened.")
         raise err
 
 

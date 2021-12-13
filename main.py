@@ -1,19 +1,27 @@
 from datetime import datetime
 import discord
-from commands.music.music import InvalidRepeatMode
-from discord.ext import commands, tasks
+from discord.ext import commands
 import os
 from os import path
 import traceback
 from pyfiglet import figlet_format
+from random import choice
 
 import loggers.logger as log
 
-import config
+import json
+import codecs
+
+with codecs.open('config.json', 'r', encoding='utf-8') as f:
+            r = json.load(f)
+            PREFIX = r['general']['PREFIX']
+            TOKEN = r['general']['TOKEN']
 
 cog_name = 'Main'
-client = commands.Bot(command_prefix=config.PREFIX,case_insensitive=True)
+intents = discord.Intents.all()
+client = commands.Bot(command_prefix=PREFIX,case_insensitive=True, intents=intents)
 client.remove_command('help')
+client.config = r
 
 
 @client.event
@@ -23,7 +31,7 @@ async def on_ready():
     print("----------")
 
     try:
-        channel =  client.get_channel(config.DEBUG)
+        channel =  client.get_channel(client.config['debug']['CHANNEL'])
 
         if path.exists('./files/exists'):
             await channel.send(f"Logged in as {client.user.name}. Running on PC.")
@@ -33,7 +41,7 @@ async def on_ready():
             await log.debug(cog=cog_name,message='Running on Heroku')
     except: pass
 
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"{config.PREFIX[0]}help"))
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"{PREFIX[0]}help"))
 
 
 @client.command()
@@ -44,10 +52,9 @@ async def load(ctx, extension = None):
     args:
         extension: str -> name of extension.
     """
-    name = 'Load'
 
     # Only works for owners of bot.
-    if ctx.author.id in config.OWNER:
+    if ctx.author.id in client.config['general']['OWNER']:
 
         # If no extension was provided
         if extension == None:
@@ -60,12 +67,14 @@ async def load(ctx, extension = None):
 
                     # If file ends with .py and not starts with ! and is not atk.py
                     if file.endswith('.py') and not file.startswith('!'):
-                        
+
                         #Attempts to load. If cog is already loaded, it will raise an exception which does nothing
                         try:
                             client.load_extension(f'commands.{dir}.{file[:-3]}')
+                        except:
+                            pass
 
-                        except: pass
+            await ctx.send(f'>> Loaded: all')
 
             print('>> Loaded: all')
 
@@ -74,27 +83,37 @@ async def load(ctx, extension = None):
             extension = extension.lower()
 
             # Get folders in /commands/
+            broken = False
             for dir in os.listdir('./commands'):
 
                 # Get files in /commands/dir
-                for file in os.listdir(f'commands/{dir}'):
+                for file in os.listdir(f'./commands/{dir}'):
 
                     # If extension matches, load it
                     if extension == file[:-3]:
+                        print(extension, file)
                         client.load_extension(f'commands.{dir}.{extension}')
 
-            print(f'>> Loaded: {extension}')
+                        print(f'>> Loaded: {extension}')
+                        broken = True
+                        break
+                
+                if broken:
+                    break
+
+            else:
+                await ctx.message.add_reaction(client.config['emotes']['ERROR'])
+                return print(f'>> Could not find {extension}')
+
 
         # Add success reaction
-        await ctx.message.add_reaction(config.EMOTE_OK)
-    await log.logger(ctx,name,cog_name,'INFO')
+        await ctx.message.add_reaction(client.config['emotes']['OK'])
     return
 
 @load.error
 async def load_error(ctx, error):
     name = 'Load'
-    await ctx.message.add_reaction(config.EMOTE_ERROR)
-    await log.logger(ctx,name,cog_name,'ERROR',error)
+    await ctx.message.add_reaction(client.config['emotes']['ERROR'])
     raise error
 
 # ------------------------------------------------ #
@@ -110,7 +129,7 @@ async def unload(ctx, extension = None):
     name = 'Unload'
 
     # Only works for owners of bot.
-    if ctx.author.id in config.OWNER:
+    if ctx.author.id in client.config['general']['OWNER']:
 
         # If no extension was provided
         if extension == None:
@@ -149,14 +168,14 @@ async def unload(ctx, extension = None):
             print(f'>> Unloaded: {extension}')
 
         # Add success reaction
-        await ctx.message.add_reaction(config.EMOTE_OK)
+        await ctx.message.add_reaction(client.config['emotes']['OK'])
     await log.logger(ctx,name,cog_name,'INFO')
     return
 
 @unload.error
 async def unload_error(ctx, error):
     name = 'Unload'
-    await ctx.message.add_reaction(config.EMOTE_ERROR)
+    await ctx.message.add_reaction(client.config['emotes']['ERROR'])
     await log.logger(ctx,name,cog_name,'ERROR',error)
     raise error
 
@@ -173,7 +192,7 @@ async def reload(ctx, extension = None):
     name = 'Reload'
 
     # Only works for owners of bot.
-    if ctx.author.id in config.OWNER:
+    if ctx.author.id in client.config['general']['OWNER']:
 
         # If no extension was provided
         if extension == None:
@@ -209,14 +228,14 @@ async def reload(ctx, extension = None):
             print(f'>> Reloaded: {extension}')
 
         # Add success reaction
-        await ctx.message.add_reaction(config.EMOTE_OK)
+        await ctx.message.add_reaction(client.config['emotes']['OK'])
     await log.logger(ctx,name,cog_name,'INFO')
     return
 
 @reload.error
 async def reload_error(ctx, error):
     name = 'Reload'
-    await ctx.message.add_reaction(config.EMOTE_ERROR)
+    await ctx.message.add_reaction(client.config['emotes']['ERROR'])
     await log.logger(ctx,name,cog_name,'ERROR',error)
     raise error
 
@@ -227,7 +246,7 @@ def load_cogs():
             
                 if file == 'logger.py':
                     try:
-                        if config.DEBUG:
+                        if client.config["debug"]["CHANNEL"]:
                             client.load_extension(f'commands{dir}.{file[:-3]}')
                             print()
                     except:
@@ -249,7 +268,7 @@ async def on_command_completion(ctx):
 
     await log.logger(ctx,ctx.command.name,cog,'INFO')
     try:
-        channel =  client.get_channel(config.DEBUG)
+        channel =  client.get_channel(client.config['debug']['CHANNEL'])
         embed = discord.Embed(title='INFO', description=f'{ctx.author} used {ctx.invoked_with} in {ctx.channel.name}', color = discord.Color.blue(),timestamp=datetime.utcnow())
         await channel.send(embed=embed)
     except:
@@ -269,7 +288,7 @@ async def on_command_error(ctx, error):
         await log.logger(ctx,ctx.command.name,cog,'ERROR',str(error))
     
     try:
-        channel =  client.get_channel(config.DEBUG)
+        channel =  client.get_channel(client.config['debug']['CHANNEL'])
         embed = discord.Embed(title='ERROR', description=f'{ctx.author} used {ctx.command.name} in {ctx.channel.name}', color = discord.Color.red(),timestamp=datetime.utcnow())
         embed.add_field(name='Error', value=str(error))
         tb = traceback.format_exc()
@@ -282,7 +301,8 @@ async def on_command_error(ctx, error):
 
     
 if __name__ == '__main__':
-    print(figlet_format(config.NAME,font='slant'))
+    font = choice(['graffiti', 'ogre', 'rectangles', 'roman', 'slant', 'standard'])
+    print(figlet_format(client.config['general']['NAME'],font=font))
     print("OMEGA BOT\nBy Xanthis\nVersion 1.2\nCreate an issue at https://github.com/xanthisafk/omega")
     print('----------')
     print('Loading Cogs')
@@ -291,4 +311,4 @@ if __name__ == '__main__':
     print("All cogs loaded")
     print("----------")
 
-    client.run(config.SECRET)
+    client.run(TOKEN)

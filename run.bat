@@ -1,6 +1,6 @@
 @echo off
 title Omega Bot Instance
-IF EXIST "config.py" (
+IF EXIST "config.json" (
     start /WAIT pip install -r requirements.txt
     cd files
     start java -jar lavalink.jar

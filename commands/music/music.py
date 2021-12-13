@@ -6,18 +6,32 @@
 
 import asyncio
 import datetime as dt
-import enum
 import random
 import re
 import typing as t
 from enum import Enum
+import json
+import codecs
 
 import aiohttp
 import discord
-from discord.ext.commands.errors import CommandInvokeError
 import wavelink
 from discord.ext import commands
-from config import EMOTE_ERROR, EMOTE_LEFT,EMOTE_OK, EMOTE_RIGHT,NAME as configname, EMOTE_ZERO,EMOTE_ONE,EMOTE_TWO,EMOTE_THREE,EMOTE_FOUR,EMOTE_FIVE,EMOTE_SIX
+
+with codecs.open('config.json', 'r', encoding='utf-8') as f:
+    config = json.load(f)
+    EMOTE_ERROR = config['emotes']['ERROR']
+    EMOTE_LEFT = config['emotes']['LEFT']
+    EMOTE_RIGHT = config['emotes']['RIGHT']
+    configname = config['general']['NAME']
+    EMOTE_ONE = config['emotes']['ONE']
+    EMOTE_TWO = config['emotes']['TWO']
+    EMOTE_THREE = config['emotes']['THREE']
+    EMOTE_FOUR = config['emotes']['FOUR']
+    EMOTE_FIVE = config['emotes']['FIVE']
+
+    config = None
+
 
 rang = [
     0x6100fd, 0xf800b8, 0xff0074, 0xff7343, 0xffbe39, 0xf9f871
@@ -34,6 +48,7 @@ OPTIONS = {
     EMOTE_FOUR: 3,
     EMOTE_FIVE: 4,
 }
+
 
 
 class AlreadyConnectedToChannel(commands.CommandError):
@@ -374,6 +389,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="connect", aliases=["join"])
     async def connect_command(self, ctx, *, channel: t.Optional[discord.VoiceChannel]):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
         channel = await player.connect(ctx, channel)
         embed = discord.Embed(color=random.choice(rang), timestamp=dt.datetime.utcnow())
         embed.set_author(name="Connection", icon_url='https://i.ibb.co/9tggL7N/icons8-connected-64.png')
@@ -393,6 +410,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="disconnect", aliases=["leave", "dc", "clear"])
     async def disconnect_command(self, ctx):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
         await player.teardown()
         embed = discord.Embed(color=random.choice(rang), timestamp=dt.datetime.utcnow())
         embed.set_author(name="Connection", icon_url='https://i.ibb.co/6Jzs4mF/icons8-disconnected-64.png')
@@ -409,6 +428,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="resume", aliases=["unpause"])
     async def resume_command(self, ctx):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
         await player.set_pause(False)
         embed = discord.Embed(color=random.choice(rang), timestamp=dt.datetime.utcnow())
         embed.set_author(name="Player", icon_url='https://i.ibb.co/mcPgy27/icons8-circled-play-64-1.png')
@@ -464,6 +485,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="pause")
     async def pause_command(self, ctx):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if player.is_paused:
             raise PlayerIsAlreadyPaused
@@ -485,6 +508,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="stop")
     async def stop_command(self, ctx):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
         player.queue.empty()
         await player.stop()
         embed = discord.Embed(description = "Stopped",color=random.choice(rang), timestamp=dt.datetime.utcnow())
@@ -495,6 +520,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="next", aliases=["skip"])
     async def next_command(self, ctx):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if not player.queue.upcoming:
             return await ctx.invoke(self.stop_command)
@@ -515,6 +542,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="previous", aliases=["prev","last"])
     async def previous_command(self, ctx):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if not player.queue.history:
             raise NoPreviousTracks
@@ -536,6 +565,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def shuffle_command(self, ctx):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
         player.queue.shuffle()
         embed = discord.Embed()
         embed.set_author(name="Player", icon_url="https://i.ibb.co/dbg9XxS/icons8-shuffle-64-1.png")
@@ -561,6 +592,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.cooldown(1, 60, commands.BucketType.user)
     async def repeat_command(self, ctx, mode: str=None):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
         if mode is None:
             current = str(player.queue.repeat_mode).split(".")[1]
             if current == "NONE":
@@ -579,9 +612,10 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             await message.add_reaction(EMOTE_ONE)
             await message.add_reaction(EMOTE_TWO)
             await message.add_reaction(EMOTE_THREE)
+            await message.add_reaction(EMOTE_ERROR)
 
             def check(reaction, user):
-                return user == ctx.author and str(reaction.emoji) in [EMOTE_ONE, EMOTE_TWO, EMOTE_THREE]
+                return user == ctx.author and str(reaction.emoji) in [EMOTE_ONE, EMOTE_TWO, EMOTE_THREE, EMOTE_ERROR]
 
             while True:
                 try:
@@ -604,6 +638,12 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
                         embed.description = 'Repeat all songs'
                         await message.edit(embed=embed)
                         await message.remove_reaction(reaction, user)
+
+                    elif str(reaction.emoji) == EMOTE_ERROR:
+                        await message.clear_reactions()
+                        embed.remove_field(0)
+                        await message.edit(embed=embed)
+                        break
 
                     else:
                         await message.remove_reaction(reaction, user)
@@ -649,6 +689,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def queue_command(self, ctx, show: t.Optional[int] = 10):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if player.queue.is_empty:
             raise QueueIsEmpty
@@ -722,6 +764,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.group(name="volume", invoke_without_command=True)
     async def volume_group(self, ctx, volume: int = None):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
         if volume is None:
             embed = discord.Embed(color = random.choice(rang), timestamp=dt.datetime.utcnow())
             embed.set_author(name=f'Volume', icon_url='https://i.ibb.co/6RBLQqK/icons8-speaker-64.png')
@@ -732,9 +776,10 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
             await msg.add_reaction('🔉')
             await msg.add_reaction('🔊')
+            await msg.add_reaction(EMOTE_ERROR)
 
             def check(reaction, user):
-                return user == ctx.author and str(reaction.emoji) in ['🔉', '🔊']
+                return user == ctx.author and str(reaction.emoji) in ['🔉', '🔊', EMOTE_ERROR]
 
             while True:
                 try:
@@ -747,6 +792,12 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
                     elif str(reaction.emoji) == '🔊':
                         volume += 10
 
+                    elif str(reaction.emoji) == EMOTE_ERROR:
+                        await msg.clear_reactions()
+                        embed.clear_fields()
+                        await msg.edit(embed=embed)
+                        break
+
                     if volume < 0:
                         volume = 0
 
@@ -754,7 +805,6 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
                         volume = 150
 
                     await player.set_volume(volume)
-                    embed.clear_fields()
                     embed.add_field(name='Current volume', value=f'{player.volume}%', inline=False)
                     await msg.edit(embed=embed)
                     await msg.remove_reaction(reaction, user)
@@ -795,6 +845,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @volume_group.command(name="up")
     async def volume_up_command(self, ctx):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if player.volume == 150:
             raise MaxVolume
@@ -820,6 +872,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @volume_group.command(name="down")
     async def volume_down_command(self, ctx):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if player.volume == 0:
             raise MinVolume
@@ -878,6 +932,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="eq")
     async def eq_command(self, ctx, preset: str = None):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if preset is None:
             embed = discord.Embed(
@@ -894,9 +950,10 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             await msg.add_reaction(EMOTE_TWO)
             await msg.add_reaction(EMOTE_THREE)
             await msg.add_reaction(EMOTE_FOUR)
+            await msg.add_reaction(EMOTE_ERROR)
 
             def check(reaction, user):
-                return user == ctx.author and str(reaction.emoji) in [EMOTE_ONE, EMOTE_TWO, EMOTE_THREE, EMOTE_FOUR]
+                return user == ctx.author and str(reaction.emoji) in [EMOTE_ONE, EMOTE_TWO, EMOTE_THREE, EMOTE_FOUR, EMOTE_ERROR]
 
             while True:
                 try:
@@ -913,6 +970,11 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
                     elif str(reaction.emoji) == EMOTE_FOUR:
                         preset = "piano"
+
+                    elif str(reaction.emoji) == EMOTE_ERROR:
+                        embed.clear_fields()
+                        await msg.edit(embed=embed)
+                        break
 
                     eq = getattr(wavelink.eqs.Equalizer, preset, None)
                     await player.set_eq(eq())
@@ -951,6 +1013,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="adveq", aliases=["aeq"])
     async def adveq_command(self, ctx, band: int, gain: float):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if not 1 <= band <= 15 and band not in HZ_BANDS:
             raise NonExistentEQBand
@@ -986,6 +1050,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="playing", aliases=["np"])
     async def playing_command(self, ctx):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if not player.is_playing:
             raise PlayerIsAlreadyPaused
@@ -1020,6 +1086,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="skipto", aliases=["playindex"])
     async def skipto_command(self, ctx, index: int):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if player.queue.is_empty:
             raise QueueIsEmpty
@@ -1045,6 +1113,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="restart")
     async def restart_command(self, ctx):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if player.queue.is_empty:
             raise QueueIsEmpty
@@ -1064,6 +1134,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="seek")
     async def seek_command(self, ctx, position: str):
         player = self.get_player(ctx)
+        if not player.channel_id == ctx.author.voice.channel.id:
+            return
 
         if player.queue.is_empty:
             raise QueueIsEmpty

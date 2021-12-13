@@ -376,7 +376,7 @@
 
         "thumbsup":{
             "desc": "It is not the taste of thunder.",
-            "synt": "$PREFIXthumpsup [member]",
+            "synt": "$PREFIXthumbsup [member]",
             "alis": "None",
             "opti": 1,
             "cate": "thumbsup"

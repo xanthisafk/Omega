@@ -2,7 +2,7 @@ import APIs.color as rang
 import discord
 from discord.ext import commands
 
-from loggers.logger import logger
+
 
 class NothingToSnipe(Exception):
     def __init__(self):
@@ -40,6 +40,9 @@ class Snipe(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, bf, at):
+
+        if bf.author.bot or at.author.bot:
+            return
 
         guildid = bf.guild.id
         user = bf.author.name + '#' + bf.author.discriminator

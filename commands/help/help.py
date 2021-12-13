@@ -5,9 +5,7 @@ import random
 
 import APIs.color as rang
 import discord
-import loggers.logger as log
 from discord.ext import commands
-import config
 
 
 class Help(commands.Cog):
@@ -15,6 +13,13 @@ class Help(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.cog_name = __name__[9:].capitalize()
+        with codecs.open('config.json', 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            self.prefix = config['general']['PREFIX'][0]
+            self.emote_error = config['emotes']['ERROR']
+            self.emote_left = config['emotes']['LEFT']
+            self.emote_right = config['emotes']['RIGHT']
+            config = None
 
     async def emo_section(self):
         syntax = ""
@@ -99,8 +104,8 @@ class Help(commands.Cog):
         uti = await self.uti_section()
         paw = await self.paw_section()
         mus = await self.mus_section()
-        atk = f'List all Auto Trigger Keywords using `{config.PREFIX[0]}help atk`'
-        hdr = f'Bot for ***Nowhere Space***.\nUse `{config.PREFIX[0]}help <command>` for more information.'
+        atk = f'List all Auto Trigger Keywords using `{self.prefix}help atk`'
+        hdr = f'Bot for ***Nowhere Space***.\nUse `{self.prefix}help <command>` for more information.'
 
         color = await rang.get_color()
 
@@ -120,14 +125,14 @@ class Help(commands.Cog):
     
     @help.error
     async def help_error(self,ctx,err):
-        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        await ctx.send(f"{self.emote_error} Something unexpected happened.")
         raise err
 
     ############################
     # EMOTES COG HELP SECTION  #
     ############################
 
-    @help.command(aliases=['blush', 'dance', 'wave', 'sleep', 'vibe', 'pat', 'cry', 'pout', 'kiss', 'bully', 'hug', 'cuddle', 'lick', 'smug', 'bonk', 'yeet', 'throw', 'smile', 'happy', 'highfive', 'handhold', 'hold', 'eat', 'hungry', 'bite', 'glomp', 'superhug', 'slap', 'kill', 'kick', 'wink', 'poke', 'cringe', 'baka', 'hmph', 'bored', 'facepalm', 'feed', 'laugh', 'shrug', 'stare', 'think', 'thonk', 'thumbsup', 'tickle', 'run'])
+    @help.command(aliases=['blush', 'dance', 'wave', 'sleep', 'vibe', 'pat', 'cry', 'pout', 'kiss', 'bully', 'hug', 'cuddle', 'lick', 'smug', 'bonk', 'yeet', 'throw', 'smile', 'happy', 'highfive', 'handhold', 'hold', 'eat', 'hungry', 'bite', 'glomp', 'superhug', 'slap', 'kill', 'kick', 'wink', 'poke', 'cringe', 'baka', 'hmph', 'bored', 'facepalm', 'feed', 'laugh', 'shrug', 'stare', 'think', 'thonk', 'thumbsup', 'tickle', 'run', 'cheer'])
     async def emotes_help(self, ctx):
         """
         Sends out help embed for every element in emotes in help.json
@@ -144,8 +149,8 @@ class Help(commands.Cog):
             '\nAliases: ' + data['emotes'][name]['alis']
         synt = '`' + data['emotes'][name]['synt'] + '`'
 
-        desc = desc.replace('$PREFIX', config.PREFIX[0])
-        synt = synt.replace('$PREFIX', config.PREFIX[0])
+        desc = desc.replace('$PREFIX', self.prefix)
+        synt = synt.replace('$PREFIX', self.prefix)
 
         if data['emotes'][name]['opti'] == 0:
             footer = 'Argument is <required>'
@@ -162,7 +167,7 @@ class Help(commands.Cog):
 
     @emotes_help.error
     async def emotes_help_error(self,ctx,err):
-        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        await ctx.send(f"{self.emote_error} Something unexpected happened.")
         raise err
 
 
@@ -189,8 +194,8 @@ class Help(commands.Cog):
         desc = data['fun'][name]['desc'] + '\nAliases: ' + data['fun'][name]['alis']
         synt = '`' + data['fun'][name]['synt'] + '`'
 
-        desc = desc.replace('$PREFIX', config.PREFIX[0])
-        synt = synt.replace('$PREFIX', config.PREFIX[0])
+        desc = desc.replace('$PREFIX', self.prefix)
+        synt = synt.replace('$PREFIX', self.prefix)
 
         if data['fun'][name]['opti'] == 0:
             footer = 'Argument is <required>'
@@ -207,7 +212,7 @@ class Help(commands.Cog):
 
     @fun_help.error
     async def fun_help_error(self,ctx,err):
-        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        await ctx.send(f"{self.emote_error} Something unexpected happened.")
         raise err
 
     ############################
@@ -232,8 +237,8 @@ class Help(commands.Cog):
             '\nAliases: ' + data['utility'][name]['alis']
         synt = '`' + data['utility'][name]['synt'] + '`'
 
-        desc = desc.replace('$PREFIX', config.PREFIX[0])
-        synt = synt.replace('$PREFIX', config.PREFIX[0])
+        desc = desc.replace('$PREFIX', self.prefix)
+        synt = synt.replace('$PREFIX', self.prefix)
 
         if data['utility'][name]['opti'] == 0:
             footer = 'Argument is <required>'
@@ -250,7 +255,7 @@ class Help(commands.Cog):
 
     @utility_help.error
     async def utility_help_error(self,ctx,err):
-        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        await ctx.send(f"{self.emote_error} Something unexpected happened.")
         raise err
 
     #################################
@@ -267,7 +272,14 @@ class Help(commands.Cog):
         text = 'Auto Trigger Keywords trigger the bot to post a message instantly when sent in chat.'
         syntax = ''
         cog = self.client.get_cog('ATK')
-        data = cog.atks
+        
+        try:
+            data = cog.atks[str(ctx.guild.id)]
+        except KeyError:
+            data = ["No keywords are loaded."]
+
+        if len(data) == 0:
+            data = ["No keywords are loaded."]
 
         temp = []
         synt = []
@@ -293,22 +305,25 @@ class Help(commands.Cog):
         total_pages = len(synt)
 
         embed = discord.Embed(title=name, description=text, color=color)
+        embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
 
         embed.add_field(
-            name=f'Syntax (Page {page}):', value=synt[i], inline=False)
+            name=f'Available triggers (Page {page}/{total_pages}):', value=synt[i], inline=False)
 
         message = await ctx.send(embed=embed)
         embed = None
 
         # https://stackoverflow.com/a/61793587/14504836
         if len(synt) >= 2:
-            right_e = config.EMOTE_RIGHT
-            left_e = config.EMOTE_LEFT
+            right_e = self.emote_right
+            left_e = self.emote_left
+            error_e = self.emote_error
             await message.add_reaction(left_e)
             await message.add_reaction(right_e)
+            await message.add_reaction(error_e)
 
             def check(reaction, user):
-                return user == ctx.author and str(reaction.emoji) in [left_e, right_e]
+                return user == ctx.author and str(reaction.emoji) in [left_e, right_e, error_e]
 
             while True:
                 try:
@@ -316,11 +331,12 @@ class Help(commands.Cog):
 
                     embed = discord.Embed(
                         title=name, description=text, color=color)
+                    embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
 
                     if str(reaction.emoji) == right_e and page != total_pages:
                         page += 1
                         embed.add_field(
-                            name=f'Syntax (Page {page}):', value=synt[(page-1)], inline=False)
+                            name=f'Available triggers (Page {page}/{total_pages}):', value=synt[(page-1)], inline=False)
                         await message.edit(embed=embed)
                         await message.remove_reaction(reaction, user)
 
@@ -331,18 +347,22 @@ class Help(commands.Cog):
                         await message.edit(embed=embed)
                         await message.remove_reaction(reaction, user)
 
+                    elif str(reaction.emoji) == error_e:
+                        await message.clear_reactions()
+                        await message.edit(content="Message not active")
+                        break
+
                     else:
                         await message.remove_reaction(reaction, user)
 
                 except asyncio.TimeoutError:
-                    await message.clear_reaction(right_e)
-                    await message.clear_reaction(left_e)
+                    await message.clear_reactions()
                     await message.edit(content="Message timed out")
                     break
 
     @atk_help.error
     async def atk_help_error(self,ctx,err):
-        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        await ctx.send(f"{self.emote_error} Something unexpected happened.")
         raise err
 
     ############################
@@ -361,8 +381,8 @@ class Help(commands.Cog):
             '\nAliases: ' + data['animals'][name]['alis']
         synt = '`' + data['animals'][name]['synt'] + '`'
 
-        desc = desc.replace('$PREFIX', config.PREFIX[0])
-        synt = synt.replace('$PREFIX', config.PREFIX[0])
+        desc = desc.replace('$PREFIX', self.prefix)
+        synt = synt.replace('$PREFIX', self.prefix)
 
         if data['animals'][name]['opti'] == 0:
             footer = 'Argument is <required>'
@@ -379,7 +399,7 @@ class Help(commands.Cog):
 
     @animal_help.error
     async def animal_help_error(self,ctx,err):
-        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        await ctx.send(f"{self.emote_error} Something unexpected happened.")
         raise err
 
     ##########################
@@ -399,8 +419,8 @@ class Help(commands.Cog):
         desc = data['music'][name]['desc'] + \
             '\nAliases: ' + data['music'][name]['alis']
         synt = '`' + data['music'][name]['synt'] + '`'
-        desc = desc.replace('$PREFIX', config.PREFIX[0])
-        synt = synt.replace('$PREFIX', config.PREFIX[0])
+        desc = desc.replace('$PREFIX', self.prefix)
+        synt = synt.replace('$PREFIX', self.prefix)
         if data['music'][name]['opti'] == 0:
             footer = 'Argument is <required>'
         elif data['music'][name]['opti'] == 1:
@@ -416,18 +436,9 @@ class Help(commands.Cog):
 
     @music_help.error
     async def music_help_error(self,ctx,err):
-        await ctx.send(f"{config.EMOTE_ERROR} Something unexpected happened.")
+        await ctx.send(f"{self.emote_error} Something unexpected happened.")
         raise err
 
-
-
-    @commands.command()
-    async def testin(self, ctx):
-        if ctx.author.id == 800400638156210176:
-            emoji = self.client.emojis
-            for i in emoji:
-               print(i)
-            await ctx.message.add_reaction(config.EMOTE_OK)
 
 
 def setup(client):

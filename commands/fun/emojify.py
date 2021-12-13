@@ -1,23 +1,26 @@
 import json
+import codecs
 
 import discord
-import loggers.logger as log
 from discord.ext import commands
 from emojifier import Emojifier
-import config
 
 class NoText(Exception):
     def __init__(self):
-        super().__init__(f"{config.EMOTE_ERROR} Give me some text to work with!")
+        super().__init__("Give me some text to work with!")
 
 class TextTooBig(Exception):
     def __init__(self):
-        super().__init__(f"{config.EMOTE_ERROR} Maximum 1500 characters only.\nText you gave is too big!")
+        super().__init__("Maximum 1500 characters only.\nText you gave is too big!")
 
 class Emoji(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.cog_name = __name__[9:].capitalize()
+        with codecs.open('config.json', 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            self.error_emote = config['emotes']['ERROR']
+            config = None
 
 
     @commands.command()
@@ -43,21 +46,20 @@ class Emoji(commands.Cog):
         else:
             text = emoji.generate_emojipasta(text)
             await ctx.send(text)
-            await log.logger(ctx, name, self.cog_name, "INFO")
 
     @emojify.error
     async def emojify_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            await ctx.reply(f'{config.EMOTE_ERROR}  You are on cooldown! Try again in {round(error.retry_after,1)} seconds.')
+            await ctx.reply(f'{self.error_emote}  You are on cooldown! Try again in {round(error.retry_after,2)} seconds.')
 
         elif isinstance(error.original, NoText):
-            await ctx.reply(error.original)
+            await ctx.reply(f"{self.error_emote} Error: {error.original}")
 
         elif isinstance(error.original, TextTooBig):
-            await ctx.reply(error.original)
+            await ctx.reply(f"{self.error_emote} Error: {error.original}")
 
         else:
-            await ctx.send(f'{config.EMOTE_ERROR} An error occured.')
+            await ctx.send(f'{self.error_emote} An error occured.')
             raise error
 
 

@@ -17,7 +17,7 @@ class Emotes(commands.Cog):
         self.gif = APIs.emotehelper.GIF_And_Text()
 
     aliases = ['dance', 'wave', 'sleep', 'vibe', 'pat', 'cry', 'pout', 'kiss', 'bully', 'hug', 'cuddle', 'lick', 'smug', 'bonk', 'yeet', 'throw', 'smile', 'happy', 'highfive', 'handhold', 'hold', 'eat',
-               'hungry', 'bite', 'glomp', 'superhug', 'slap', 'kill', 'kick', 'wink', 'poke', 'cringe', 'baka', 'hmph', 'bored', 'facepalm', 'feed', 'laugh', 'shrug', 'stare', 'think', 'thonk', 'thumbsup', 'tickle', 'run']
+               'hungry', 'bite', 'glomp', 'superhug', 'slap', 'kill', 'kick', 'wink', 'poke', 'cringe', 'baka', 'hmph', 'bored', 'facepalm', 'feed', 'laugh', 'shrug', 'stare', 'think', 'thonk', 'thumbsup', 'tickle', 'run', 'cheer']
 
     @commands.command(name='blush', aliases=aliases)
     async def send_emotes(self, ctx, member: Union[discord.Member, str] = None):
@@ -84,6 +84,11 @@ class Emotes(commands.Cog):
         embed.set_footer(text=image[1])
         await ctx.send(embed=embed)
         await log.logger(ctx,name,self.cog_name,'INFO')
+
+    @send_emotes.error
+    async def send_emotes_error(self, ctx, error):
+        await ctx.send(f'{self.client.config["emotes"]["ERROR"]} Sorry, some error occured internally.')
+        raise error
 
 
 def setup(client):

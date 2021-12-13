@@ -1,14 +1,21 @@
 import asyncio
-import discord, APIs.color as rang,config
+import discord, APIs.color as rang
 from discord.ext import commands
-from config import EMOTE_LEFT,EMOTE_RIGHT
-import loggers.logger as log
+import json
+import codecs
 
 
 class Credits(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.cog_name = __name__[9:]
+        with codecs.open('config.json', 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            self.error_emote = config['emotes']['ERROR']
+            self.emote_left = config['emotes']['LEFT']
+            self.emote_right = config['emotes']['RIGHT']
+            self.owner = config['general']['OWNER']
+            config = None
 
     @commands.command(aliases=['credit'])
     async def credits(self, ctx):
@@ -26,7 +33,7 @@ This bot uses [discord.py](https://github.com/rapptz/discord.py) Python library.
 This bot's owner(s) are set to:"""
 
         j=1
-        for i in config.OWNER:
+        for i in self.owner:
             about+= f'\n{j}.\t<@{i}>'
             j+=1
         
@@ -66,8 +73,9 @@ This bot's owner(s) are set to:"""
 
         message = await ctx.reply(embed=embed)
 
-        right_e = EMOTE_RIGHT
-        left_e = EMOTE_LEFT
+        right_e = self.emote_right
+        left_e = self.emote_left
+        error_e = self.emote_error
 
         total = 3
         min = 1
@@ -75,9 +83,10 @@ This bot's owner(s) are set to:"""
 
         await message.add_reaction(left_e)
         await message.add_reaction(right_e)
+        await message.add_reaction(error_e)
 
         def check(reaction, user):
-                return user == ctx.author and str(reaction.emoji) in [left_e, right_e]
+                return user == ctx.author and str(reaction.emoji) in [left_e, right_e, error_e]
         
         while True:
             try:
@@ -89,6 +98,9 @@ This bot's owner(s) are set to:"""
                     current+=1
                 elif str(reaction.emoji) == left_e and current > min:
                     current-=1
+                elif str(reaction.emoji) == error_e:
+                    await message.clear_reactions()
+                    break
                 elif current == total or current == 0:
                     pass
                 

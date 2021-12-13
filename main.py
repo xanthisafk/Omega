@@ -6,6 +6,9 @@ from os import path
 import traceback
 from pyfiglet import figlet_format
 from random import choice
+import subprocess
+import sys
+import requests
 
 import loggers.logger as log
 
@@ -299,8 +302,47 @@ async def on_command_error(ctx, error):
 
     #raise error
 
+
+def download_lavalink(url: str, dest_folder='lib'):
+    print("Lavalink is not installed.\nDownloading Lavalink...")
+    
+    if not os.path.exists(dest_folder):
+        os.makedirs(dest_folder)
+    
+    filename = "Lavalink.jar"
+    file_path = os.path.join(dest_folder, filename)
+
+    r = requests.get(url, stream=True)
+    if r.ok:
+        print("Saving Lavalink to", os.path.abspath(file_path))
+        with open(file_path, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=1024 * 8):
+                if chunk:
+                    f.write(chunk)
+                    f.flush()
+                    os.fsync(f.fileno())
+    else:  # HTTP status code 4XX/5XX
+        print("Download failed: status code {}\n{}".format(r.status_code, r.text))
+
+
+def setup_dependencies():
+    # install requirements via pip
+    print("Installing Dependencies...")
+    subprocess.check_call([sys. executable, "-m", "pip", "install", "-r", "requirements.txt"], 
+                            stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    
+    # check if Lavalink.jar exists
+    if not os.path.exists('lib/Lavalink.jar'):
+        lavalink_url = "https://github.com/freyacodes/Lavalink/releases/download/3.4/Lavalink.jar"
+        download_lavalink(lavalink_url)
+
+    print("Dependencies installed.\nStarting Lavalink")
+    
+    subprocess.Popen(['java', '-jar', 'lib/Lavalink.jar'])
+
     
 if __name__ == '__main__':
+    setup_dependencies()
     font = choice(['graffiti', 'ogre', 'rectangles', 'roman', 'slant', 'standard'])
     print(figlet_format(client.config['general']['NAME'],font=font))
     print("OMEGA BOT\nBy Xanthis\nVersion 1.2\nCreate an issue at https://github.com/xanthisafk/omega")

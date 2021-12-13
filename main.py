@@ -300,7 +300,7 @@ async def on_command_error(ctx, error):
     except:
         pass
 
-    #raise error
+    
 
 
 def download_lavalink(url: str, dest_folder='lib'):

@@ -5,7 +5,7 @@ Omega is a multipurpose bot. Uses discord (previously discord.py) library.
 # Now with a functional music bot!
 
 ## Features
-* Music bot _Powered by Lavalink_
+* Music bot [https://github.com/freyacodes/Lavalink](_Powered by Lavalink_)
 	* User friendly interface
 	* Customizable by editing `config.py`
 	* Playlists, Volume and customizable Equalizers
